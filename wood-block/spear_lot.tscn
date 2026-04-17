@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://ylal5gkka0xc"]
+
+[ext_resource type="Script" uid="uid://cmrkve4nn3v8d" path="res://spear_lot.gd" id="1_be0kb"]
+[ext_resource type="ArrayMesh" uid="uid://cvg2ix27f57gh" path="res://assets/model/wbspear_lotforEVERYTHING.obj" id="1_mn8l0"]
+[ext_resource type="Texture2D" uid="uid://bf4ywd8q04y07" path="res://assets/foto/greenbast01.png" id="2_be0kb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_op6tg"]
+resource_local_to_scene = true
+albedo_color = Color(2.454227, 2.454227, 2.454227, 1)
+albedo_texture = ExtResource("2_be0kb")
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_75oee"]
+size = Vector3(0.5, 3, 0.5)
+
+[node name="Spear_lot" type="RigidBody3D" unique_id=2131948688]
+transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, 0, 0, 0)
+mass = 0.125
+continuous_cd = true
+script = ExtResource("1_be0kb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2053987263]
+transform = Transform3D(16.000002, 0, 0, 0, -6.9938216e-07, -15.999999, 0, 15.999999, -6.9938216e-07, 0, 0, 0)
+mesh = ExtResource("1_mn8l0")
+surface_material_override/0 = SubResource("StandardMaterial3D_op6tg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1814698857]
+shape = SubResource("BoxShape3D_75oee")

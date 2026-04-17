@@ -1,0 +1,1416 @@
+[gd_scene format=3 uid="uid://cxhg31dah7yey"]
+
+[ext_resource type="Script" uid="uid://cdiwuejj645sg" path="res://scripts/MainManager.gd" id="1_18i6f"]
+[ext_resource type="PackedScene" uid="uid://vtuufanghs2c" path="res://unit_slot.tscn" id="2_c5gpw"]
+[ext_resource type="Script" uid="uid://rajl35varkhy" path="res://scripts/building_camera.gd" id="3_58rcv"]
+[ext_resource type="Texture2D" uid="uid://dp4bhe054tk5c" path="res://assets/foto/showbar_01.png" id="4_xl22u"]
+[ext_resource type="Texture2D" uid="uid://dny2gtkg3dn4q" path="res://assets/foto/SammyfaceforUI.png" id="5_gmct2"]
+[ext_resource type="Texture2D" uid="uid://y1fc4du6hckm" path="res://assets/foto/healthbar_01_back.png" id="6_6y008"]
+[ext_resource type="Texture2D" uid="uid://jg3wkls57xye" path="res://assets/foto/healthbar_01_front.png" id="7_dqv0h"]
+[ext_resource type="Texture2D" uid="uid://bjg740s1dt4ye" path="res://assets/foto/enbar_01_back.png" id="8_c6u68"]
+[ext_resource type="Texture2D" uid="uid://ov3k77x82ax1" path="res://assets/foto/enbar_01_front.png" id="9_fpyro"]
+[ext_resource type="Texture2D" uid="uid://b7q0j2hxw3flw" path="res://assets/foto/showbar_02.png" id="10_s2uw0"]
+[ext_resource type="Texture2D" uid="uid://d1q8xbvatfkk6" path="res://assets/foto/wblot03forUI.png" id="11_pqlt6"]
+[ext_resource type="Texture2D" uid="uid://chmtg6ll6vvgf" path="res://assets/foto/healthbar_02_front.png" id="12_egs0f"]
+[ext_resource type="Texture2D" uid="uid://ga4hlyuvvmw6" path="res://assets/foto/selecber-003.png" id="13_hvw7w"]
+[ext_resource type="Script" uid="uid://dg2kec5ca77yu" path="res://scroll_container.gd" id="14_3o3mh"]
+[ext_resource type="Texture2D" uid="uid://dkqhhfhbmeini" path="res://assets/foto/ButtonUI01.png" id="15_ihie8"]
+[ext_resource type="Texture2D" uid="uid://8voxl2j4vitf" path="res://assets/foto/rotate2.png" id="16_8pkml"]
+[ext_resource type="Texture2D" uid="uid://dfhp3jy52tfhm" path="res://assets/foto/CopyUI2.png" id="17_yodu7"]
+[ext_resource type="Texture2D" uid="uid://sraq26p8qr2x" path="res://assets/foto/rotate1.png" id="18_udipb"]
+[ext_resource type="Texture2D" uid="uid://0mjugmrs3mcg" path="res://assets/foto/UI-Delete.png" id="19_0ix3x"]
+[ext_resource type="Texture2D" uid="uid://dlb1i417r2hss" path="res://assets/foto/UI-Place.png" id="20_86f4m"]
+[ext_resource type="Script" uid="uid://c27m0jb28yrbt" path="res://shooting_power_ui.gd" id="21_381rm"]
+[ext_resource type="Texture2D" uid="uid://cytd2e8gb27u5" path="res://assets/foto/gun_slider_fill.png" id="22_ew6dv"]
+[ext_resource type="Texture2D" uid="uid://d04oyp1h5tix5" path="res://assets/foto/gun_slider_bg2.png" id="23_v2uui"]
+[ext_resource type="Texture2D" uid="uid://bk28pvynp3agx" path="res://assets/foto/gun_slider_thumb.png" id="24_a2hsn"]
+[ext_resource type="Texture2D" uid="uid://d2fc87gckly81" path="res://assets/foto/Save_UI.png" id="25_7x0kj"]
+[ext_resource type="Texture2D" uid="uid://cwf00rfupy73o" path="res://assets/foto/X_ui.png" id="26_ljnr7"]
+[ext_resource type="Texture2D" uid="uid://bnqnn1cxja8ot" path="res://assets/foto/selecber-0002.png" id="27_k3ufe"]
+[ext_resource type="AudioStream" uid="uid://cd5rjg07ku7kw" path="res://sounds/Alert.mp3" id="28_xnmwh"]
+[ext_resource type="PackedScene" uid="uid://cjechkxia6mcx" path="res://lotcher.tscn" id="29_h3128"]
+[ext_resource type="PackedScene" uid="uid://ck85sw2epj81w" path="res://construction_block.tscn" id="31_gmct2"]
+[ext_resource type="PackedScene" uid="uid://rua05cerdvip" path="res://soren.tscn" id="33_dqv0h"]
+
+[sub_resource type="Environment" id="Environment_rogxy"]
+background_mode = 1
+background_color = Color(0.027103946, 0.114819705, 0.092681326, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.4337527, 0.3763091, 1.92523e-07, 1)
+glow_enabled = true
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w26js"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_jsfha"]
+size = Vector3(128, 1, 256)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_siewb"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w26js"]
+size = Vector3(128, 1, 256)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_n0ka0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xns47"]
+size = Vector3(128, 1, 128)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ltbj"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_siewb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e63ln"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+distance_fade_max_distance = 0.0
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_akibp"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_omahq"]
+texture = ExtResource("4_xl22u")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qthju"]
+texture = ExtResource("5_gmct2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k4o7o"]
+texture = ExtResource("10_s2uw0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lj6eb"]
+texture = ExtResource("11_pqlt6")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_rogxy"]
+load_path = "res://.godot/imported/healthbar_02_back.png-6fcd6ba674406b471a5a0c4162e35a5d.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n0ka0"]
+texture = ExtResource("13_hvw7w")
+
+[sub_resource type="ImageTexture" id="ImageTexture_akibp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0u0al"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.23137255, 0.23137255, 0.23137255, 0.4627451)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_obhl2"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0epqv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.75, 0.75, 0.75, 0.75)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqrj4"]
+content_margin_left = 0.0
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 4.0
+bg_color = Color(0.3126469, 0.3126469, 0.3126469, 0.1254902)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o642o"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="Theme" id="Theme_q3lsq"]
+HScrollBar/icons/decrement = SubResource("ImageTexture_akibp")
+HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_akibp")
+HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_akibp")
+HScrollBar/icons/increment = SubResource("ImageTexture_akibp")
+HScrollBar/icons/increment_highlight = SubResource("ImageTexture_akibp")
+HScrollBar/icons/increment_pressed = SubResource("ImageTexture_akibp")
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_0u0al")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_obhl2")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_0epqv")
+HScrollBar/styles/scroll = SubResource("StyleBoxFlat_nqrj4")
+HScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_o642o")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_akibp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l7cpn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ltbj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rogxy"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8116174, 1.8247963, 1.8247963, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_djdxu"]
+texture = ExtResource("27_k3ufe")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l7cpn"]
+texture = ExtResource("27_k3ufe")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1qaeu"]
+texture = ExtResource("27_k3ufe")
+
+[sub_resource type="GDScript" id="GDScript_t871q"]
+script/source = "extends RigidBody3D
+
+@export_group(\"Unit Stats\")
+@export var unit_name: String = \"soren\"
+@export var energy_cost: float = 0
+@export var hp_gain_on_place: int = 10
+@export var hp_loss_on_death: int = 10
+
+var is_dead: bool = false
+var tile_key: String = \"\"
+var is_combat_started: bool = false
+
+# --- ตัวแปรสำหรับระบบ Move และปืน ---
+var active_gun: Node3D = null
+var is_repositioning: bool = false
+var is_selected: bool = false
+
+func _ready():
+	freeze = true # ล็อกไว้ก่อนเริ่ม
+
+func activate_unit(key: String):
+	tile_key = key
+
+func start_combat():
+	is_combat_started = true
+	freeze = false 
+	print(name + \" พร้อมรบแล้ว!\")
+
+func _physics_process(_delta: float):
+	# ถ้าอยู่ในโหมดย้าย ให้ข้ามการเช็คฟิสิกส์/ความเอียงไปก่อ
+		
+	if not is_combat_started: 
+		return
+	
+	# ระบบความเอียง (ล้ม/ฟื้น) ของคุณ
+	var tilt_angle = rad_to_deg(global_transform.basis.y.angle_to(Vector3.UP))
+	if tilt_angle > 60:
+		die()
+	elif tilt_angle <= 45:
+		revive()
+
+func die():
+	if is_dead: return 
+	is_dead = true
+	print(name + \" ล้มลงแล้ว!\")
+	if get_tree().current_scene.has_method(\"reduce_army_hp\"):
+		# 🌟 เติม self, เข้าไปข้างหน้า เพื่อส่ง \"ตัวมันเอง\" ไปให้ MainManager เช็คค่าย!
+		get_tree().current_scene.reduce_army_hp(self, hp_loss_on_death)
+
+func revive():
+	if not is_dead: return 
+	is_dead = false
+	print(name + \" ลุกขึ้นสู้!\")
+	if get_tree().current_scene.has_method(\"restore_army_hp\"):
+		# 🌟 เติม self, เข้าไปตรงนี้ด้วยเหมือนกันครับ
+		get_tree().current_scene.restore_army_hp(self, hp_loss_on_death)
+
+# --- ระบบปืน ---
+func pickup_gun(gun_node: Node3D):
+	active_gun = gun_node
+	if gun_node.has_method(\"equip_to\"):
+		gun_node.equip_to(self)
+"
+
+[node name="Main Scene Place" type="Node3D" unique_id=2103157186]
+script = ExtResource("1_18i6f")
+slot_scene = ExtResource("2_c5gpw")
+is_dev_mode = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=959964239]
+transform = Transform3D(0.81488514, -9.8192515e-08, 0.57962257, -0.40169263, -0.72091407, 0.56473535, 0.41785794, -0.6930245, -0.5874622, -0.74661446, 64, 0.637)
+light_color = Color(1.0859477e-05, 1.2369778, 1.143175, 1)
+light_energy = 0.5
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1109963069]
+environment = SubResource("Environment_rogxy")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=318348487]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.199, 0)
+physics_material_override = SubResource("PhysicsMaterial_w26js")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1953422654]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.389, 64)
+mesh = SubResource("BoxMesh_jsfha")
+surface_material_override/0 = SubResource("StandardMaterial3D_siewb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1447093391]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.37, 64.87402)
+shape = SubResource("BoxShape3D_w26js")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=2043919400]
+transform = Transform3D(1, 0, 0, 0, 0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 192)
+physics_material_override = SubResource("PhysicsMaterial_n0ka0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=486282149]
+shape = SubResource("BoxShape3D_xns47")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=2103790642]
+transform = Transform3D(1, 0, 0, 0, -0.25881904, -0.9659258, 0, 0.9659258, -0.25881904, 0, 0.199, -64)
+physics_material_override = SubResource("PhysicsMaterial_n0ka0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=59488980]
+shape = SubResource("BoxShape3D_xns47")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="." unique_id=1455804662]
+transform = Transform3D(-8.742278e-08, 1.9318516, 0.51763815, 0, 0.51763815, -1.9318516, -2, -8.444392e-08, -2.2626683e-08, 64, 0, 64)
+physics_material_override = SubResource("PhysicsMaterial_n0ka0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4" unique_id=2012019392]
+shape = SubResource("BoxShape3D_xns47")
+
+[node name="StaticBody3D5" type="StaticBody3D" parent="." unique_id=2097946566]
+transform = Transform3D(2.563106e-07, 1.9318516, -0.51763815, -4.5253365e-08, -0.51763815, -1.9318516, -2, 2.5928946e-07, -2.2626683e-08, -64, 0, 64)
+physics_material_override = SubResource("PhysicsMaterial_n0ka0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D5" unique_id=1241836442]
+shape = SubResource("BoxShape3D_xns47")
+
+[node name="GridVisualizer" type="MeshInstance3D" parent="." unique_id=190055841]
+material_override = SubResource("StandardMaterial3D_2ltbj")
+custom_aabb = AABB(-50, -50, -50, 100, 100, 100)
+mesh = SubResource("ImmediateMesh_siewb")
+
+[node name="TrajectoryLine" type="MeshInstance3D" parent="." unique_id=729873081]
+material_override = SubResource("StandardMaterial3D_e63ln")
+mesh = SubResource("ImmediateMesh_akibp")
+
+[node name="CameraPosition" type="Node3D" parent="." unique_id=2038702040]
+transform = Transform3D(0.8972578, 0, 0.44150704, 0, 1, 0, -0.44150704, 0, 0.8972578, 3.887219, 0, 12.058458)
+script = ExtResource("3_58rcv")
+
+[node name="CameraRotationX" type="Node3D" parent="CameraPosition" unique_id=1185583938]
+
+[node name="CameraZoomPivot" type="Node3D" parent="CameraPosition/CameraRotationX" unique_id=1315506955]
+transform = Transform3D(1, 0, 0, 0, 0.7071067, 0.7071067, 0, -0.7071067, 0.7071067, 0, 10, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPosition/CameraRotationX/CameraZoomPivot" unique_id=1483350558]
+transform = Transform3D(1, -1.074509e-08, -1.6507524e-08, 0, 0.83809096, -0.5455308, 1.9696579e-08, 0.5455308, 0.83809096, 0, 0, -6.9999943)
+current = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1994742543]
+
+[node name="UnitList" type="HBoxContainer" parent="HUD" unique_id=1368518575]
+visible = false
+custom_minimum_size = Vector2(300, 150)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_right = 300.0
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ArmyShow" type="Label" parent="HUD" unique_id=1618224373]
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 62.0
+offset_bottom = 62.0
+scale = Vector2(2, 2)
+theme_override_styles/normal = SubResource("StyleBoxTexture_omahq")
+
+[node name="Panel" type="Panel" parent="HUD/ArmyShow" unique_id=64354192]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 62.5
+offset_top = -4.0
+offset_right = 75.5
+offset_bottom = -4.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(-1, 1)
+theme_override_styles/panel = SubResource("StyleBoxTexture_qthju")
+
+[node name="PlayerHPBar" type="TextureProgressBar" parent="HUD" unique_id=20040617]
+offset_left = 118.0
+offset_top = 6.0
+offset_right = 374.0
+offset_bottom = 38.0
+scale = Vector2(1.5, 1.5)
+max_value = 10.0
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("6_6y008")
+texture_progress = ExtResource("7_dqv0h")
+
+[node name="HPLabel" type="Label" parent="HUD" unique_id=1294668377]
+offset_left = 134.0
+offset_top = 18.0
+offset_right = 174.0
+offset_bottom = 41.0
+text = "ARMY HP: 10"
+
+[node name="EnergyBar" type="TextureProgressBar" parent="HUD" unique_id=1162179713]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -333.0
+offset_top = 11.0
+offset_right = -77.0
+offset_bottom = 27.0
+grow_horizontal = 2
+scale = Vector2(2.5, 2.5)
+max_value = 500.0
+value = 496.0
+nine_patch_stretch = true
+texture_under = ExtResource("8_c6u68")
+texture_progress = ExtResource("9_fpyro")
+
+[node name="EnergyLabel" type="Label" parent="HUD/EnergyBar" unique_id=1746449981]
+layout_mode = 0
+offset_left = 113.59998
+offset_top = 1.5999985
+offset_right = 216.59998
+offset_bottom = 46.6
+scale = Vector2(0.25, 0.25)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 32
+text = "495.5 / 500"
+
+[node name="EnemyShow" type="Label" parent="HUD" unique_id=46250472]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -119.0
+offset_top = 5.0
+offset_right = -63.0
+offset_bottom = 61.0
+grow_horizontal = 0
+scale = Vector2(2, 2)
+theme_override_styles/normal = SubResource("StyleBoxTexture_k4o7o")
+
+[node name="Panel" type="Panel" parent="HUD/EnemyShow" unique_id=1310152562]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -9.5
+offset_top = -4.5
+offset_right = 7.5
+offset_bottom = -5.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_lj6eb")
+
+[node name="EnemyHPBar" type="TextureProgressBar" parent="HUD" unique_id=788914451]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -503.0
+offset_top = 5.0
+offset_right = -247.0
+offset_bottom = 37.0
+grow_horizontal = 0
+scale = Vector2(1.5, 1.5)
+max_value = 200.0
+value = 200.0
+fill_mode = 1
+nine_patch_stretch = true
+texture_under = SubResource("CompressedTexture2D_rogxy")
+texture_progress = ExtResource("12_egs0f")
+
+[node name="EnemyHPLabel" type="Label" parent="HUD" unique_id=305272834]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -175.0
+offset_top = 17.0
+offset_right = -135.0
+offset_bottom = 40.0
+grow_horizontal = 0
+text = "ENEMY HP: 200"
+horizontal_alignment = 2
+
+[node name="EnemyEnergyLabel" type="Label" parent="HUD" unique_id=324811462]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -164.0
+offset_top = 50.0
+offset_right = -124.0
+offset_bottom = 73.0
+grow_horizontal = 0
+text = "COST EN: 100"
+horizontal_alignment = 2
+
+[node name="VBoxContainer" type="Control" parent="HUD" unique_id=1094327706]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -163.99997
+offset_right = 517.0
+offset_bottom = -36.0
+grow_vertical = 0
+scale = Vector2(1.25, 1.25)
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="HUD/VBoxContainer" unique_id=225776450]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_n0ka0")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/VBoxContainer" unique_id=1678194435]
+custom_minimum_size = Vector2(500, 125)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.470623
+offset_top = -113.37813
+offset_right = 694.4693
+offset_bottom = 27.621872
+grow_vertical = 0
+scale = Vector2(0.7, 0.7)
+mouse_filter = 2
+theme = SubResource("Theme_q3lsq")
+theme_override_styles/panel = SubResource("StyleBoxTexture_akibp")
+draw_focus_border = true
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 0
+script = ExtResource("14_3o3mh")
+
+[node name="UnitList" type="HBoxContainer" parent="HUD/VBoxContainer/ScrollContainer" unique_id=895404160]
+custom_minimum_size = Vector2(125, 125)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer" unique_id=2093668986]
+layout_mode = 0
+offset_left = 0.79999983
+offset_top = -30.400015
+offset_right = 500.80002
+offset_bottom = 0.5999851
+scale = Vector2(0.9, 0.9)
+mouse_filter = 2
+
+[node name="BtnTabChar" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1990611435]
+layout_mode = 2
+text = "Characters"
+
+[node name="BtnTabGun" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=510037795]
+layout_mode = 2
+text = "Guns"
+
+[node name="BtnTabBlock" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1529117338]
+layout_mode = 2
+text = "Blocks"
+
+[node name="BtnTabShield" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1624876473]
+layout_mode = 2
+text = "Shield"
+
+[node name="BtnTabEnemyChar" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=864063345 groups=["enemy_ui_tabs"]]
+layout_mode = 2
+text = "Echa"
+
+[node name="BtnTabEnemyGun" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1552670662 groups=["enemy_ui_tabs"]]
+layout_mode = 2
+text = "Egun"
+
+[node name="BtnTabEnemyBlock" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1485607754 groups=["enemy_ui_tabs"]]
+layout_mode = 2
+text = "Eblock"
+
+[node name="BtnEndTurn" type="Button" parent="HUD" unique_id=1351231283]
+visible = false
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = -40.0
+offset_right = 118.0
+offset_bottom = 56.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_l7cpn")
+icon = ExtResource("15_ihie8")
+
+[node name="Label" type="Label" parent="HUD/BtnEndTurn" unique_id=540835675]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -108.0
+offset_top = -32.0
+offset_right = 161.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 56
+text = "ENDTURN"
+
+[node name="BtnStart" type="Button" parent="HUD" unique_id=512985376]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -74.0
+offset_top = 59.0
+offset_right = 182.0
+offset_bottom = 155.0
+grow_horizontal = 2
+scale = Vector2(0.5, 0.5)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2ltbj")
+icon = ExtResource("15_ihie8")
+
+[node name="Label" type="Label" parent="HUD/BtnStart" unique_id=1361907178]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -11.5
+offset_right = 24.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 56
+text = "START"
+
+[node name="BtnSaveLevel" type="Button" parent="HUD" unique_id=1135238959]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -109.0
+offset_top = 119.0
+offset_right = -13.0
+offset_bottom = 150.0
+grow_horizontal = 0
+text = "SAVE LEVEL"
+
+[node name="ActionMenu" type="Control" parent="HUD" unique_id=779510904]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 944.6418
+offset_top = 542.9802
+offset_right = 984.64166
+offset_bottom = 582.9802
+scale = Vector2(2.15, 2.15)
+
+[node name="BtnRotate" type="Button" parent="HUD/ActionMenu" unique_id=1584212894]
+layout_mode = 0
+offset_left = 1.8623077
+offset_top = -3.2590363
+offset_right = 41.86231
+offset_bottom = 36.740963
+scale = Vector2(0.63754356, 0.63754356)
+icon = ExtResource("16_8pkml")
+
+[node name="BtnDuplicate" type="Button" parent="HUD/ActionMenu" unique_id=720106322]
+visible = false
+layout_mode = 0
+offset_left = 28.372093
+offset_top = 23.255816
+offset_right = 68.37209
+offset_bottom = 63.255814
+scale = Vector2(0.6358598, 0.6358598)
+icon = ExtResource("17_yodu7")
+
+[node name="BtnRotateHorizontal" type="Button" parent="HUD/ActionMenu" unique_id=1303875376]
+visible = false
+layout_mode = 0
+offset_left = 28.400175
+offset_top = -2.79346
+offset_right = 68.400185
+offset_bottom = 37.206543
+scale = Vector2(0.6379144, 0.6379144)
+icon = ExtResource("18_udipb")
+
+[node name="BtnDelete" type="Button" parent="HUD/ActionMenu" unique_id=518272901]
+layout_mode = 0
+offset_left = 1.860466
+offset_top = 23.255817
+offset_right = 41.86047
+offset_bottom = 63.255817
+scale = Vector2(0.6379144, 0.6379144)
+icon = ExtResource("19_0ix3x")
+
+[node name="MultiActionMenu" type="Control" parent="HUD" unique_id=1705138619]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1052.1644
+offset_top = 322.62912
+offset_right = 1132.1646
+offset_bottom = 402.62918
+scale = Vector2(1.4, 1.4)
+
+[node name="BtnMultiRotate" type="Button" parent="HUD/MultiActionMenu" unique_id=1447760199]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+icon = ExtResource("16_8pkml")
+
+[node name="BtnMultiDelete" type="Button" parent="HUD/MultiActionMenu" unique_id=1233663699]
+layout_mode = 0
+offset_top = 40.714283
+offset_right = 40.000008
+offset_bottom = 80.71428
+icon = ExtResource("19_0ix3x")
+
+[node name="BtnMultiCopy" type="Button" parent="HUD/MultiActionMenu" unique_id=943636830]
+layout_mode = 0
+offset_left = 40.714283
+offset_top = 41.42857
+offset_right = 80.71428
+offset_bottom = 81.42857
+icon = ExtResource("17_yodu7")
+
+[node name="BtnMultiSave" type="Button" parent="HUD/MultiActionMenu" unique_id=1309274976]
+layout_mode = 0
+offset_left = 41.0
+offset_right = 81.0
+offset_bottom = 40.0
+icon = ExtResource("20_86f4m")
+
+[node name="CombatMenu" type="Control" parent="HUD" unique_id=614622005]
+visible = false
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -389.99988
+offset_top = -42.99997
+offset_right = -349.99988
+offset_bottom = -2.9999695
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(2.147874, 2.147874)
+
+[node name="BtnCombatShoot" type="Button" parent="HUD/CombatMenu" unique_id=1804905582]
+layout_mode = 0
+offset_left = -3.259067
+offset_right = 114.74094
+offset_bottom = 52.999996
+scale = Vector2(0.3028628, 0.3028628)
+theme_override_font_sizes/font_size = 32
+text = "SHOOT"
+
+[node name="BtnCombatSnap" type="Button" parent="HUD/CombatMenu" unique_id=2141541480]
+layout_mode = 0
+offset_left = -2.3279133
+offset_top = 17.226332
+offset_right = 95.67209
+offset_bottom = 70.22633
+scale = Vector2(0.3028628, 0.3028628)
+theme_override_font_sizes/font_size = 32
+text = "PEEK"
+
+[node name="BtnCombatWalk" type="Button" parent="HUD/CombatMenu" unique_id=567641619]
+layout_mode = 0
+offset_left = -0.46560287
+offset_top = 33.98709
+offset_right = 99.53439
+offset_bottom = 86.98709
+scale = Vector2(0.3028628, 0.3028628)
+theme_override_font_sizes/font_size = 32
+text = "MOVE"
+
+[node name="ShootingPowerUI" type="Control" parent="HUD" unique_id=190700143]
+visible = false
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -445.0
+offset_top = -256.0
+offset_right = -445.0
+offset_bottom = -256.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("21_381rm")
+
+[node name="PowerBar" type="TextureProgressBar" parent="HUD/ShootingPowerUI" unique_id=333756142]
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 1.0
+mouse_filter = 2
+fill_mode = 2
+texture_under = ExtResource("22_ew6dv")
+texture_progress = ExtResource("23_v2uui")
+
+[node name="Thumb" type="TextureRect" parent="HUD/ShootingPowerUI/PowerBar" unique_id=1377678741]
+layout_mode = 0
+offset_top = 16.000004
+offset_right = 64.0
+offset_bottom = 48.000004
+scale = Vector2(1.016199, 1.016199)
+texture = ExtResource("24_a2hsn")
+
+[node name="PowerLabel" type="Label" parent="HUD/ShootingPowerUI" unique_id=560791098]
+layout_mode = 0
+offset_left = 16.999998
+offset_top = 402.0
+offset_right = 57.0
+offset_bottom = 425.0
+scale = Vector2(0.7485006, 0.7485006)
+theme_override_colors/font_color = Color(1, 1, 1, 0)
+text = "0/0"
+
+[node name="SelectionBox" type="ColorRect" parent="HUD" unique_id=931856091]
+unique_name_in_owner = true
+visible = false
+offset_left = 699.0
+offset_top = 267.0
+offset_right = 1679.0
+offset_bottom = 650.0
+mouse_filter = 2
+color = Color(0.6472146, 0.9610217, 0.9999998, 0.078431375)
+
+[node name="Border" type="Panel" parent="HUD/SelectionBox" unique_id=1251494917]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rogxy")
+
+[node name="BlueprintSaveUI" type="Panel" parent="HUD" unique_id=398505748]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -211.0
+offset_top = -159.99998
+offset_right = 189.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InputName" type="LineEdit" parent="HUD/BlueprintSaveUI" unique_id=786255229]
+layout_mode = 0
+offset_left = 52.999996
+offset_top = 47.99998
+offset_right = 353.0
+offset_bottom = 78.999985
+text = "..."
+
+[node name="BtnConfirmSave" type="Button" parent="HUD/BlueprintSaveUI" unique_id=1319611863]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 111.999985
+offset_right = 117.0
+offset_bottom = 153.99998
+theme_override_font_sizes/font_size = 24
+text = "SAVE"
+
+[node name="BtnCancelSave" type="Button" parent="HUD/BlueprintSaveUI" unique_id=89224669]
+layout_mode = 0
+offset_left = 252.0
+offset_top = 111.999985
+offset_right = 352.0
+offset_bottom = 153.99998
+theme_override_font_sizes/font_size = 24
+text = "CANCEL"
+
+[node name="RenamePopup" type="Panel" parent="HUD" unique_id=371754848]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -211.0
+offset_top = -159.99998
+offset_right = 189.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RenameInput" type="LineEdit" parent="HUD/RenamePopup" unique_id=850897662]
+layout_mode = 0
+offset_left = 53.0
+offset_top = 47.99998
+offset_right = 353.0
+offset_bottom = 78.999985
+text = "..."
+
+[node name="BtnRenameConfirm" type="Button" parent="HUD/RenamePopup" unique_id=355667429]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 111.999985
+offset_right = 117.0
+offset_bottom = 153.99998
+theme_override_font_sizes/font_size = 24
+text = "SAVE"
+
+[node name="BtnRenameCancel" type="Button" parent="HUD/RenamePopup" unique_id=516596559]
+layout_mode = 0
+offset_left = 252.0
+offset_top = 111.999985
+offset_right = 352.0
+offset_bottom = 153.99998
+theme_override_font_sizes/font_size = 24
+text = "CANCEL"
+
+[node name="BtnOpenLibrary" type="Button" parent="HUD" unique_id=1291799855]
+offset_left = 7.0
+offset_top = 141.0
+offset_right = 47.0
+offset_bottom = 181.0
+icon = ExtResource("25_7x0kj")
+
+[node name="BlueprintLibraryUI" type="Panel" parent="HUD" unique_id=1402689427]
+visible = false
+offset_left = 7.0
+offset_top = 182.0
+offset_right = 207.0
+offset_bottom = 582.0
+
+[node name="BtnCloseLibrary" type="Button" parent="HUD/BlueprintLibraryUI" unique_id=1294962776]
+layout_mode = 0
+offset_left = 179.0
+offset_top = -20.000006
+offset_right = 219.0
+offset_bottom = 19.999994
+scale = Vector2(0.5, 0.5)
+icon = ExtResource("26_ljnr7")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/BlueprintLibraryUI" unique_id=1475193366]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scroll_hint_mode = 3
+
+[node name="BlueprintList" type="VBoxContainer" parent="HUD/BlueprintLibraryUI/ScrollContainer" unique_id=20792984]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BlueprintContextMenu" type="Panel" parent="HUD" unique_id=1296615793]
+visible = false
+offset_left = -335.0
+offset_top = 312.0
+offset_right = -255.0
+offset_bottom = 376.0
+
+[node name="BtnMenuRename" type="Button" parent="HUD/BlueprintContextMenu" unique_id=132987516]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 31.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_djdxu")
+text = "Rename"
+
+[node name="BtnMenuDelete" type="Button" parent="HUD/BlueprintContextMenu" unique_id=57584058]
+layout_mode = 0
+offset_top = 33.0
+offset_right = 80.0
+offset_bottom = 64.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_l7cpn")
+text = "Delete"
+
+[node name="DeleteConfirmUI" type="ColorRect" parent="HUD" unique_id=971165638]
+visible = false
+offset_left = -251.0
+offset_top = 312.0
+offset_right = -51.0
+offset_bottom = 432.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="Panel" type="Panel" parent="HUD/DeleteConfirmUI" unique_id=870022691]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_1qaeu")
+
+[node name="Label" type="Label" parent="HUD/DeleteConfirmUI/Panel" unique_id=1516604442]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -78.0
+offset_top = 19.0
+offset_right = 79.0
+offset_bottom = 53.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Are you sure?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/DeleteConfirmUI/Panel" unique_id=487618815]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 59.0
+offset_right = 149.0
+offset_bottom = 99.0
+
+[node name="BtnYes" type="Button" parent="HUD/DeleteConfirmUI/Panel/HBoxContainer" unique_id=614934499]
+layout_mode = 2
+text = "  Yes  "
+
+[node name="BtnNo" type="Button" parent="HUD/DeleteConfirmUI/Panel/HBoxContainer" unique_id=1183536519]
+layout_mode = 2
+text = "  No  "
+
+[node name="ErrorSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1161023347]
+stream = ExtResource("28_xnmwh")
+
+[node name="lotcher_id_1_40080" parent="." unique_id=1189641117 instance=ExtResource("29_h3128")]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 15.5, 1.45, 47)
+freeze = true
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(15.05, 0, 46.8, 0.9, 2.9, 0.40000007)
+metadata/cached_pos = Vector3(15.5, 1.45, 47)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+
+[node name="lotcher_id_2_40081" parent="." unique_id=806700972 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.5, 1.45, 46.75)
+freeze = true
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(5.05, 0, 46.55, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(5.5, 1.45, 46.75)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+
+[node name="lotcher_id_3_40081" parent="." unique_id=1956576151 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -5.75, 1.45, 46.5)
+freeze = true
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-6.2, 0, 46.3, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-5.75, 1.45, 46.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+
+[node name="lotcher_id_4_40081" parent="." unique_id=2119615288 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -17, 1.45, 46.5)
+freeze = true
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-17.45, 0, 46.3, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-17, 1.45, 46.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+
+[node name="lotcher_id_5_40081" parent="." unique_id=1601156986 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 4.5, 1.45, 69.25)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(4.05, 0, 69.05, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(4.5, 1.45, 69.25)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_6_40081" parent="." unique_id=377017976 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -6.75, 1.45, 69)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-7.2, 0, 68.8, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-6.75, 1.45, 69)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_7_40081" parent="." unique_id=436275431 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -18, 1.45, 69)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-18.45, 0, 68.8, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-18, 1.45, 69)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_8_40081" parent="." unique_id=1149575198 instance=ExtResource("29_h3128")]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 14.5, 1.45, 69.5)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(14.05, 0, 69.3, 0.9, 2.9, 0.40000007)
+metadata/cached_pos = Vector3(14.5, 1.45, 69.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_9_40081" parent="." unique_id=499690000 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 12.25, 1.45, 52.75)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(11.8, 0, 52.55, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(12.25, 1.45, 52.75)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_10_40081" parent="." unique_id=2050623685 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1, 1.45, 52.5)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(0.54999995, 0, 52.3, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(1, 1.45, 52.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_11_40081" parent="." unique_id=669323988 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -10.25, 1.45, 52.5)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-10.7, 0, 52.3, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-10.25, 1.45, 52.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_12_40081" parent="." unique_id=112250014 instance=ExtResource("29_h3128")]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 22.25, 1.45, 53)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(21.8, 0, 52.8, 0.9, 2.9, 0.40000007)
+metadata/cached_pos = Vector3(22.25, 1.45, 53)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_13_40081" parent="." unique_id=1733977720 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 11.25, 1.45, 75.25)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(10.8, 0, 75.05, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(11.25, 1.45, 75.25)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_14_40081" parent="." unique_id=1237611208 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1.45, 75)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-0.45000002, 0, 74.8, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(0, 1.45, 75)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_15_40081" parent="." unique_id=1783449322 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -11.25, 1.45, 75)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-11.7, 0, 74.8, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-11.25, 1.45, 75)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_16_40081" parent="." unique_id=1033503765 instance=ExtResource("29_h3128")]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 21.25, 1.45, 75.5)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(20.8, 0, 75.3, 0.9, 2.9, 0.40000007)
+metadata/cached_pos = Vector3(21.25, 1.45, 75.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_17_40081" parent="." unique_id=2133545814 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -24.5, 1.45, 75.5)
+freeze = true
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-24.95, 0, 75.3, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-24.5, 1.45, 75.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+
+[node name="lotcher_id_18_40081" parent="." unique_id=644079976 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -23, 1.45, 52)
+freeze = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-23.45, 0, 51.8, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-23, 1.45, 52)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+
+[node name="lotcher_id_19_40081" parent="." unique_id=1104188371 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 8.5, 1.45, 60.25)
+freeze = true
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(8.05, 0, 60.05, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(8.5, 1.45, 60.25)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+
+[node name="lotcher_id_20_40081" parent="." unique_id=830002479 instance=ExtResource("29_h3128")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -10, 1.45, 60)
+freeze = true
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-10.45, 0, 59.8, 0.90000004, 2.9, 0.4000001)
+metadata/cached_pos = Vector3(-10, 1.45, 60)
+metadata/cached_rot = Vector3(0, 3.1415925, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(15.999999, 0, 0, 0, 16, 0, 0, 0, 15.999999, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wb model 01.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+, Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(-0.99, 0, -1.4948584e-07, 0, 0.99, 0, 1.4948584e-07, 0, -0.99, 0, 0.125, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":Resource("res://assets/model/wbrot01_block.obj"),"skin":null,"skeleton":NodePath(""),"surface_material_override/0":null,"script":null)
+])
+
+[node name="block_id_21_40081" parent="." unique_id=350566958 instance=ExtResource("31_gmct2")]
+transform = Transform3D(4.3711385e-08, 0.99999994, 8.742278e-08, 0.99999994, -4.3711385e-08, 0, 3.8213705e-15, 8.742277e-08, -1, -2, 0.45, 0.75)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-3.4499998, 0, 0.54999983, 2.8999999, 0.9, 0.40000027)
+metadata/cached_pos = Vector3(-2, 0.45, 0.75)
+metadata/cached_rot = Vector3(0, 3.1415925, 1.5707964)
+
+[node name="block_id_22_40081" parent="." unique_id=331630724 instance=ExtResource("31_gmct2")]
+transform = Transform3D(4.3711385e-08, 0.99999994, 8.742278e-08, 0.99999994, -4.3711385e-08, 0, 3.8213705e-15, 8.742277e-08, -1, -2, 0.45, 0.25)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-3.4499998, 0, 0.049999863, 2.8999999, 0.9, 0.40000027)
+metadata/cached_pos = Vector3(-2, 0.45, 0.25)
+metadata/cached_rot = Vector3(0, 3.1415925, 1.5707964)
+
+[node name="block_id_23_40081" parent="." unique_id=1044526378 instance=ExtResource("31_gmct2")]
+transform = Transform3D(-4.371138e-08, 0.99999976, 4.3711374e-08, 0, -4.3711378e-08, 0.9999997, 0.9999998, 4.3711378e-08, 1.9106848e-15, -2, 1.2, 0.5)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-3.4499998, 1, 0.05000004, 2.8999994, 0.39999998, 0.8999999)
+metadata/cached_pos = Vector3(-2, 1.2, 0.5)
+metadata/cached_rot = Vector3(-1.5707964, -1.5707964, 0)
+
+[node name="block_id_24_40081" parent="." unique_id=403024771 instance=ExtResource("31_gmct2")]
+transform = Transform3D(4.3711385e-08, 0.99999994, 8.742278e-08, 0.99999994, -4.3711385e-08, 0, 3.8213705e-15, 8.742277e-08, -1, 1, 0.45, 0.5)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-0.44999993, 0, 0.29999986, 2.8999999, 0.9, 0.40000027)
+metadata/cached_pos = Vector3(1, 0.45, 0.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 1.5707964)
+
+[node name="block_id_25_40081" parent="." unique_id=189413019 instance=ExtResource("31_gmct2")]
+transform = Transform3D(4.3711385e-08, 0.99999994, 8.742278e-08, 0.99999994, -4.3711385e-08, 0, 3.8213705e-15, 8.742277e-08, -1, 1, 0.45, 0)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-0.44999993, 0, -0.20000014, 2.8999999, 0.9, 0.40000027)
+metadata/cached_pos = Vector3(1, 0.45, 0)
+metadata/cached_rot = Vector3(0, 3.1415925, 1.5707964)
+
+[node name="block_id_26_40081" parent="." unique_id=2140408001 instance=ExtResource("31_gmct2")]
+transform = Transform3D(-4.371138e-08, 0.99999976, 4.3711374e-08, 0, -4.3711378e-08, 0.9999997, 0.9999998, 4.3711378e-08, 1.9106848e-15, 1, 1.2, 0.25)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-0.4499997, 1, -0.19999996, 2.8999994, 0.39999998, 0.8999999)
+metadata/cached_pos = Vector3(1, 1.2, 0.25)
+metadata/cached_rot = Vector3(-1.5707964, -1.5707964, 0)
+
+[node name="block_id_27_40081" parent="." unique_id=571778881 instance=ExtResource("31_gmct2")]
+transform = Transform3D(4.3711385e-08, 0.99999994, 8.742278e-08, 0.99999994, -4.3711385e-08, 0, 3.8213705e-15, 8.742277e-08, -1, -5, 0.45, 0.5)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-6.45, 0, 0.29999986, 2.8999999, 0.9, 0.40000027)
+metadata/cached_pos = Vector3(-5, 0.45, 0.5)
+metadata/cached_rot = Vector3(0, 3.1415925, 1.5707964)
+
+[node name="block_id_28_40081" parent="." unique_id=1108503376 instance=ExtResource("31_gmct2")]
+transform = Transform3D(4.3711385e-08, 0.99999994, 8.742278e-08, 0.99999994, -4.3711385e-08, 0, 3.8213705e-15, 8.742277e-08, -1, -5, 0.45, 0)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-6.45, 0, -0.20000014, 2.8999999, 0.9, 0.40000027)
+metadata/cached_pos = Vector3(-5, 0.45, 0)
+metadata/cached_rot = Vector3(0, 3.1415925, 1.5707964)
+
+[node name="block_id_29_40081" parent="." unique_id=1101405717 instance=ExtResource("31_gmct2")]
+transform = Transform3D(-4.371138e-08, 0.99999976, 4.3711374e-08, 0, -4.3711378e-08, 0.9999997, 0.9999998, 4.3711378e-08, 1.9106848e-15, -5, 1.2, 0.25)
+freeze = true
+metadata/from_blueprint = true
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-6.45, 1, -0.19999996, 2.8999994, 0.39999998, 0.8999999)
+metadata/cached_pos = Vector3(-5, 1.2, 0.25)
+metadata/cached_rot = Vector3(-1.5707964, -1.5707964, 0)
+
+[node name="soren_id_30_40081" parent="." unique_id=357763680 instance=ExtResource("33_dqv0h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.45, -0.75)
+freeze = true
+script = SubResource("GDScript_t871q")
+metadata/cached_shapes = Array[Node]([Object(CollisionShape3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"shape":null,"disabled":false,"debug_fill":true,"script":null)
+])
+metadata/cached_global_aabb = AABB(-2.45, 0, -0.95, 0.9, 2.9, 0.4)
+metadata/cached_pos = Vector3(-2, 1.45, -0.75)
+metadata/cached_rot = Vector3(0, 0, 0)
+metadata/cached_meshes = Array[Node]([Object(MeshInstance3D,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","transform":Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"layers":1,"sorting_offset":0.0,"sorting_use_aabb_center":true,"material_override":null,"material_overlay":null,"transparency":0.0,"cast_shadow":1,"extra_cull_margin":0.0,"custom_aabb":AABB(0, 0, 0, 0, 0, 0),"lod_bias":1.0,"ignore_occlusion_culling":false,"gi_mode":1,"gi_lightmap_texel_scale":1.0,"visibility_range_begin":0.0,"visibility_range_begin_margin":0.0,"visibility_range_end":0.0,"visibility_range_end_margin":0.0,"visibility_range_fade_mode":0,"mesh":null,"skin":null,"skeleton":NodePath(""),"script":null)
+])
+
+[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabChar" to="." method="_on_btn_tab_char_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabGun" to="." method="_on_btn_tab_gun_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabBlock" to="." method="_on_btn_tab_block_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabShield" to="." method="_on_btn_tab_shield_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabEnemyChar" to="." method="_on_btn_tab_enemy_char_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabEnemyGun" to="." method="_on_btn_tab_enemy_gun_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabEnemyBlock" to="." method="_on_btn_tab_enemy_block_pressed"]
+[connection signal="pressed" from="HUD/BtnEndTurn" to="." method="_on_btn_end_turn_pressed"]
+[connection signal="pressed" from="HUD/BtnStart" to="." method="_on_btn_start_pressed"]
+[connection signal="pressed" from="HUD/ActionMenu/BtnRotate" to="." method="_on_btn_rotate_pressed"]
+[connection signal="pressed" from="HUD/ActionMenu/BtnDuplicate" to="." method="_on_btn_duplicate_pressed"]
+[connection signal="pressed" from="HUD/ActionMenu/BtnRotateHorizontal" to="." method="_on_btn_rotate_horizontal_pressed"]
+[connection signal="pressed" from="HUD/ActionMenu/BtnDelete" to="." method="_on_btn_delete_pressed"]
+[connection signal="pressed" from="HUD/MultiActionMenu/BtnMultiRotate" to="." method="_on_btn_multi_rotate_pressed"]
+[connection signal="pressed" from="HUD/MultiActionMenu/BtnMultiDelete" to="." method="_on_btn_multi_delete_pressed"]
+[connection signal="pressed" from="HUD/MultiActionMenu/BtnMultiCopy" to="." method="_on_btn_multi_copy_pressed"]
+[connection signal="pressed" from="HUD/MultiActionMenu/BtnMultiSave" to="." method="_on_btn_multi_save_pressed"]

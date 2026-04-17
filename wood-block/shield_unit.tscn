@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://dw7moo85r5ldl"]
+
+[ext_resource type="Script" uid="uid://lmt48agr6bqs" path="res://shield_unit.gd" id="1_brrup"]
+[ext_resource type="ArrayMesh" uid="uid://cak3n6uey44cg" path="res://assets/model/wb model 01.obj" id="2_ki7fq"]
+[ext_resource type="Texture2D" uid="uid://cdddfs7ujkbwt" path="res://assets/foto/lightning3.png" id="2_mfg7f"]
+[ext_resource type="Texture2D" uid="uid://ds4xhll4xwdro" path="res://assets/foto/wbT023-export.png" id="3_mfg7f"]
+[ext_resource type="Shader" uid="uid://gs8keq5fjaeo" path="res://Shader/shield_outline.gdshader" id="5_mfg7f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8gqep"]
+render_priority = 0
+shader = ExtResource("5_mfg7f")
+shader_parameter/outline_color = Color(0.8, 0.4, 1, 1)
+shader_parameter/outline_thickness = 0.02
+shader_parameter/outline_brightness = 1.0
+shader_parameter/mesh_center = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8gqep"]
+next_pass = SubResource("ShaderMaterial_8gqep")
+albedo_texture = ExtResource("3_mfg7f")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_43lxw"]
+size = Vector3(1, 3, 0.5)
+
+[node name="shield_unit" type="RigidBody3D" unique_id=364780047]
+mass = 1000.0
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("1_brrup")
+energy_cost = 10.0
+max_hp = 3
+glint_tex = ExtResource("2_mfg7f")
+outline_size = 0.03
+outline_color = Color(1.063, 0.90393233, 0.47371602, 0.157)
+glint_color = Color(1.0789998, 0.9332465, 0.53056604, 0.114)
+glint_scale = 0.25
+glint_speed = Vector2(0.025, -0.05)
+damage_color = Color(1.353256, 0, 0, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1789399547]
+transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, -2, 0)
+mesh = ExtResource("2_ki7fq")
+surface_material_override/0 = SubResource("StandardMaterial3D_8gqep")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=778098192]
+shape = SubResource("BoxShape3D_43lxw")

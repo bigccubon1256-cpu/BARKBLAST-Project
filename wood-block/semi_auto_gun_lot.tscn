@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dj8f3s34iiwyn"]
+
+[ext_resource type="Script" uid="uid://c3d44yfoxy8gp" path="res://semi_auto_gun_lot.gd" id="1_b8u8x"]
+[ext_resource type="ArrayMesh" uid="uid://b2d8yfrsyribl" path="res://assets/model/wbrot01.obj" id="2_rrgcr"]
+[ext_resource type="Texture2D" uid="uid://bf4ywd8q04y07" path="res://assets/foto/greenbast01.png" id="3_4763x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xhf8v"]
+resource_local_to_scene = true
+albedo_color = Color(2.454227, 2.454227, 2.454227, 1)
+albedo_texture = ExtResource("3_4763x")
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pet2j"]
+size = Vector3(1, 3, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2isfo"]
+resource_local_to_scene = true
+albedo_color = Color(2.454227, 2.454227, 2.454227, 1)
+albedo_texture = ExtResource("3_4763x")
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gt7hm"]
+size = Vector3(1, 3, 0.5)
+
+[node name="semi_auto_gun_lot" type="Node3D" unique_id=684518880]
+transform = Transform3D(1.9106855e-15, -4.371139e-08, 1, -1, -4.371139e-08, 0, 4.371139e-08, -1, -4.371139e-08, 0, 0, 0)
+script = ExtResource("1_b8u8x")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=2084954846]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 0, 0, 0)
+mass = 0.5
+freeze = true
+continuous_cd = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=1124659311]
+transform = Transform3D(-15.999996, 1.398764e-06, 0, -1.3987641e-06, -15.999995, 0, 0, 0, 16, -8.7458034e-08, 0.0008074036, 8.745807e-08)
+mesh = ExtResource("2_rrgcr")
+surface_material_override/0 = SubResource("StandardMaterial3D_xhf8v")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1232918248]
+shape = SubResource("BoxShape3D_pet2j")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="." unique_id=1921982236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+mass = 0.5
+freeze = true
+continuous_cd = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2" unique_id=1093021068]
+transform = Transform3D(16.000002, 0, 0, 0, -16, 1.3987644e-06, 0, -1.3987644e-06, -16, -1.1920929e-07, 0.0022949139, 8.752309e-08)
+mesh = ExtResource("2_rrgcr")
+surface_material_override/0 = SubResource("StandardMaterial3D_2isfo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=1728483403]
+shape = SubResource("BoxShape3D_gt7hm")

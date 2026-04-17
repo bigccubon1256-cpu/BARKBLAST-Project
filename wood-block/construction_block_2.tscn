@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cm5ew58wttut0"]
+
+[ext_resource type="Script" uid="uid://bg58guvk1hmyu" path="res://construction_block_2.gd" id="1_7s7j4"]
+[ext_resource type="ArrayMesh" uid="uid://tdrrsdhfyxpt" path="res://assets/model/wbrob02.obj" id="1_p7aaa"]
+[ext_resource type="Texture2D" uid="uid://ctk4fwwsm1pnu" path="res://assets/foto/woodrob-01-export.png" id="3_7s7j4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grvyu"]
+albedo_texture = ExtResource("3_7s7j4")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x5tid"]
+size = Vector3(1, 3, 0.5)
+
+[node name="construction_block_2" type="RigidBody3D" unique_id=176687672]
+mass = 3.0
+continuous_cd = true
+script = ExtResource("1_7s7j4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1543858321]
+transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, 0, 0)
+mesh = ExtResource("1_p7aaa")
+surface_material_override/0 = SubResource("StandardMaterial3D_grvyu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1925138863]
+shape = SubResource("BoxShape3D_x5tid")
