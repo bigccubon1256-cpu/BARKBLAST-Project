@@ -28,7 +28,6 @@
 [ext_resource type="Texture2D" uid="uid://d2fc87gckly81" path="res://assets/foto/Save_UI.png" id="23_omahq"]
 [ext_resource type="Texture2D" uid="uid://cwf00rfupy73o" path="res://assets/foto/X_ui.png" id="24_omahq"]
 [ext_resource type="Texture2D" uid="uid://bnqnn1cxja8ot" path="res://assets/foto/selecber-0002.png" id="25_k4o7o"]
-[ext_resource type="Script" uid="uid://blw5i846lxrp4" path="res://virtual_joystick.gd" id="29_1qaeu"]
 
 [sub_resource type="Environment" id="Environment_rogxy"]
 background_mode = 1
@@ -954,23 +953,6 @@ text = "  No  "
 
 [node name="ErrorSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1161023347]
 stream = ExtResource("6_kk4gi")
-
-[node name="MobileUI" type="CanvasLayer" parent="." unique_id=577824622]
-
-[node name="VirtualJoystick" type="Control" parent="MobileUI" unique_id=1086739732]
-layout_mode = 3
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -202.0
-offset_top = -208.0
-offset_right = -52.0
-offset_bottom = -58.0
-grow_horizontal = 0
-grow_vertical = 0
-script = ExtResource("29_1qaeu")
 
 [connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabChar" to="." method="_on_btn_tab_char_pressed"]
 [connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabGun" to="." method="_on_btn_tab_gun_pressed"]
