@@ -792,18 +792,20 @@ func _process(delta: float) -> void:
 		if pos != Vector3.ZERO:
 			var snap_x = snapped(pos.x, snap_step)
 			var snap_z = snapped(pos.z, snap_step)
-			var center_snap = Vector3(snap_x, 0, snap_z)
+			# 🌟 ล็อกความสูงศูนย์กลางให้เป็น 0 เสมอ
+			var center_snap = Vector3(snap_x, 0.0, snap_z)
 			
 			# 🌟 ด่านลดแล็กขั้นเด็ดขาด: คำนวณเมื่อข้ามช่องตารางเท่านั้น!
 			if center_snap != last_drag_grid_pos:
 				last_drag_grid_pos = center_snap
 			
-				# 🌟 1. ตั้งตำแหน่ง และบังคับอัปเดตกระดูกทันที! (แก้บั๊กวางแทรกกัน)
+				# 🌟 1. ตั้งตำแหน่ง และบังคับอัปเดตกระดูกทันที! 
 				for i in range(dragging_multi_units.size()):
 					var clone = dragging_multi_units[i]
 					var offset = multi_drag_offsets[i]
-					clone.global_position = center_snap + offset
-					clone.force_update_transform() # สั่งให้กล่อง Collision วิ่งตามโมเดลเดี๋ยวนี้!
+					# (ค่า offset.y ของทุกคน ถูกปรับให้พอดีพื้นมาตั้งแต่ตอนกดก๊อปปี้แล้ว!)
+					clone.global_position = center_snap + offset 
+					clone.force_update_transform() 
 					
 				# 🌟 2. ระบบ Auto-Stacking (ดันขึ้นข้างบนถ้าชนของเดิม)
 				var max_stack_levels = 40
@@ -4703,15 +4705,23 @@ func _on_btn_multi_copy_pressed():
 		if dragging_unit and is_instance_valid(dragging_unit):
 			dragging_unit.queue_free()
 		
+		# 1. หาจุดศูนย์กลาง และหา "จุดที่ต่ำที่สุด" 
 		var center_pos = Vector3.ZERO
+		var min_aabb_y = 99999.0 # 🌟 เรดาร์ความสูง
+		
 		if valid_units.size() == 0:
 			_clear_multi_selection()
 			return 
 			
 		for item in valid_units:
-			center_pos += item["unit"].global_position
+			var u = item["unit"]
+			center_pos += Vector3(u.global_position.x, 0.0, u.global_position.z)
+			var aabb = get_unit_global_aabb(u.global_position, u.global_transform.basis, u, true)
+			if aabb.position.y < min_aabb_y:
+				min_aabb_y = aabb.position.y
+			
 		center_pos /= valid_units.size()
-		center_pos = Vector3(snapped(center_pos.x, snap_step), 0, snapped(center_pos.z, snap_step))
+		center_pos = Vector3(snapped(center_pos.x, snap_step), 0.0, snapped(center_pos.z, snap_step))
 		
 		dragging_multi_units.clear()
 		multi_drag_offsets.clear()
@@ -4725,7 +4735,10 @@ func _on_btn_multi_copy_pressed():
 			add_child(new_unit)
 			
 			new_unit.global_transform.basis = orig_unit.global_transform.basis
+			
 			var offset = orig_unit.global_position - center_pos
+			# 🌟 ล็อกร่างโคลนคนที่อยู่ล่างสุด ให้ติดพื้นเสมอ!
+			offset.y = orig_unit.global_position.y - min_aabb_y 
 			
 			multi_drag_offsets.append(offset)
 			dragging_multi_units.append(new_unit)
@@ -4827,15 +4840,23 @@ func _start_multi_move_from_world():
 	
 	print("🚚 เริ่มลากย้ายกลุ่มยูนิต (ฟรี! ไม่เสีย Energy)")
 	
-	# 1. หาจุดศูนย์กลางของเมาส์
+	# 1. หาจุดศูนย์กลาง และหา "จุดที่ต่ำที่สุด (AABB)" ของกลุ่ม
 	var center_pos = Vector3.ZERO
+	var min_aabb_y = 99999.0 # 🌟 สร้างตัวแปรดักจับความสูง
+	
 	for u in multi_selected_units:
 		if is_instance_valid(u):
-			center_pos += u.global_position
+			center_pos += Vector3(u.global_position.x, 0.0, u.global_position.z)
+			
+			# 🌟 ใช้เรดาร์ AABB หาจุดต่ำสุดของโมเดล (กันตัวจมดิน)
+			var aabb = get_unit_global_aabb(u.global_position, u.global_transform.basis, u, true)
+			if aabb.position.y < min_aabb_y:
+				min_aabb_y = aabb.position.y
+				
 	center_pos /= multi_selected_units.size()
-	center_pos = Vector3(snapped(center_pos.x, snap_step), 0, snapped(center_pos.z, snap_step))
+	center_pos = Vector3(snapped(center_pos.x, snap_step), 0.0, snapped(center_pos.z, snap_step))
 	
-	multi_drag_cost = 0.0 # 🌟 ย้ายของเดิม ไม่ต้องจ่ายตังค์!
+	multi_drag_cost = 0.0 
 	multi_drag_hp = 0
 	dragging_multi_units.clear()
 	multi_drag_offsets.clear()
@@ -4843,18 +4864,19 @@ func _start_multi_move_from_world():
 	# 2. ถอนรากถอนโคนของทุกตัวในกลุ่มให้มาลอยติดเมาส์
 	for unit in multi_selected_units:
 		if is_instance_valid(unit):
-			# เอาออกจากตาราง Grid ชั่วคราว
 			if occupied_tiles.has(unit.tile_key):
 				occupied_tiles.erase(unit.tile_key)
 				
 			var offset = unit.global_position - center_pos
+			# 🌟 พระเอกอยู่ตรงนี้! เซ็ตให้คนต่ำสุดมีค่า offset Y เป็นศูนย์ (แตะพื้นเสมอ)
+			offset.y = unit.global_position.y - min_aabb_y 
+			
 			multi_drag_offsets.append(offset)
 			dragging_multi_units.append(unit)
 			
-			toggle_collision(unit, true) # ปิดการชนตอนกำลังลอย
-			set_unit_preview_color(unit, Color(0.0, 1.0, 1.0, 0.502)) # เปลี่ยนเป็นสีฟ้าโปร่งแสง
+			toggle_collision(unit, true) 
+			set_unit_preview_color(unit, Color(0.0, 1.0, 1.0, 0.502)) 
 			
-	# 3. ล้างสถานะการคลุมทิ้ง และซ่อนเมนู
 	multi_selected_units.clear()
 	if multi_action_menu: multi_action_menu.hide()
 
