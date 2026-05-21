@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://jg3wkls57xye" path="res://assets/foto/healthbar_01_front.png" id="6_rogxy"]
 [ext_resource type="Texture2D" uid="uid://dfhp3jy52tfhm" path="res://assets/foto/CopyUI2.png" id="7_2ltbj"]
 [ext_resource type="Texture2D" uid="uid://bjg740s1dt4ye" path="res://assets/foto/enbar_01_back.png" id="7_n0ka0"]
+[ext_resource type="FontFile" uid="uid://bx3egoaarha46" path="res://assets/Font/Jersey_10/Jersey10-Regular.ttf" id="8_lj6eb"]
 [ext_resource type="Texture2D" uid="uid://ov3k77x82ax1" path="res://assets/foto/enbar_01_front.png" id="8_xns47"]
 [ext_resource type="Texture2D" uid="uid://b7q0j2hxw3flw" path="res://assets/foto/showbar_02.png" id="9_n0ka0"]
 [ext_resource type="Script" uid="uid://c27m0jb28yrbt" path="res://shooting_power_ui.gd" id="9_siewb"]
@@ -28,6 +29,10 @@
 [ext_resource type="Texture2D" uid="uid://d2fc87gckly81" path="res://assets/foto/Save_UI.png" id="23_omahq"]
 [ext_resource type="Texture2D" uid="uid://cwf00rfupy73o" path="res://assets/foto/X_ui.png" id="24_omahq"]
 [ext_resource type="Texture2D" uid="uid://bnqnn1cxja8ot" path="res://assets/foto/selecber-0002.png" id="25_k4o7o"]
+[ext_resource type="Texture2D" uid="uid://do1jcsv3ndqxv" path="res://assets/foto/SETUP PHASE-ui01.png" id="29_qthju"]
+[ext_resource type="Texture2D" uid="uid://btdts6o8p1x5m" path="res://assets/foto/gamestart-ui01.png" id="30_qthju"]
+[ext_resource type="Texture2D" uid="uid://dil00qrbv5yso" path="res://assets/foto/blue-shade-01.png" id="31_0uwhg"]
+[ext_resource type="Texture2D" uid="uid://bdeiwi0bej020" path="res://assets/foto/red-shade-01.png" id="32_iobm0"]
 
 [sub_resource type="Environment" id="Environment_rogxy"]
 background_mode = 1
@@ -194,10 +199,23 @@ texture = ExtResource("25_k4o7o")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1qaeu"]
 texture = ExtResource("25_k4o7o")
 
-[node name="Main Scene Place" type="Node3D" unique_id=2103157186]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gv4xv"]
+texture = ExtResource("29_qthju")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0uwhg"]
+texture = ExtResource("30_qthju")
+
+[node name="Main Scene Place" type="Node3D" unique_id=2103157186 node_paths=PackedStringArray("game_over_panel", "game_over_label", "btn_next_level", "turn_status_label")]
 script = ExtResource("1_jcp40")
 slot_scene = ExtResource("2_k4o7o")
 is_dev_mode = true
+game_over_panel = NodePath("HUD/GameOverPanel")
+game_over_label = NodePath("HUD/GameOverPanel/ResultLabel")
+btn_next_level = NodePath("HUD/GameOverPanel/BtnNextLevel")
+return_menu_scene = "uid://duw5jkfqekcwr"
+next_level_scene = "uid://duw5jkfqekcwr"
+first_turn_side = "Enemy"
+turn_status_label = NodePath("HUD/SetupBanner/you go")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=959964239]
 transform = Transform3D(0.81488514, -9.8192515e-08, 0.57962257, -0.40169263, -0.72091407, 0.56473535, 0.41785794, -0.6930245, -0.5874622, -0.74661446, 64, 0.637)
@@ -299,20 +317,20 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 62.5
-offset_top = -4.0
-offset_right = 75.5
-offset_bottom = -4.5
+offset_left = 63.0
+offset_top = -3.0
+offset_right = 76.0
+offset_bottom = -3.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(-1, 1)
 theme_override_styles/panel = SubResource("StyleBoxTexture_qthju")
 
 [node name="PlayerHPBar" type="TextureProgressBar" parent="HUD" unique_id=20040617]
-offset_left = 118.0
-offset_top = 6.0
+offset_left = 118.00001
+offset_top = 70.0
 offset_right = 374.0
-offset_bottom = 38.0
+offset_bottom = 102.0
 scale = Vector2(1.5, 1.5)
 value = 100.0
 nine_patch_stretch = true
@@ -320,21 +338,27 @@ texture_under = ExtResource("5_qyvu1")
 texture_progress = ExtResource("6_rogxy")
 
 [node name="HPLabel" type="Label" parent="HUD" unique_id=1294668377]
-offset_left = 134.0
-offset_top = 18.0
-offset_right = 174.0
-offset_bottom = 41.0
+offset_left = 131.0
+offset_top = 78.0
+offset_right = 165.0
+offset_bottom = 113.0
+scale = Vector2(0.9, 0.9)
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
 text = "0/0"
 
 [node name="EnergyBar" type="TextureProgressBar" parent="HUD" unique_id=1162179713]
-anchors_preset = 5
+anchors_preset = 7
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-offset_left = -333.0
-offset_top = 11.0
-offset_right = -77.0
-offset_bottom = 27.0
+anchor_bottom = 1.0
+offset_left = -306.0
+offset_top = -243.0
+offset_right = -50.0
+offset_bottom = -227.0
 grow_horizontal = 2
+grow_vertical = 0
 scale = Vector2(2.5, 2.5)
 value = 100.0
 nine_patch_stretch = true
@@ -342,16 +366,14 @@ texture_under = ExtResource("7_n0ka0")
 texture_progress = ExtResource("8_xns47")
 
 [node name="EnergyLabel" type="Label" parent="HUD/EnergyBar" unique_id=1746449981]
-layout_mode = 0
-offset_left = 113.59998
-offset_top = 1.5999985
-offset_right = 216.59998
-offset_bottom = 46.6
-scale = Vector2(0.25, 0.25)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(1, 1, 1, 0)
+layout_mode = 1
+offset_left = -49.6
+offset_right = 19.40001
+offset_bottom = 35.0
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(1.8832343, 1.8832343, 1.8832343, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 1
+theme_override_fonts/font = ExtResource("8_lj6eb")
 theme_override_font_sizes/font_size = 32
 text = "0.0/0.0"
 
@@ -373,9 +395,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -9.5
-offset_top = -4.5
+offset_top = -4.0
 offset_right = 7.5
-offset_bottom = -5.5
+offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_lj6eb")
@@ -385,9 +407,9 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -503.0
-offset_top = 5.0
+offset_top = 69.0
 offset_right = -247.0
-offset_bottom = 37.0
+offset_bottom = 101.0
 grow_horizontal = 0
 scale = Vector2(1.5, 1.5)
 value = 100.0
@@ -400,11 +422,14 @@ texture_progress = ExtResource("11_omahq")
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -175.0
-offset_top = 17.0
-offset_right = -135.0
-offset_bottom = 40.0
+offset_left = -169.0
+offset_top = 78.0
+offset_right = -129.0
+offset_bottom = 113.0
 grow_horizontal = 0
+scale = Vector2(0.9, 0.9)
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
 text = "0/0"
 horizontal_alignment = 2
 
@@ -422,13 +447,16 @@ horizontal_alignment = 2
 
 [node name="VBoxContainer" type="Control" parent="HUD" unique_id=1094327706]
 layout_mode = 3
-anchors_preset = 2
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = -163.99997
-offset_right = 517.0
-offset_bottom = -36.0
+offset_left = -331.0
+offset_top = -204.0
+offset_right = 213.0
+offset_bottom = -44.0
+grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.25, 1.25)
 mouse_filter = 2
@@ -444,15 +472,15 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_n0ka0")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HUD/VBoxContainer" unique_id=1678194435]
-custom_minimum_size = Vector2(500, 125)
+custom_minimum_size = Vector2(525, 150)
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 20.470623
-offset_top = -113.37813
-offset_right = 694.4693
-offset_bottom = 27.621872
+offset_left = 19.999983
+offset_top = -144.0
+offset_right = 740.0
+offset_bottom = 44.0
 grow_vertical = 0
 scale = Vector2(0.7, 0.7)
 mouse_filter = 2
@@ -464,46 +492,53 @@ vertical_scroll_mode = 0
 script = ExtResource("5_0u0al")
 
 [node name="UnitList" type="HBoxContainer" parent="HUD/VBoxContainer/ScrollContainer" unique_id=895404160]
-custom_minimum_size = Vector2(125, 125)
+custom_minimum_size = Vector2(172, 172)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer" unique_id=2093668986]
+[node name="ScrollContainer2" type="ScrollContainer" parent="HUD/VBoxContainer" unique_id=697698610]
 layout_mode = 0
-offset_left = 0.79999983
-offset_top = -30.400015
-offset_right = 500.80002
-offset_bottom = 0.5999851
-scale = Vector2(0.9, 0.9)
+offset_left = -93.59999
+offset_top = 0.7999511
+offset_right = 9.599991
+offset_bottom = 159.19992
+horizontal_scroll_mode = 0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/ScrollContainer2" unique_id=1747426623]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="BtnTabChar" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1990611435]
+[node name="BtnTabChar" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=1990611435]
 layout_mode = 2
 text = "Characters"
 
-[node name="BtnTabGun" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=510037795]
+[node name="BtnTabGun" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=510037795]
 layout_mode = 2
 text = "Guns"
 
-[node name="BtnTabBlock" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1529117338]
+[node name="BtnTabBlock" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=1529117338]
 layout_mode = 2
 text = "Blocks"
 
-[node name="BtnTabShield" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1624876473]
+[node name="BtnTabShield" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=1624876473]
 layout_mode = 2
 text = "Shield"
 
-[node name="BtnTabEnemyChar" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=864063345 groups=["enemy_ui_tabs"]]
+[node name="BtnTabEnemyChar" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=864063345 groups=["enemy_ui_tabs"]]
 layout_mode = 2
 text = "Echa"
 
-[node name="BtnTabEnemyGun" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1552670662 groups=["enemy_ui_tabs"]]
+[node name="BtnTabEnemyGun" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=1552670662 groups=["enemy_ui_tabs"]]
 layout_mode = 2
 text = "Egun"
 
-[node name="BtnTabEnemyBlock" type="Button" parent="HUD/VBoxContainer/HBoxContainer" unique_id=1485607754 groups=["enemy_ui_tabs"]]
+[node name="BtnTabEnemyBlock" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=1485607754 groups=["enemy_ui_tabs"]]
 layout_mode = 2
 text = "Eblock"
+
+[node name="BtnTabEnemyShield" type="Button" parent="HUD/VBoxContainer/ScrollContainer2/HBoxContainer" unique_id=1826750096]
+layout_mode = 2
+text = "Eshield"
 
 [node name="BtnEndTurn" type="Button" parent="HUD" unique_id=1351231283]
 anchors_preset = 6
@@ -541,14 +576,17 @@ theme_override_font_sizes/font_size = 56
 text = "ENDTURN"
 
 [node name="BtnStart" type="Button" parent="HUD" unique_id=512985376]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -74.0
-offset_top = 59.0
-offset_right = 182.0
-offset_bottom = 155.0
-grow_horizontal = 2
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = -90.0
+offset_right = 118.0
+offset_bottom = 6.0
+grow_horizontal = 0
+grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_2ltbj")
 icon = ExtResource("13_omahq")
@@ -851,9 +889,10 @@ text = "CANCEL"
 
 [node name="BtnOpenLibrary" type="Button" parent="HUD" unique_id=1291799855]
 offset_left = 7.0
-offset_top = 141.0
+offset_top = 131.0
 offset_right = 47.0
-offset_bottom = 181.0
+offset_bottom = 171.0
+scale = Vector2(1.2, 1.2)
 icon = ExtResource("23_omahq")
 
 [node name="BlueprintLibraryUI" type="Panel" parent="HUD" unique_id=1402689427]
@@ -951,16 +990,185 @@ text = "  Yes  "
 layout_mode = 2
 text = "  No  "
 
+[node name="SetupBanner" type="Label" parent="HUD" unique_id=1804322700]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_right = 200.0
+offset_bottom = 72.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_gv4xv")
+
+[node name="you go" type="Label" parent="HUD/SetupBanner" unique_id=1146662530]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -56.0
+offset_top = -3.0
+offset_right = 52.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 24
+text = "YOU GO FIRST"
+
+[node name="VSScreen" type="Label" parent="HUD" unique_id=1645834464]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -305.99994
+offset_top = -81.0
+offset_right = 206.0
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.25, 1.25)
+theme_override_styles/normal = SubResource("StyleBoxTexture_0uwhg")
+
+[node name="TurnBanner" type="Control" parent="HUD" unique_id=1503673995]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BannerLabel" type="Label" parent="HUD/TurnBanner" unique_id=700610134]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -35.0
+offset_right = 118.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 128
+text = "YOUR TURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerPortraitGlow" type="TextureRect" parent="HUD" unique_id=1186661168]
+modulate = Color(1.290827, 1.290827, 1.290827, 1)
+z_index = -1
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 118.0
+offset_bottom = 119.0
+texture = ExtResource("31_0uwhg")
+expand_mode = 1
+
+[node name="EnemyPortraitGlow" type="TextureRect" parent="HUD" unique_id=1341301643]
+z_index = -1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -119.0
+offset_top = 6.0
+offset_right = -7.0
+offset_bottom = 118.0
+grow_horizontal = 0
+texture = ExtResource("32_iobm0")
+expand_mode = 1
+
+[node name="GameOverPanel" type="Panel" parent="HUD" unique_id=394311926]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultLabel" type="Label" parent="HUD/GameOverPanel" unique_id=1522326931]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -176.0
+offset_top = 31.0
+offset_right = 180.0
+offset_bottom = 169.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 128
+text = "YOU WIN"
+
+[node name="BtnMainMenu" type="Button" parent="HUD/GameOverPanel" unique_id=514068146]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 61.0
+offset_top = -59.0
+offset_right = 192.0
+offset_bottom = 1.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 48
+text = "RESUME"
+
+[node name="BtnRestart" type="Button" parent="HUD/GameOverPanel" unique_id=1985913260]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -68.0
+offset_top = -59.0
+offset_right = 58.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 48
+text = "REPLAY"
+
+[node name="BtnNextLevel" type="Button" parent="HUD/GameOverPanel" unique_id=255836404]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -201.0
+offset_top = -59.0
+offset_right = -15.0
+offset_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 48
+text = "NEXT LEVEL"
+
 [node name="ErrorSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1161023347]
 stream = ExtResource("6_kk4gi")
 
-[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabChar" to="." method="_on_btn_tab_char_pressed"]
-[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabGun" to="." method="_on_btn_tab_gun_pressed"]
-[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabBlock" to="." method="_on_btn_tab_block_pressed"]
-[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabShield" to="." method="_on_btn_tab_shield_pressed"]
-[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabEnemyChar" to="." method="_on_btn_tab_enemy_char_pressed"]
-[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabEnemyGun" to="." method="_on_btn_tab_enemy_gun_pressed"]
-[connection signal="pressed" from="HUD/VBoxContainer/HBoxContainer/BtnTabEnemyBlock" to="." method="_on_btn_tab_enemy_block_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabChar" to="." method="_on_btn_tab_char_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabGun" to="." method="_on_btn_tab_gun_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabBlock" to="." method="_on_btn_tab_block_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabShield" to="." method="_on_btn_tab_shield_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabEnemyChar" to="." method="_on_btn_tab_enemy_char_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabEnemyGun" to="." method="_on_btn_tab_enemy_gun_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabEnemyBlock" to="." method="_on_btn_tab_enemy_block_pressed"]
+[connection signal="pressed" from="HUD/VBoxContainer/ScrollContainer2/HBoxContainer/BtnTabEnemyShield" to="." method="_on_btn_tab_enemy_shield_pressed"]
 [connection signal="pressed" from="HUD/BtnEndTurn" to="." method="_on_btn_end_turn_pressed"]
 [connection signal="pressed" from="HUD/BtnStart" to="." method="_on_btn_start_pressed"]
 [connection signal="pressed" from="HUD/ActionMenu/BtnRotate" to="." method="_on_btn_rotate_pressed"]
@@ -971,3 +1179,6 @@ stream = ExtResource("6_kk4gi")
 [connection signal="pressed" from="HUD/MultiActionMenu/BtnMultiDelete" to="." method="_on_btn_multi_delete_pressed"]
 [connection signal="pressed" from="HUD/MultiActionMenu/BtnMultiCopy" to="." method="_on_btn_multi_copy_pressed"]
 [connection signal="pressed" from="HUD/MultiActionMenu/BtnMultiSave" to="." method="_on_btn_multi_save_pressed"]
+[connection signal="pressed" from="HUD/GameOverPanel/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
+[connection signal="pressed" from="HUD/GameOverPanel/BtnRestart" to="." method="_on_btn_restart_pressed"]
+[connection signal="pressed" from="HUD/GameOverPanel/BtnNextLevel" to="." method="_on_btn_next_level_pressed"]

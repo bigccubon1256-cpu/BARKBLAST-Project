@@ -78,7 +78,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseMotion and Input.is_action_pressed("rotate"):
 		var manual_relative = event.position - saved_mouse_pos
-		if manual_relative == Vector2.ZERO: return
+		if manual_relative.length() < 1.5: return
 		
 		rotate_keys_target -= manual_relative.x * mouse_sensitivity
 		pitch_target -= manual_relative.y * mouse_sensitivity

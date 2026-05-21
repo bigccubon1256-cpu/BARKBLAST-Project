@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://q22dxo7sx13x" path="res://assets/foto/260977_0pixel.png" id="1_lah2f"]
 [ext_resource type="Texture2D" uid="uid://b471miw5ro6lb" path="res://assets/foto/Sammy-0001-Sheet.png" id="2_t871q"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://HighlightComponent.gd" id="3_ogcsb"]
+[ext_resource type="Material" uid="uid://crs4uy5oe3b4g" path="res://HighlightMaterial.tres" id="4_wluk8"]
 
 [sub_resource type="GDScript" id="GDScript_t871q"]
 script/source = "extends RigidBody3D
@@ -1054,3 +1056,7 @@ transform = Transform3D(0.724332, 0, -2.9802322e-08, 0, 0.7143635, 0, -1.4901161
 sprite_frames = SubResource("SpriteFrames_ui2yc")
 animation = &"Sammy idle"
 autoplay = "Sammy idle"
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=1922531190]
+script = ExtResource("3_ogcsb")
+base_material = ExtResource("4_wluk8")

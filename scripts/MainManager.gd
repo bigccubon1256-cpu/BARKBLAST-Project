@@ -52,6 +52,34 @@ var total_enemy_energy_used: float = 0.0
 @onready var enemy_hp_bar = $HUD/EnemyHPBar 
 # ==========================================
 
+@onready var setup_banner = $HUD/SetupBanner
+@onready var vs_screen    = $HUD/VSScreen
+
+@onready var turn_banner        = $HUD/TurnBanner
+@onready var turn_banner_label  = $HUD/TurnBanner/BannerLabel
+@onready var player_glow        = $HUD/PlayerPortraitGlow
+@onready var enemy_glow         = $HUD/EnemyPortraitGlow
+
+# ==========================================
+# 🌟 ตัวแปร UI จบเกม (ใช้วิธีลากวางใน Inspector ชัวร์ 100%)
+# ==========================================
+@export var game_over_panel: Control
+@export var game_over_label: Label
+@export var btn_next_level: Button
+# 🌟 สร้างช่องให้ลูกพี่เลือกหน้าต่าง Level Selection ของแต่ละด่านได้เอง!
+@export_file("*.tscn") var return_menu_scene: String
+# 🌟 เพิ่มช่องเลือกด่านถัดไปสำหรับปุ่ม Next Level
+@export_file("*.tscn") var next_level_scene: String
+# อ้างอิงปุ่ม Next Level จาก Scene Tree
+
+# ==========================================
+# 🌟 ตั้งค่าด่าน (โผล่ใน Inspector)
+# ==========================================
+@export_enum("Player", "Enemy") var first_turn_side: String = "Player"
+@export var turn_status_label: Label # 🌟 ช่องสำหรับลากวาง Label แสดงสถานะเทิร์นจากหน้าต่าง Inspector
+
+
+
 
 
 
@@ -60,7 +88,7 @@ var army_list = [{"name": "soren", "category": "character", "cost": 0, "hp_gain"
 	{"name": "forces", "category": "character", "cost": 5, "hp_gain": 10, "scene": preload("res://forces.tscn"), "icon": preload("res://assets/foto/ForceforUI.png"), "max_count": -1},
 	
 	{"name": "block", "display_name": "OAK BLOCK", "category": "block", "cost": 0.5, "scene": preload("res://construction_block.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1}, 
-	{"name": "block_dark", "display_name": "ROSEWOOD BLOCK", "category": "block", "cost": 1.0, "scene": preload("res://construction_block_2.tscn"), "icon": preload("res://assets/foto/wbrob02forUI.png"), "max_count": -1}, 
+	{"name": "block_2", "display_name": "ROSEWOOD BLOCK", "category": "block", "cost": 1.0, "scene": preload("res://construction_block_2.tscn"), "icon": preload("res://assets/foto/wbrob02forUI.png"), "max_count": -1}, 
 	
 	{"name": "gun", "display_name": "PISTOL", "category": "gun", "cost": 2, "scene": preload("res://gun.tscn"), "icon": preload("res://assets/foto/gun01forUI.png"), "max_count": -1},
 	{"name": "spear", "category": "gun", "cost": 7, "scene": preload("res://spear.tscn"), "icon": preload("res://assets/foto/wbspearforUI.png"), "max_count": -1 }, 
@@ -74,6 +102,7 @@ var army_list = [{"name": "soren", "category": "character", "cost": 0, "hp_gain"
 	
 	
 	{"name": "shield_block", "display_name": "OAK SHIELD", "category": "shield", "cost": 10, "scene": preload("res://shield_unit.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1},
+	{"name": "shield_block_dark", "display_name": "DARK OAK SHIELD", "category": "shield", "cost": 20, "scene": preload("res://shield_unit_dark.tscn"), "icon": preload("res://assets/foto/wbrob02forUI.png"), "max_count": -1},
 	
 	#=====================================ศัตรู========================================
 	#=====================================ศัตรู========================================
@@ -81,16 +110,21 @@ var army_list = [{"name": "soren", "category": "character", "cost": 0, "hp_gain"
 	{"name": "lotcher", "category": "enemy_character", "cost": 5, "scene": preload("res://lotcher.tscn"), "icon": preload("res://assets/foto/loter2.png"), "max_count": -1},
 	
 	{"name": "block_lot_1", "category": "enemy_block", "cost": 0.5, "scene": preload("res://construction_block_lot_1.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
+	{"name": "block_lot_2", "category": "enemy_block", "cost": 1.0, "scene": preload("res://construction_block_lot_2.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
 	
-	{"name": "gun_lot", "category": "enemy_gun", "cost": 2, "scene": preload("res://gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124955.png"), "max_range": 64.0 , "max_count": -1},
+	{"name": "gun_lot", "category": "enemy_gun", "cost": 2, "scene": preload("res://gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124955.png"), "max_range": 98.0 , "max_count": -1},
 	{"name": "sniper_lot", "category": "enemy_gun", "cost": 30, "scene": preload("res://sniper_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 125007.png"), "max_range": 256.0 , "max_count": -1},
-	{"name": "shotgun_lot", "category": "enemy_gun", "cost": 10, "scene": preload("res://shotgun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-31 172132.png"), "max_range": 48.0 , "max_count": -1},
-	{"name": "shotgun_triple_lot", "category": "enemy_gun", "cost": 15, "scene": preload("res://shotgun_triple_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-01 131725.png"), "max_range": 48.0 , "max_count": -1},
+	{"name": "shotgun_lot", "category": "enemy_gun", "cost": 10, "scene": preload("res://shotgun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-31 172132.png"), "max_range": 72.0 , "max_count": -1},
+	{"name": "shotgun_triple_lot", "category": "enemy_gun", "cost": 15, "scene": preload("res://shotgun_triple_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-01 131725.png"), "max_range": 98.0 , "max_count": -1},
 	{"name": "spear_lot", "category": "enemy_gun", "cost": 7, "scene": preload("res://spear_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-01 140147.png"), "max_range": 128.0 , "max_count": -1 }, 
-	{"name": "machine_gun_mini_lot", "category": "enemy_gun", "cost": 6, "scene": preload("res://machine_gun_mini_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 153810.png"), "max_range": 72.0 , "max_count": -1},
-	{"name": "machine_gun_lot", "category": "enemy_gun", "cost": 9, "scene": preload("res://machine_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 121249.png"), "max_range": 72.0 , "max_count": -1},
-	{"name": "machine_gun_heavy_lot", "category": "enemy_gun", "cost": 12, "scene": preload("res://machine_gun_heavy_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 120126.png"), "max_range": 72.0 , "max_count": -1},
-	{"name": "semi_auto_gun_lot", "category": "enemy_gun", "cost": 4, "scene": preload("res://semi_auto_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 122335.png"), "max_range": 64.0 , "max_count": -1},
+	{"name": "machine_gun_mini_lot", "category": "enemy_gun", "cost": 6, "scene": preload("res://machine_gun_mini_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 153810.png"), "max_range": 128.0 , "max_count": -1},
+	{"name": "machine_gun_lot", "category": "enemy_gun", "cost": 9, "scene": preload("res://machine_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 121249.png"), "max_range": 128.0 , "max_count": -1},
+	{"name": "machine_gun_heavy_lot", "category": "enemy_gun", "cost": 12, "scene": preload("res://machine_gun_heavy_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 120126.png"), "max_range": 128.0 , "max_count": -1},
+	{"name": "semi_auto_gun_lot", "category": "enemy_gun", "cost": 4, "scene": preload("res://semi_auto_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 122335.png"), "max_range": 98.0 , "max_count": -1},
+	
+	
+	{"name": "shield_block_lot_1", "category": "enemy_shield", "cost": 10, "scene": preload("res://shield_block_lot_1.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
+	{"name": "shield_block_lot_2", "category": "enemy_shield", "cost": 20, "scene": preload("res://shield_block_lot_2.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
 	
 	]
 
@@ -145,7 +179,7 @@ var is_firing: bool = false   # 🌟 [เพิ่มบรรทัดนี้
 var TILT_RTS = deg_to_rad(45.0)    # มุมก้มตอนสร้าง (ก้มมองพื้น)
 var TILT_COMBAT = deg_to_rad(40.0) # มุมก้มตอนเล็ง (ระดับสายตาที่พี่ชอบ)
 var is_changing_turn = false # 🌟 กุญแจสำหรับป้องกันบั๊กเปลี่ยนเทิร์นซ้อนทับกัน
-
+var deleted_level_blocks: Array = [] # บัญชีดำจำชื่อบล็อกด่านที่โดนขายทิ้ง
 
 
 
@@ -237,6 +271,12 @@ var item_to_manage: String = ""
 
 
 func _ready():
+		# 🌟 [เพิ่มตรงนี้เป็นบรรทัดแรกสุด] ล็อกฟิสิกส์ทันทีกันบล็อกร่วง
+	for child in get_children():
+		if child is RigidBody3D:
+			child.freeze = true
+			child.linear_velocity  = Vector3.ZERO
+			child.angular_velocity = Vector3.ZERO
 	# วาดตารางกว้าง 10 หน่วย, ช่องละ 0.25 (ตาม snap_step), ขอบเขตสร้างกว้าง 5 หน่วย
 	# --- [เพิ่มบรรทัดนี้] เซ็ตพลังงานตั้งต้นตอนเริ่มด่าน ---
 	current_energy = starting_energy 
@@ -331,6 +371,217 @@ func _ready():
 	if btn_end_turn:
 		btn_end_turn.hide() # ซ่อนตั้งแต่รันเกม
 
+	# 🌟 [เพิ่มตรงนี้] Setup Banner และ VS Screen
+	if setup_banner: setup_banner.show()
+	if vs_screen: vs_screen.hide()
+
+	if turn_banner: turn_banner.hide()
+	if player_glow: player_glow.modulate.a = 0.0
+	if enemy_glow:  enemy_glow.modulate.a  = 0.0
+	if btn_end_turn: btn_end_turn.hide()
+
+	# ซ่อนหน้าต่างจบเกมไว้ก่อนตอนเริ่มเกม
+	if game_over_panel:
+		game_over_panel.hide()
+
+
+	# ==========================================
+	# 🌟 เอาโค้ดนี้ไว้ล่างสุดของ _ready() แค่นี้พอครับ
+	# ==========================================
+	if Global.is_replaying and Global.saved_player_blocks.size() > 0:
+		# เรียกแค่ "ครั้งเดียว" ห้ามใส่ใน for loop เด็ดขาด!
+		call_deferred("_start_delayed_replay")
+
+# ==========================================
+	# 🌟 อัปเดต Label บอกเทิร์นล่วงหน้า ตั้งแต่ตอนกำลัง Setup ด่าน!
+	# ==========================================
+	if is_instance_valid(turn_status_label):
+		if first_turn_side == "Player":
+			turn_status_label.text = "YOU GO FIRST"
+		else:
+			turn_status_label.text = "YOU GO SECOND"
+
+
+
+
+# ==========================================
+# 🧹 ฟังก์ชันสแกนทะลวงไส้ หาขยะพิมพ์เขียวทุกซอกทุกมุม
+# ==========================================
+func _clean_up_deep_garbage(current_node: Node):
+	for child in current_node.get_children():
+		
+		# ถ้าเจอวัตถุที่รับแรงโน้มถ่วงได้ (RigidBody3D)
+		if child is RigidBody3D:
+			# 1. เช็คก่อนว่ามันคือ "ศัตรู" ที่อยู่ใน occupied_tiles หรือเปล่า?
+			var is_enemy = false
+			for key in occupied_tiles:
+				if occupied_tiles[key] == child:
+					is_enemy = true
+					break
+			
+			# 2. เช็คว่าเป็นของผู้เล่นที่รอดมาไหม? (กันพลาด)
+			var is_player = child.has_meta("placed_by_player") and child.get_meta("placed_by_player") == true
+			
+			# 💥 ถ้าไม่ใช่ศัตรู และไม่ใช่ของผู้เล่น... มันคือไอ้ 18 บล็อกนั่นแหละ! ฆ่าทิ้ง!
+			if not is_enemy and not is_player:
+				# ดักชื่อนิดนึง กันพลาดไปลบพื้นฉาก (ถ้าพื้นดันเป็น RigidBody3D)
+				if "block" in child.name.to_lower() or "tower" in child.name.to_lower():
+					print("🔥 เจอขยะพิมพ์เขียวแอบซ่อน! กำจัด: ", child.name)
+					child.queue_free()
+					continue # ข้ามไปตัวต่อไปเลย เพราะตัวนี้ตายแล้ว
+					
+		# ถอนรากถอนโคน: สั่งให้ค้นหาลึกลงไปในลูกหลานของมันอีก! (เผื่อซ้อนกันหลายชั้น)
+		_clean_up_deep_garbage(child)
+
+
+# ==========================================
+# 🌟 ฟังก์ชันเสก Replay แบบหน่วงเวลา (เวอร์ชันกันกระสุน 100%)
+# ==========================================
+func _start_delayed_replay():
+	
+	# ==========================================
+	# 🧹 กวาดล้างซากพิมพ์เขียว (ไอ้ 18 บล็อก) ที่ตกค้างอยู่ในฉาก
+	# ==========================================
+	for unit in get_tree().current_scene.get_children():
+		if unit is RigidBody3D or "block" in unit.name.to_lower():
+			# ถ้ามันเป็นบล็อก แต่ "ไม่มี snap_ghost" แปลว่ามันคือขยะพิมพ์เขียวชัวร์!
+			if not unit.has_meta("snap_ghost"):
+				
+				# เช็คให้ชัวร์ว่าไม่ใช่ของศัตรู (กันพลาดไปลบศัตรูทิ้ง)
+				var is_enemy = false
+				for key in occupied_tiles:
+					if occupied_tiles[key] == unit:
+						is_enemy = true
+						break
+				
+				# ถ้าไม่ใช่ศัตรู และไม่มี snap_ghost... สั่งประหารมันเลย!
+				if not is_enemy:
+					print("🔥 กำจัดบล็อกบั๊กจากพิมพ์เขียว: ", unit.name)
+					unit.queue_free()
+	
+	await get_tree().process_frame # รอให้มันระเหยไป 1 เฟรม
+	# ==========================================
+	
+	await get_tree().process_frame 
+	
+	# 🔍 DEBUG: ดูว่า occupied_tiles มีอะไรอยู่บ้างก่อน spawn
+	print("=== DEBUG REPLAY START ===")
+	print("occupied_tiles มี: ", occupied_tiles.size(), " entries")
+	for key in occupied_tiles:
+		var unit = occupied_tiles[key]
+		if is_instance_valid(unit):
+			var has_player = unit.has_meta("placed_by_player")
+			var u_name = unit.get("unit_name") if unit.get("unit_name") != null else unit.name
+			print("  → ", u_name, " | placed_by_player=", has_player, " | pos=", unit.global_position, " | frozen=", unit.freeze if unit is RigidBody3D else "N/A")
+	print("Global.saved_player_blocks มี: ", Global.saved_player_blocks.size(), " ชิ้น")
+	print("=========================")
+	
+	# 🌟 [เพิ่มตรงนี้] freeze บล็อกด่านทั้งหมดก่อน spawn ของใหม่
+	for key in occupied_tiles:
+		var unit = occupied_tiles[key]
+		if is_instance_valid(unit) and unit is RigidBody3D:
+			unit.freeze = true
+			unit.linear_velocity  = Vector3.ZERO
+			unit.angular_velocity = Vector3.ZERO
+			
+	print("🧱 กำลังเริ่มเสกยูนิต Replay รอบใหม่ (รอบเดียวจบ!)...")
+	# 🌟 [เพิ่มตรงนี้] กวาดล้างบล็อกเก่าที่ค้างในฉากออกก่อนเสกใหม่
+	var keys_to_remove = []
+	for key in occupied_tiles:
+		var unit = occupied_tiles[key]
+		if is_instance_valid(unit) and unit.has_meta("placed_by_player"):
+			keys_to_remove.append(key)
+			unit.queue_free()
+	for key in keys_to_remove:
+		occupied_tiles.erase(key)
+	print("🧹 กวาดล้างบล็อกเก่าออก: ", keys_to_remove.size(), " ชิ้น")
+	# ==========================================
+	# 🌟 [ร่างทองปราบผี!] กวาดล้างซากบล็อกจากตาที่แล้วให้เหี้ยน!
+	# ป้องกันบล็อกซ้อนทับกันจนไปทริกเกอร์ระบบลบคืน Energy อัตโนมัติ
+	# ==========================================
+	var spawned_dict = {} 
+	
+	# --- ขั้นตอนที่ 1: เสกทุกอย่างออกมาก่อน ---
+	for data in Global.saved_player_blocks:
+		var s_path = data.get("scene_path", "")
+		if s_path == "": continue
+			
+		var block_scene = load(s_path)
+		if block_scene:
+			var block_instance = block_scene.instantiate()
+			
+			# ==========================================
+			# 🌟 [จุดพิสูจน์ความจริง!] บังคับแช่แข็งก่อนเสกลงฉาก
+			# ==========================================
+			if block_instance is RigidBody3D:
+				block_instance.freeze = true
+			# ==========================================
+			
+			add_child(block_instance)
+			
+			# 🌟 [แก้ตรงนี้] ปิด collision ก่อนเหมือน finalize_placement
+			toggle_collision(block_instance, false)
+			
+			# 🌟 [เพิ่ม 3 บรรทัดนี้] แปะป้ายว่าเป็นบล็อกของผู้เล่น
+			block_instance.set_meta("placed_by_player", true)
+			block_instance.add_to_group("player_blocks")
+			if block_instance.scene_file_path != "":
+				block_instance.set_meta("save_path", block_instance.scene_file_path)
+			
+			var pos = data.get("position", Vector3.ZERO)
+			block_instance.global_position = pos
+			if block_instance is RigidBody3D:
+				block_instance.global_transform.origin = pos
+			block_instance.global_rotation = data.get("rotation", Vector3.ZERO)
+			
+			current_energy -= data.get("cost", 1.0)
+			total_hp += data.get("hp", 0)
+			
+			var tile_key = get_tile_key(pos) + "_" + str(block_instance.get_instance_id())
+			block_instance.tile_key = tile_key
+			occupied_tiles[tile_key] = block_instance
+			
+			# 🌟 ดึง save_id อย่างปลอดภัย
+			var s_id = data.get("save_id")
+			if s_id != null:
+				spawned_dict[s_id] = block_instance
+			
+			if block_instance.has_method("activate_unit"):
+				block_instance.activate_unit(tile_key)
+				
+			# 🌟 [แก้ตรงนี้] re-freeze หลัง activate_unit เพราะมันอาจ unfreeze บล็อก
+			if block_instance is RigidBody3D:
+				block_instance.freeze = true
+				block_instance.linear_velocity  = Vector3.ZERO
+				block_instance.angular_velocity = Vector3.ZERO
+				
+			set_unit_preview_color(block_instance, Color(1,1,1,1))
+			
+	# --- ขั้นตอนที่ 2: จับคู่ปืนกับคนให้กลับมาเชื่อมกัน! ---
+	for data in Global.saved_player_blocks:
+		var linked_gun_id = data.get("linked_gun_id")
+		var s_id = data.get("save_id")
+		
+		# ถ้ามีทั้งคนทั้งปืน ถึงจะเริ่มจับคู่
+		if linked_gun_id != null and s_id != null:
+			var char_node = spawned_dict.get(s_id)
+			var gun_node = spawned_dict.get(linked_gun_id)
+			
+			if is_instance_valid(char_node) and is_instance_valid(gun_node):
+				char_node.set_meta("linked_gun", gun_node)
+				gun_node.set_meta("linked_char", char_node)
+				
+				char_node.set_meta("saved_gun_name", data.get("saved_gun_name", ""))
+				char_node.set_meta("saved_gun_local_pos", data.get("saved_gun_local_pos", Vector3.ZERO))
+				char_node.set_meta("saved_gun_local_rot", data.get("saved_gun_local_rot", 0.0))
+				char_node.set_meta("needs_reload", false)
+				print("🔗 ผูกปืนสำเร็จ! คืนอาวุธให้ ", char_node.name)
+
+	print("✅ เสก Replay สำเร็จทั้งหมด! ผูกปืนและหักเงินเรียบร้อย!")
+	update_ui() 
+	
+	Global.is_replaying = false
+	Global.saved_player_blocks.clear()
 
 
 
@@ -445,9 +696,6 @@ func get_unit_count_on_field(target_name: String) -> int:
 			if u_name == target_name:
 				count += 1
 	return count
-
-
-
 
 
 
@@ -739,6 +987,28 @@ func _process(delta: float) -> void:
 							# 🌟 ถ้าเราลากปืนผู้เล่น ต้องหาเจ้าของที่เป็นผู้เล่นเท่านั้น
 							is_valid_target = is_player_char(t_name)
 							
+						# ==========================================
+						# 🌟 [เพิ่มตรงนี้!] ดักตรวจคนมีอาวุธ
+						# ==========================================
+						# ถ้าตัวละครมีปืนอยู่แล้ว (และไม่ใช่ปืนกระบอกที่เรากำลังถืออยู่) ให้ปัดตกทันที!
+						if is_valid_target and tile_unit.has_meta("linked_gun"):
+							var existing_gun = tile_unit.get_meta("linked_gun")
+							if is_instance_valid(existing_gun) and not existing_gun.is_queued_for_deletion() and existing_gun != dragging_unit:
+								is_valid_target = false # หมดสิทธิ์!
+						# ==========================================
+							
+						# ==========================================
+						# 🌟 [เพิ่มตรงนี้!] ระบบไฮไลท์ดึงดูดสายตาตอนลากปืน
+						# ==========================================
+						var hl_sys = tile_unit.get_node_or_null("HighlightPulsingComponent")
+						if hl_sys:
+							# 🎯 กฎเหล็ก: สั่งเปิดไฟ "เฉพาะยูนิตตัวละครฝั่งผู้เล่นเท่านั้น"
+							if is_valid_target and is_player_char(t_name):
+								hl_sys.enable_highlight(Color(1.0, 1.0, 1.0, 0.5), true, 1.5, 0.01) # สั่งกะพริบสีขาว!
+							else:
+								# ถ้าเป็นตัวละครศัตรู หรือตัวที่ใส่ไม่ได้ ให้ดับไฟซะ
+								hl_sys.disable_highlight()
+						# ==========================================
 						if is_valid_target:
 							if tile_unit.has_meta("linked_gun"):
 								var g = tile_unit.get_meta("linked_gun")
@@ -933,6 +1203,16 @@ func _process(delta: float) -> void:
 			current_aim_offset = clamp(current_aim_offset, -MAX_AIM_ANGLE, MAX_AIM_ANGLE)
 			active_combat_unit.rotation.y = initial_aim_rotation + current_aim_offset
 		
+		# ==========================================
+		# 🌟 [ทีเด็ดอยู่ตรงนี้!] แปะกาวตราช้างเซฟความจำทุกเฟรม
+		# ==========================================
+		# ถ้าตัวละคร "กำลังอยู่ในช่วงยิงกระสุน" (is_firing) ให้มันอัปเดตความจำตลอดเวลา!
+		# 1. ป้องกันปืนกลหันจนติดลิมิตแคลมป์
+		# 2. ป้องกันการโดนดึงหน้ากลับตอนยิงเสร็จ
+		if is_firing and is_instance_valid(active_combat_unit):
+			initial_aim_rotation = active_combat_unit.rotation.y
+			current_aim_offset = 0.0
+		# ==========================================
 		
 		# 2. รับค่า Input ก้มเงย (W/S)
 		var pitch_dir = int(Input.is_physical_key_pressed(KEY_W)) - int(Input.is_physical_key_pressed(KEY_S))
@@ -1246,6 +1526,12 @@ func _input(event: InputEvent) -> void:
 				cancel_combat_aim()
 			elif selected_unit:
 				deselect_combat_unit() # 🌟 ถ้าแค่คลิกซูมตัวละครอยู่ แล้วกดคลิกขวา ให้ดึงกล้องกลับทันที!
+				# ==========================================
+				# 🌟 [เพิ่มตรงนี้!] คืนชีพปุ่ม End Turn กลับมาโชว์เมื่อผู้เล่นปิดเมนูต่อสู้เรียบร้อยแล้ว
+				# ==========================================
+				if btn_end_turn and current_state == Turn.PLAYER:
+					btn_end_turn.show()
+				# ==========================================
 
 	# ==========================================
 	# 🌟 เรดาร์ปิดเมนูอัตโนมัติเมื่อคลิกที่อื่น (เอามาต่อท้ายตรงนี้เลย!)
@@ -1397,6 +1683,9 @@ func combat_check_selection():
 			print("เข้าสู่โหมดพร้อมรบ: เลือกตัวละคร ", u_name)
 			selected_unit = result.collider
 			select_unit_for_combat(result.collider) 
+			# 🌟 [เพิ่มตรงนี้!] ซ่อนปุ่ม End Turn ทันที ป้องกันมือลั่น!
+			if btn_end_turn:
+				btn_end_turn.hide()
 		else:
 			# 🌟 ถ้าคลิกซ้ายโดนศัตรู หรือบล็อก 
 			pass # ไม่ทำอะไรทั้งสิ้น! บังคับให้กดคลิกขวาเพื่อออกเอง
@@ -1508,6 +1797,40 @@ func finalize_placement():
 				occupied_tiles[key] = clone
 				toggle_collision(clone, false)
 				set_unit_preview_color(clone, Color(1, 1, 1, 1))
+				# ==========================================
+				# 🌟 [แก้บั๊กหอคอย Library ถล่ม!]
+				# บังคับแช่แข็งร่างโคลนทุกตัวทันทีที่วาง เพื่อล้างพลังงานตกค้าง
+				if clone is RigidBody3D:
+					clone.freeze = true
+					clone.linear_velocity = Vector3.ZERO
+					clone.angular_velocity = Vector3.ZERO
+					clone.force_update_transform() # จัดกระดูกให้เข้าที่ 100%
+				# ==========================================
+				# --------------------------------------------------------
+				# 🌟 [เพิ่มบรรทัดนี้] ทำเครื่องหมายว่าเป็นยูนิตที่สร้างขึ้นในรอบนี้
+				clone.set_meta("placed_by_player", true)
+				# --------------------------------------------------------
+				# ==========================================
+				# 🌟 [จุดแก้บั๊กสูบ Energy!] วางเสร็จแล้ว ต้องฉีกป้ายทิ้ง!
+				# เพื่อให้มันกลายเป็นบล็อกธรรมดา รอบหน้าเวลาจับย้ายจะได้ย้ายฟรี!
+				if clone.has_meta("from_blueprint"):
+					clone.remove_meta("from_blueprint") # ล้างป้ายพิมพ์เขียว
+				if clone.has_meta("orig_unit"):
+					clone.remove_meta("orig_unit") # ล้างป้ายก๊อปปี้เผื่อไว้ด้วย
+				# ==========================================
+				# --------------------------------------------------------
+				# 🌟 ติดป้ายกลุ่มให้ร่างโคลนทุกตัว เพื่อให้ระบบ Replay หาเจอ!
+				clone.add_to_group("player_blocks")
+				# บังคับฝังชื่อไฟล์ไว้กัน Godot ลืม!
+				if clone.scene_file_path != "":
+					clone.set_meta("save_path", clone.scene_file_path)
+				# ==========================================
+				# 🌟 [เพิ่มตรงนี้ 1!] ติดป้ายกลุ่มให้ร่างโคลนทุกตัว เพื่อให้ระบบ Replay หาเจอ!
+				clone.add_to_group("player_blocks")
+				# บังคับฝังชื่อไฟล์ไว้กัน Godot ลืม!
+				if clone.scene_file_path != "":
+					clone.set_meta("save_path", clone.scene_file_path)
+				# ==========================================
 				
 			# ==========================================
 			# 🌟 2. [แก้บั๊กปืนพิมพ์เขียว] ฟื้นความจำ! ตามหาคู่หูให้ร่างโคลน
@@ -1590,6 +1913,15 @@ func finalize_placement():
 				clone.queue_free()
 			print("❌ วางกลุ่มไม่ได้! ติดสิ่งกีดขวาง ยกเลิกการก๊อปปี้")
 			
+		# ==========================================
+		# 🌟 [จุดดับไฟ 1] วางกลุ่มเสร็จ (หรือล้มเหลว) ต้องดับไฟตัวละครในฉากทั้งหมด!
+		# ==========================================
+		for unit in get_children():
+			if is_instance_valid(unit):
+				var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
+				if hl_sys: hl_sys.disable_highlight()
+		# ==========================================
+		
 		dragging_multi_units.clear()
 		multi_drag_offsets.clear()
 		update_ui()
@@ -1707,10 +2039,28 @@ func finalize_placement():
 		dragging_unit.tile_key = tile_key # บันทึกรหัสใหม่ที่ไม่ซ้ำใคร
 		occupied_tiles[tile_key] = dragging_unit # เซฟลงสมุดจด
 		
+		# --------------------------------------------------------
+		# 🌟 [เพิ่มบรรทัดนี้] ทำเครื่องหมายว่าเป็นยูนิตที่สร้างขึ้นในรอบนี้เช่นกัน
+		dragging_unit.set_meta("placed_by_player", true)
+		# --------------------------------------------------------
+		# ==========================================
+		# 🌟 [เพิ่มตรงนี้ 2!] ติดป้ายกลุ่มให้ตัวละครตอนวางสำเร็จ!
+		dragging_unit.add_to_group("player_blocks")
+		if dragging_unit.scene_file_path != "":
+			dragging_unit.set_meta("save_path", dragging_unit.scene_file_path)
+		# ==========================================
+		
+		# ถ้ามีปืนลากติดมาด้วย ก็ต้องติดป้ายให้ปืนด้วย!
 		if dragging_gun and is_instance_valid(dragging_gun):
 			var gun_key = get_tile_key(dragging_gun.global_position)
 			dragging_gun.tile_key = gun_key
 			occupied_tiles[gun_key] = dragging_gun
+			# ==========================================
+			# 🌟 [เพิ่มตรงนี้ 3!] ติดป้ายให้ปืน (ถ้ามี)
+			dragging_gun.add_to_group("player_blocks")
+			if dragging_gun.scene_file_path != "":
+				dragging_gun.set_meta("save_path", dragging_gun.scene_file_path)
+			# ==========================================
 			toggle_collision(dragging_gun, false)
 			set_unit_preview_color(dragging_gun, Color(1,1,1,1))
 			dragging_gun = null
@@ -1739,6 +2089,15 @@ func finalize_placement():
 		toggle_collision(dragging_unit, false)
 		if dragging_unit.has_method("activate_unit"): dragging_unit.activate_unit(tile_key)
 		set_unit_preview_color(dragging_unit, Color(1,1,1,1)) # ล้างสีผี
+		
+		# ==========================================
+		# 🌟 [จุดดับไฟ 2] วางปืนหรือตัวเดี่ยวสำเร็จ ดับไฟในฉากทั้งหมด!
+		# ==========================================
+		for unit in get_children():
+			if is_instance_valid(unit):
+				var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
+				if hl_sys: hl_sys.disable_highlight()
+		# ==========================================
 		
 		selected_unit = dragging_unit
 		action_menu.show()
@@ -1799,7 +2158,14 @@ func finalize_placement():
 		if dragging_gun and is_instance_valid(dragging_gun):
 			dragging_gun.queue_free()
 		dragging_gun = null 
-				
+		# ==========================================
+		# 🌟 [จุดดับไฟ 3] วางพลาด/กดยกเลิก ต้องดับไฟตัวละครในฉากด้วย!
+		# ==========================================
+		for unit in get_children():
+			if is_instance_valid(unit):
+				var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
+				if hl_sys: hl_sys.disable_highlight()
+		# ==========================================
 		dragging_unit.queue_free()
 		dragging_unit = null
 		is_moving_existing_unit = false
@@ -2165,25 +2531,79 @@ func _on_btn_combat_shoot_pressed():
 		active_combat_unit.set_meta("base_pos", active_combat_unit.global_position)
 		var snap_pos = active_combat_unit.get_meta("snap_pos")
 		
-		# แช่แข็งฟิสิกส์
-		if active_combat_unit is RigidBody3D: active_combat_unit.freeze = true
+		# 🌟 แช่แข็งตัวละครและล็อคทุกแกน
+		if active_combat_unit is RigidBody3D:
+			active_combat_unit.freeze = true
+			active_combat_unit.linear_velocity  = Vector3.ZERO
+			active_combat_unit.angular_velocity = Vector3.ZERO
+			active_combat_unit.axis_lock_angular_x = true
+			active_combat_unit.axis_lock_angular_y = true
+			active_combat_unit.axis_lock_angular_z = true
+			active_combat_unit.axis_lock_linear_x  = true
+			active_combat_unit.axis_lock_linear_y  = true
+			active_combat_unit.axis_lock_linear_z  = true
 		
+		# 🌟 แช่แข็งปืนและล็อคทุกแกน
+		var _gun_ref: Node3D = null
+		var _gun_local_rot: float = 0.0
+		if active_combat_unit.has_meta("linked_gun"):
+			_gun_ref = active_combat_unit.get_meta("linked_gun")
+			if is_instance_valid(_gun_ref):
+				if _gun_ref is RigidBody3D:
+					_gun_ref.freeze = true
+					_gun_ref.linear_velocity  = Vector3.ZERO
+					_gun_ref.angular_velocity = Vector3.ZERO
+					_gun_ref.axis_lock_angular_x = true
+					_gun_ref.axis_lock_angular_y = true
+					_gun_ref.axis_lock_angular_z = true
+					_gun_ref.axis_lock_linear_x  = true
+					_gun_ref.axis_lock_linear_y  = true
+					_gun_ref.axis_lock_linear_z  = true
+				# จำ local transform ปืนสัมพัทธ์ตัวละครไว้
+				var _lt = active_combat_unit.global_transform.affine_inverse() * _gun_ref.global_transform
+				active_combat_unit.set_meta("snap_gun_local_transform", _lt)
+				_gun_local_rot = wrapf(_gun_ref.global_rotation.y - active_combat_unit.global_rotation.y, -PI, PI)
+		
+		# 🌟 tween ขยับตัวละคร + ปืนตามแบบ frame-by-frame
 		var slide_tween = create_tween()
-		slide_tween.tween_property(active_combat_unit, "global_position", snap_pos, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		slide_tween.tween_method(func(t: float):
+			if not is_instance_valid(active_combat_unit): return
+			# ขยับตัวละคร
+			active_combat_unit.global_position = active_combat_unit.get_meta("base_pos").lerp(snap_pos, t)
+			active_combat_unit.linear_velocity  = Vector3.ZERO
+			active_combat_unit.angular_velocity = Vector3.ZERO
+			# ล็อคปืนให้แข็งติดตัวละครเป๊ะๆ ทุกเฟรม
+			if is_instance_valid(_gun_ref) and active_combat_unit.has_meta("snap_gun_local_transform"):
+				var lt = active_combat_unit.get_meta("snap_gun_local_transform")
+				_gun_ref.global_transform = active_combat_unit.global_transform * lt
+				if _gun_ref is RigidBody3D:
+					_gun_ref.linear_velocity  = Vector3.ZERO
+					_gun_ref.angular_velocity = Vector3.ZERO
+		, 0.0, 1.0, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		
-		# 🌟 กาวตราช้าง: ล็อกปืนให้ติดมือตอนสไลด์ออกแบบเฟรมต่อเฟรม!
-		if active_combat_unit.has_meta("linked_gun") and active_combat_unit.has_meta("gun_local_offset"):
-			var attached_gun = active_combat_unit.get_meta("linked_gun")
-			var l_pos = active_combat_unit.get_meta("gun_local_offset")
-			if is_instance_valid(attached_gun):
-				slide_tween.parallel().tween_method(func(_v):
-					if is_instance_valid(active_combat_unit) and is_instance_valid(attached_gun):
-						attached_gun.global_position = active_combat_unit.to_global(l_pos)
-				, 0.0, 1.0, 0.25)
-		
+		# 🌟 พอ tween จบ ปลดล็อคทุกอย่าง
 		slide_tween.tween_callback(func():
-			if is_instance_valid(active_combat_unit) and active_combat_unit is RigidBody3D:
+			if not is_instance_valid(active_combat_unit): return
+			if active_combat_unit is RigidBody3D:
+				active_combat_unit.axis_lock_angular_x = false
+				active_combat_unit.axis_lock_angular_y = false
+				active_combat_unit.axis_lock_angular_z = false
+				active_combat_unit.axis_lock_linear_x  = false
+				active_combat_unit.axis_lock_linear_y  = false
+				active_combat_unit.axis_lock_linear_z  = false
+				active_combat_unit.linear_velocity  = Vector3.ZERO
+				active_combat_unit.angular_velocity = Vector3.ZERO
 				active_combat_unit.freeze = false
+			if is_instance_valid(_gun_ref) and _gun_ref is RigidBody3D:
+				_gun_ref.axis_lock_angular_x = false
+				_gun_ref.axis_lock_angular_y = false
+				_gun_ref.axis_lock_angular_z = false
+				_gun_ref.axis_lock_linear_x  = false
+				_gun_ref.axis_lock_linear_y  = false
+				_gun_ref.axis_lock_linear_z  = false
+				_gun_ref.linear_velocity  = Vector3.ZERO
+				_gun_ref.angular_velocity = Vector3.ZERO
+				_gun_ref.freeze = false
 		)
 		
 		var snap_vis = get_node_or_null("SnapVisualizer")
@@ -2331,10 +2751,17 @@ func cancel_combat_aim(just_shot: bool = false, fired_gun_name: String = ""):
 							var base_pos = shooter_unit.get_meta("base_pos")
 							
 							if shooter_unit is RigidBody3D: shooter_unit.freeze = true
+							
+							if shooter_unit.has_meta("linked_gun"):
+								var _g = shooter_unit.get_meta("linked_gun")
+								if is_instance_valid(_g) and _g is RigidBody3D:
+									_g.freeze = true
+									_g.linear_velocity  = Vector3.ZERO
+									_g.angular_velocity = Vector3.ZERO
+							
 							var slide_tween = create_tween()
 							slide_tween.tween_property(shooter_unit, "global_position", base_pos, 0.20).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 							
-							# 🌟 กาวตราช้าง: ล็อกปืนให้ติดมือตอนสไลด์กลับ!
 							if shooter_unit.has_meta("linked_gun") and shooter_unit.has_meta("gun_local_offset"):
 								var attached_gun = shooter_unit.get_meta("linked_gun")
 								var l_pos = shooter_unit.get_meta("gun_local_offset")
@@ -2344,7 +2771,6 @@ func cancel_combat_aim(just_shot: bool = false, fired_gun_name: String = ""):
 											attached_gun.global_position = shooter_unit.to_global(l_pos)
 									, 0.0, 1.0, 0.20)
 							
-							# 🌟 [แก้บั๊กตรงนี้!] ย้ายการหมุนปืนกลับ มาไว้ตอนที่สไลด์เสร็จแล้วเท่านั้น!
 							slide_tween.tween_callback(func():
 								if is_instance_valid(shooter_unit):
 									if shooter_unit is RigidBody3D:
@@ -2357,6 +2783,10 @@ func cancel_combat_aim(just_shot: bool = false, fired_gun_name: String = ""):
 											if shooter_unit.has_meta("gun_local_offset"):
 												gun.global_position = shooter_unit.to_global(shooter_unit.get_meta("gun_local_offset"))
 											gun.force_update_transform()
+											if gun is RigidBody3D:
+												gun.linear_velocity  = Vector3.ZERO
+												gun.angular_velocity = Vector3.ZERO
+												gun.freeze = false
 							)
 							
 							if shooter_unit.has_meta("snap_ghost"):
@@ -2411,6 +2841,14 @@ func cancel_combat_aim(just_shot: bool = false, fired_gun_name: String = ""):
 				var base_pos = active_combat_unit.get_meta("base_pos")
 				
 				if active_combat_unit is RigidBody3D: active_combat_unit.freeze = true
+				
+				if active_combat_unit.has_meta("linked_gun"):
+					var _g = active_combat_unit.get_meta("linked_gun")
+					if is_instance_valid(_g) and _g is RigidBody3D:
+						_g.freeze = true
+						_g.linear_velocity  = Vector3.ZERO
+						_g.angular_velocity = Vector3.ZERO
+				
 				var slide_tween = create_tween()
 				slide_tween.tween_property(active_combat_unit, "global_position", base_pos, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 				
@@ -2424,8 +2862,14 @@ func cancel_combat_aim(just_shot: bool = false, fired_gun_name: String = ""):
 						, 0.0, 1.0, 0.25)
 				
 				slide_tween.tween_callback(func():
-					if is_instance_valid(active_combat_unit) and active_combat_unit is RigidBody3D:
-						active_combat_unit.freeze = false
+					if is_instance_valid(active_combat_unit):
+						if active_combat_unit is RigidBody3D: active_combat_unit.freeze = false
+						if active_combat_unit.has_meta("linked_gun"):
+							var _g2 = active_combat_unit.get_meta("linked_gun")
+							if is_instance_valid(_g2) and _g2 is RigidBody3D:
+								_g2.linear_velocity  = Vector3.ZERO
+								_g2.angular_velocity = Vector3.ZERO
+								_g2.freeze = false
 				)
 				
 				if active_combat_unit.has_meta("snap_ghost"):
@@ -2755,41 +3199,109 @@ func _on_btn_tab_enemy_block_pressed() -> void:
 	if not is_dev_mode: return
 	update_unit_menu("enemy_block")
 
+func _on_btn_tab_enemy_shield_pressed() -> void:
+	if not is_dev_mode: return
+	update_unit_menu("enemy_shield")
+
+
 
 
 
 
 func _on_btn_start_pressed():
-	if current_state == Turn.SETUP:
-		is_game_started = true
-		print("เข้าสู่ช่วงต่อสู้! ล็อกการสร้างทั้งหมด")
+	print("📸 แชะ! ถ่ายรูปจำตำแหน่งยูนิตก่อนเริ่มยิง...")
+	Global.saved_player_blocks.clear()
+	var all_nodes = occupied_tiles.values()
+	
+	# ==========================================
+	# 🌟 [ดักที่ต้นทางตามคำสั่งลูกพี่!]
+	# บังคับแช่แข็งและลบแรงโน้มถ่วงของยูนิตทุกตัว "ก่อน" ถ่ายรูป
+	# เพื่อการันตีว่าตอนเซฟ ทุกอย่างยืนนิ่งสนิท ไม่มีซากไหนร่วงลงมาก่อนฟิสิกส์จะทำงานจริง
+	for unit in all_nodes:
+		if is_instance_valid(unit) and unit is RigidBody3D:
+			unit.freeze = true
+			unit.linear_velocity = Vector3.ZERO
+			unit.angular_velocity = Vector3.ZERO
+	# ==========================================
 
-		# ซ่อน UI สร้างด่าน
-		action_menu.hide()
-		if unit_list_container.get_parent() is ScrollContainer:
-			unit_list_container.get_parent().hide() 
+	for child in all_nodes:
+		if child == self: continue
+		if not child is Node3D: continue
+		if child.is_queued_for_deletion(): continue
 		
-		var ui_panel = $HUD/VBoxContainer 
-		if ui_panel: ui_panel.hide()
+		# กรองเอาเฉพาะ "บล็อกที่ผู้เล่นลากวางเอง" เท่านั้น
+		var is_player_made = child.get_meta("placed_by_player") if child.has_meta("placed_by_player") else false
+		if not is_player_made:
+			continue 
 		
-		# ==========================================
-		# 🌟 [เอากลับมา!] ซ่อนหลอด Energy และ Grid
-		# ==========================================
+		var u_name = child.get("unit_name").to_lower() if child.get("unit_name") != null else child.name.to_lower()
+		var real_scene_path = "" # 🌟 บังคับเคลียร์ Path ให้ว่างเปล่าเสมอ
+		
+		# เช็คชื่อกับ army_list ถ้าเป็นเศษซากผีมันจะไม่มีชื่อในสมุดบัญชี
+		if get("army_list") != null:
+			for data in army_list:
+				if str(data["name"]).to_lower() == u_name:
+					if data.has("scene") and data["scene"] != null:
+						real_scene_path = data["scene"].resource_path
+					break
+					
+		# 🌟 ถ้าหา Path จากสมุดไม่เจอ แปลว่ามันคือซากแปลกปลอม เตะทิ้งทันที ห้ามเซฟ!
+		if real_scene_path == "":
+			continue
+			
+		var block_data = {
+			"save_id": child.get_instance_id(), 
+			"position": child.global_position,
+			"rotation": child.global_rotation,
+			"scene_path": real_scene_path,
+			"cost": child.get("energy_cost") if child.get("energy_cost") != null else 1.0,
+			"hp": child.get("hp_gain_on_place") if child.get("hp_gain_on_place") != null else 0
+		}
+		
+		if child.has_meta("linked_gun"):
+			var gun = child.get_meta("linked_gun")
+			if is_instance_valid(gun):
+				block_data["linked_gun_id"] = gun.get_instance_id()
+				block_data["saved_gun_name"] = child.get_meta("saved_gun_name")
+				block_data["saved_gun_local_pos"] = child.get_meta("saved_gun_local_pos")
+				block_data["saved_gun_local_rot"] = child.get_meta("saved_gun_local_rot")
+				
+		Global.saved_player_blocks.append(block_data)
+			
+	print("✔️ เซฟเตรียม Replay สำเร็จ: ", Global.saved_player_blocks.size(), " ชิ้น")
+	# ====================================================================================
+
+	if current_state == Turn.SETUP:
+		if btn_end_turn: btn_end_turn.hide()
+		if btn_start: btn_start.hide()
+		
+		if setup_banner: setup_banner.hide()
+		if action_menu: action_menu.hide()
 		if energy_bar: energy_bar.hide()
-		if has_node("GridVisualizer"): $GridVisualizer.hide()
-		# ==========================================
-		
-		if btn_start: btn_start.hide() 
-		
 		if btn_open_library: btn_open_library.hide()
 		if blueprint_library_ui: blueprint_library_ui.hide()
+		if has_node("GridVisualizer"): $GridVisualizer.hide()
+		
+		var ui_panel = $HUD/VBoxContainer
+		if ui_panel: ui_panel.hide()
+		
+		if unit_list_container.get_parent() is ScrollContainer:
+			unit_list_container.get_parent().hide()
 		
 		if dragging_unit:
 			dragging_unit.queue_free()
 			dragging_unit = null
 		selected_unit = null
 		
-		# ปลุกฟิสิกส์ให้ยูนิตทั้งหมดร่วงลงพื้น
+		is_game_started = true
+		print("เข้าสู่ช่วงต่อสู้! ล็อกการสร้างทั้งหมด")
+
+		if vs_screen:
+			vs_screen.show()
+			await get_tree().create_timer(1.5).timeout
+			vs_screen.hide()
+		
+		# 🌟 หลังจากเซฟและผ่าน VS Screen หมดแล้ว ค่อยปลุกฟิสิกส์ให้ยูนิตหล่นทีหลังสุด!
 		print("ปลุกยูนิตทั้งหมดและเปิดระบบฟิสิกส์!")
 		for unit in occupied_tiles.values():
 			if is_instance_valid(unit):
@@ -2798,7 +3310,26 @@ func _on_btn_start_pressed():
 
 		print("⏳ เริ่มเกม! รอทุกคนหล่นถึงพื้น...")
 		current_state = Turn.WAITING_PHYSICS
-		next_turn = Turn.PLAYER
+		
+		if first_turn_side == "Player":
+			next_turn = Turn.PLAYER
+			print("🚩 ผู้เล่นได้เริ่มก่อน!")
+		else:
+			next_turn = Turn.ENEMY
+			print("🚩 ศัตรูได้เริ่มก่อน!")
+		# ==========================================
+
+	# ==================================================================
+	# 🕵️ DEBUG 1: พิสูจน์ว่าเรายัดอะไรลงกระเป๋าเซฟบ้าง? มีขยะหลุดไปไหม?
+	# ==================================================================
+	print("\n=== 📸 LOG พิสูจน์: รายชื่อของที่ถูกเซฟตอนกด START ===")
+	for i in range(Global.saved_player_blocks.size()):
+		var data = Global.saved_player_blocks[i]
+		print("ชิ้นที่ ", i+1, " -> Path: ", data.get("scene_path", "ไม่มี Path!"))
+	print("รวมเซฟทั้งหมด: ", Global.saved_player_blocks.size(), " ชิ้น (ลองนับดูว่าเกินจำนวนบล็อกจริงไหม?)")
+	print("====================================================\n")
+
+
 
 
 
@@ -2834,6 +3365,111 @@ func end_current_turn():
 		print("⏳ จบตาศัตรู! รอตัวละครนิ่ง...")
 		next_turn = Turn.PLAYER
 		current_state = Turn.WAITING_PHYSICS
+
+
+
+
+# 🌟 ฟังก์ชันใหม่! เอาไว้รันคิวแอนิเมชันตอนตัวละครหล่นถึงพื้นแล้วเริ่มเทิร์น
+func play_turn_start_sequence(is_player: bool):
+	# 1. รอแบนเนอร์เทิร์นวิ่งผ่านหน้าจอให้เสร็จก่อน (ใช้ await เพื่อรอมันจบ)
+	await show_turn_banner(is_player)
+	
+	# 2. ถ้าเป็นตาผู้เล่น พอแบนเนอร์หายไป ค่อยเฟดปุ่ม End Turn ให้โผล่มา
+	if is_player:
+		if btn_end_turn:
+			btn_end_turn.modulate.a = 0.0 # เริ่มจากโปร่งใส
+			btn_end_turn.show()
+			
+			var tween = create_tween()
+			tween.tween_property(btn_end_turn, "modulate:a", 1.0, 0.3)
+
+
+
+
+# ==========================================
+# 🌟 ระบบ Turn Banner และ Glow
+# ==========================================
+func show_turn_banner(is_player_turn: bool):
+	if not turn_banner or not turn_banner_label: return
+
+	var viewport_size = get_viewport().get_visible_rect().size
+	var center_x = viewport_size.x / 2.0
+	var center_y = viewport_size.y / 2.0
+	var off_left  = -300.0   # นอกจอซ้าย
+	var off_right = viewport_size.x + 300.0  # นอกจอขวา
+
+	turn_banner_label.pivot_offset = turn_banner_label.size / 2.0
+	turn_banner.show()
+
+	var tween = create_tween().set_parallel(false)
+
+	if is_player_turn:
+		turn_banner_label.text = "YOUR TURN"
+
+		# เริ่ม: ซ้าย + โปร่งใส
+		turn_banner_label.position = Vector2(off_left, center_y - turn_banner_label.size.y / 2.0)
+		turn_banner_label.modulate = Color(1, 1, 1, 0)
+
+		# เลื่อนเข้ากลาง + fade in ตัวหนังสือ + สว่างแสง Glow
+		if is_instance_valid(player_glow):
+			tween.tween_property(player_glow, "modulate:a", 1.0, 0.4)
+			
+		tween.parallel().tween_property(turn_banner_label, "position:x",
+			center_x - turn_banner_label.size.x / 2.0, 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		tween.parallel().tween_property(turn_banner_label, "modulate:a", 1.0, 0.45).set_trans(Tween.TRANS_LINEAR)
+
+		# ค้างไว้
+		tween.tween_interval(0.8)
+
+		# เลื่อนออกขวา + fade out ตัวหนังสือ (ส่วน Glow ปล่อยค้างไว้จนกว่าจะจบเทิร์น)
+		tween.tween_property(turn_banner_label, "position:x", off_right, 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		tween.parallel().tween_property(turn_banner_label, "modulate:a", 0.0, 0.45).set_trans(Tween.TRANS_LINEAR)
+
+	else:
+		turn_banner_label.text = "ENEMY TURN"
+
+		# เริ่ม: ขวา + โปร่งใส
+		turn_banner_label.position = Vector2(off_right, center_y - turn_banner_label.size.y / 2.0)
+		turn_banner_label.modulate = Color(1, 1, 1, 0)
+
+		# เลื่อนเข้ากลาง + fade in ตัวหนังสือ + สว่างแสง Glow ศัตรู
+		if is_instance_valid(enemy_glow):
+			tween.tween_property(enemy_glow, "modulate:a", 1.0, 0.4)
+			
+		tween.parallel().tween_property(turn_banner_label, "position:x",
+			center_x - turn_banner_label.size.x / 2.0, 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		tween.parallel().tween_property(turn_banner_label, "modulate:a", 1.0, 0.45).set_trans(Tween.TRANS_LINEAR)
+
+		# ค้างไว้
+		tween.tween_interval(0.8)
+
+		# เลื่อนออกซ้าย + fade out ตัวหนังสือ (ส่วน Glow ปล่อยค้างไว้จนกว่าจะจบเทิร์น)
+		tween.tween_property(turn_banner_label, "position:x", off_left, 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		tween.parallel().tween_property(turn_banner_label, "modulate:a", 0.0, 0.45).set_trans(Tween.TRANS_LINEAR)
+
+	tween.tween_callback(func(): turn_banner.hide())
+	
+	await tween.finished
+
+
+func hide_turn_glow():
+	var tween = create_tween().set_parallel(true)
+	# สั่งเฟด Glow คืนค่าความโปร่งใสเป็น 0 ตอนกำลังจะสลับเทิร์น
+	if is_instance_valid(player_glow):
+		tween.tween_property(player_glow, "modulate:a", 0.0, 0.3)
+	if is_instance_valid(enemy_glow):
+		tween.tween_property(enemy_glow, "modulate:a", 0.0, 0.3)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2979,7 +3615,7 @@ func _on_charge_finished(power: float):
 					base_dir = base_dir.normalized()
 					var pitch = current_pitch_offset if "current_pitch_offset" in self else 0.0
 					
-					# โยนให้ฟิสิกส์จัดการยิง
+					# ⏳ โยนให้ฟิสิกส์จัดการยิง (รอจนกว่ากระสุนนัดสุดท้ายจะออกไป)
 					await execute_gun_physics(active_combat_unit, gun, base_dir, power, true, pitch)
 					
 					if not is_semi:
@@ -3095,6 +3731,11 @@ func execute_gun_physics(shooter: Node3D, gun: Node3D, base_dir: Vector3, power:
 		if is_player:
 			await get_tree().create_timer(0.5).timeout 
 			is_spraying = false
+			# ==========================================
+			# 🌟 [แสตมป์เผื่อไว้ให้ปืนกลด้วย!]
+			initial_aim_rotation = shooter.rotation.y
+			current_aim_offset = 0.0
+			# ==========================================
 			cancel_combat_aim(true, clean_name)
 		else:
 			shooter.set("has_attacked_this_turn", true)
@@ -3239,6 +3880,13 @@ func execute_gun_physics(shooter: Node3D, gun: Node3D, base_dir: Vector3, power:
 	# ====================================================
 	shooter.set_meta("linked_gun", null)
 	if is_player:
+		# ==========================================
+		# 🌟 [ทีเด็ดแก้บั๊กปืนนัดเดียว!] 
+		# แสตมป์มุมกล้องล่าสุดทับไปเลยตรงนี้ ก่อนที่จะสั่งจบเทิร์น!
+		# พอโค้ดดึงหน้ากลับ มันจะได้ดึงกลับมาที่มุมนี้เป๊ะๆ ครับ
+		initial_aim_rotation = shooter.rotation.y
+		current_aim_offset = 0.0
+		# ==========================================
 		cancel_combat_aim(true, clean_name)
 	else:
 		shooter.set("has_attacked_this_turn", true)
@@ -3457,9 +4105,32 @@ func _restore_saved_level_data():
 	for child in get_children():
 		if "unit_name" in child:
 			found_units += 1
-			var key = get_tile_key(child.global_position)
+			# ==========================================
+			# 🌟 [แก้บั๊กสมุดจดทับกัน!] เติม Instance ID ห้อยท้าย
+			# หอคอยแนวตั้งจะได้มีคีย์ไม่ซ้ำกัน Replay จะได้กวาดมาครบ!
+			var key = get_tile_key(child.global_position) + "_" + str(child.get_instance_id())
+			# ==========================================
+			
 			child.set("tile_key", key)
 			occupied_tiles[key] = child
+
+			toggle_collision(child, false)
+			set_unit_preview_color(child, Color(1, 1, 1, 1))
+			# --------------------------------------------------------
+			# 🌟 [เพิ่มบรรทัดเหล่านี้] สั่งตรึงฟิสิกส์ของยูนิตด่านทั้งหมดไว้จนกว่าเกมจะเริ่ม
+			if child is RigidBody3D:
+				child.freeze = true
+				child.linear_velocity = Vector3.ZERO
+				child.angular_velocity = Vector3.ZERO
+				child.force_update_transform()
+			# --------------------------------------------------------
+			# ==========================================
+			# 🌟 [แถมร่างทอง!] ดักแช่แข็งของที่มากับด่านด้วยเลย กันตึกถล่ม
+			if child is RigidBody3D:
+				child.freeze = true
+				child.linear_velocity = Vector3.ZERO
+				child.angular_velocity = Vector3.ZERO
+			# ==========================================
 
 			toggle_collision(child, false)
 			set_unit_preview_color(child, Color(1, 1, 1, 1))
@@ -3564,23 +4235,46 @@ func proceed_to_next_turn():
 	# 🟡 4. รีโหลดกระสุน และ รีเซ็ตสิทธิ์การยิง (ใช้ await ได้อย่างปลอดภัย 100% แล้ว!)
 	await reset_turn_actions(next_turn)
 	
+	# 🌟 Fade out glow ก่อนเสมอ
+	hide_turn_glow()
+	await get_tree().create_timer(0.3).timeout
+	
 	# 🔵 5. สลับสวิตช์เข้าสู่เทิร์นถัดไป!
 	current_state = next_turn
 	is_changing_turn = false # 🔓 ปลดล็อกประตู! อนุญาตให้ระบบฟิสิกส์ทำงานต่อได้
 	
 	# ==========================================
-	# 🌟 [เพิ่มตรงนี้!] จัดการการแสดงผลปุ่ม End Turn
+	# 🌟 จัดคิว UI ลำดับการแสดงผลตอนเริ่มเทิร์น
 	# ==========================================
-	if btn_end_turn:
-		if current_state == Turn.PLAYER:
-			btn_end_turn.show() # โชว์แค่ตอนตาเรา
-		else:
-			btn_end_turn.hide() # ซ่อนตอนตาศัตรู และสถานะอื่นๆ
+	
+	# ปิดปุ่ม End Turn ให้แน่ใจว่ามันจะไม่โผล่มากวนใจตอนแบนเนอร์วิ่ง
+	if btn_end_turn: btn_end_turn.hide()
 	
 	if current_state == Turn.PLAYER:
 		print("🛡️ ตาของคุณ! (PLAYER TURN)")
+		
+		# 1. รอแบนเนอร์วิ่งผ่านหน้าจอให้เสร็จก่อน
+		await show_turn_banner(true)
+		
+		# 2. พอป้ายหายไป ค่อยเฟดปุ่ม End Turn ให้โผล่มาอย่างนุ่มนวล
+		if btn_end_turn:
+			btn_end_turn.modulate.a = 0.0
+			btn_end_turn.show()
+			btn_end_turn.disabled = false # เปิดให้กดได้
+			
+			var tween = create_tween()
+			tween.tween_property(btn_end_turn, "modulate:a", 1.0, 0.3)
+
 	elif current_state == Turn.ENEMY:
 		print("👹 ตาศัตรู! (ENEMY TURN)")
+		
+		# 1. รอแบนเนอร์วิ่งผ่านหน้าจอให้เสร็จก่อน
+		await show_turn_banner(false)
+		
+		# (ในอนาคต) ถ้ามีแอนิเมชันบอสคำราม ให้ใส่ await ตรงนี้ได้เลย
+		# ตัวอย่าง: await play_boss_intro()
+		
+		# 2. เริ่มให้ AI คิดและโจมตี
 		run_enemy_ai()
 
 # 3. ฟังก์ชันจับยืนตรง
@@ -3678,14 +4372,145 @@ func reset_turn_actions(target_turn):
 				# ==========================================
 
 
-# 5. ฟังก์ชันประกาศจบเกม!
+
+
+
+
+
+
+
+
+#  ฟังก์ชันประกาศจบเกม!
 func check_game_over():
 	if total_hp <= 0 and total_enemy_hp <= 0:
 		print("🤝 เสมอกัน! ตายเรียบทั้งกระดาน!")
+		show_game_over_screen("DRAW")
 	elif total_hp <= 0:
 		print("💀 GAME OVER! กองทัพคุณพ่ายแพ้!")
+		show_game_over_screen("LOSE")
 	elif total_enemy_hp <= 0:
 		print("🎉 YOU WIN! ปราบศัตรูสำเร็จ!")
+		show_game_over_screen("WIN")
+
+# ==========================================
+# 🌟 ฟังก์ชันคุมการโชว์ UI แพ้/ชนะ
+# ==========================================
+#  ฟังก์ชันกลางสำหรับคุมหน้าจอจบเกม (เผื่ออนาคตเพิ่มเสียง หรือแอนิเมชัน)
+func show_game_over_screen(result_type: String):
+	if not game_over_panel: 
+		print("❌ หา GameOverPanel ไม่เจอ! เช็ค Path ด่วน")
+		return
+		
+	# 1. จัดการข้อความผลลัพธ์
+	match result_type:
+		"WIN":
+			if game_over_label:
+				game_over_label.text = "YOU WIN"
+				game_over_label.modulate = Color.WHITE
+			
+			# ✅ ชนะ: โชว์ปุ่ม
+			if btn_next_level: 
+				btn_next_level.show()
+				print("✔️ โชว์ปุ่ม Next Level")
+			
+		"LOSE":
+			if game_over_label:
+				game_over_label.text = "GAME OVER"
+				game_over_label.modulate = Color.RED
+			
+			# ❌ แพ้: ซ่อนปุ่ม
+			if btn_next_level: 
+				btn_next_level.hide()
+				print("✔️ ซ่อนปุ่ม Next Level")
+			
+		"DRAW":
+			if game_over_label:
+				game_over_label.text = "DRAW"
+				game_over_label.modulate = Color.YELLOW
+			
+			# ❌ เสมอ: ซ่อนปุ่ม
+			if btn_next_level: 
+				btn_next_level.hide()
+				print("✔️ ซ่อนปุ่ม Next Level")
+			
+	# 2. แสดงผลแอนิเมชันหน้าต่าง UI (ใช้ game_over_panel)
+	game_over_panel.modulate.a = 0.0
+	game_over_panel.show()
+	var tween = create_tween()
+	tween.tween_property(game_over_panel, "modulate:a", 1.0, 0.5)
+
+# ==========================================
+# 🌟 ฟังก์ชันสำหรับปุ่มกดทั้ง 3 ปุ่ม
+# ==========================================
+
+func _on_btn_restart_pressed():
+	print("--- 🔄 โหลด REPLAY กลับไปยืนหล่อๆ แบบตอนก่อนสู้ (ผ่านหน้าโหลด) ---")
+	
+	get_tree().call_group("enemy_lines", "queue_free")
+	
+	Global.is_replaying = true
+	get_tree().paused = false
+	
+	# ==========================================
+	# 🌟 โยนเข้าหน้า Loading Screen ของเรา
+	# ==========================================
+	# 1. ดึง Path ของด่านปัจจุบันที่เรากำลังเล่นอยู่ แล้วฝากไว้ที่คุณ Global
+	var current_scene_path = get_tree().current_scene.scene_file_path
+	Global.next_scene_path = current_scene_path
+	
+	# 2. ตั้งค่า Path ของหน้าโหลด (ถ้าลูกพี่เก็บไว้โฟลเดอร์อื่น อย่าลืมแก้ให้ตรงนะครับ)
+	var loading_screen_path = "res://loading_screen.tscn"
+	
+	if ResourceLoader.exists(loading_screen_path):
+		get_tree().change_scene_to_file(loading_screen_path)
+	else:
+		print("❌ [ERROR] หาไฟล์หน้าโหลด (loading_screen.tscn) ไม่เจอ! โหลดแบบธรรมดาแทน...")
+		get_tree().reload_current_scene()
+
+func _on_btn_main_menu_pressed():
+	print("⬅️ กลับหน้าเลือกด่าน!")
+	get_tree().paused = false # ปลดแช่แข็งเผื่อไว้
+	
+	# เช็คก่อนว่าลูกพี่ลืมใส่ไฟล์หรือเปล่า
+	if return_menu_scene == "":
+		print("[ERROR] ด่านนี้ยังไม่ได้เลือกหน้า Menu ที่จะกลับ! ไปตั้งค่าที่ Inspector ก่อนนะ")
+		return
+		
+	if ResourceLoader.exists(return_menu_scene):
+		get_tree().change_scene_to_file(return_menu_scene)
+	else:
+		print("[ERROR] หาไฟล์ซีนไม่เจอ! เช็กให้ชัวร์ว่าไฟล์ยังอยู่")
+
+# ==========================================
+# 🌟 ฟังก์ชันสำหรับปุ่ม Next Level
+# ==========================================
+func _on_btn_next_level_pressed():
+	print("➡️ กำลังเดินทางไปด่านถัดไปผ่านหน้าโหลด...")
+	
+	# ปลดล็อกเกมก่อนเผื่อด่านนี้โดน Pause อยู่
+	get_tree().paused = false 
+	
+	if next_level_scene == "":
+		print("[ERROR] ยังไม่ได้เลือกไฟล์ด่านถัดไปใน Inspector!")
+		return
+		
+	# ==========================================
+	# 🌟 โยนเข้าหน้า Loading Screen ของเรา
+	# ==========================================
+	# 1. ฝาก Path ด่านถัดไปไว้ที่คุณ Global
+	Global.next_scene_path = next_level_scene
+	
+	# 2. ตั้งค่า Path ของหน้าโหลด (ถ้าลูกพี่เซฟหน้าโหลดไว้ที่อื่น อย่าลืมแก้ตรงนี้นะครับ)
+	var loading_screen_path = "res://loading_screen.tscn"
+	
+	if ResourceLoader.exists(loading_screen_path):
+		get_tree().change_scene_to_file(loading_screen_path)
+	else:
+		print("❌ [ERROR] หาไฟล์หน้าโหลด (loading_screen.tscn) ไม่เจอ!")
+
+
+
+
 
 
 
@@ -3846,6 +4671,7 @@ func run_enemy_ai():
 				var base_dir = (end_pos - start_pos).normalized()
 				var target_dist = start_pos.distance_to(end_pos)
 				
+				
 				# 🌟 1. ยิงเรดาร์เส้นหลัก 1 เส้นตรงๆ
 				var query = PhysicsRayQueryParameters3D.create(start_pos, end_pos)
 				query.hit_from_inside = true
@@ -3870,9 +4696,49 @@ func run_enemy_ai():
 						if "tile_key" in hit_node.get_parent(): hit_node = hit_node.get_parent()
 						
 					if "unit_name" in hit_node and is_enemy_unit(str(hit_node.get("unit_name")).to_lower()):
-						# 🌟 [อัปเกรด!] ถ้าเป็นศพเพื่อน ให้มองข้ามไปเลย ไม่นับว่าบัง!
 						if hit_node.get("is_dead") != true:
-							hit_friendly_node = hit_node 
+							hit_friendly_node = hit_node
+
+				# 🌟 [เพิ่มใหม่] ถ้าตัวโล่ง ให้เช็คตำแหน่งปืนด้วย
+				if hit_friendly_node == null and current_final_shooter.has_meta("linked_gun"):
+					var _g = current_final_shooter.get_meta("linked_gun")
+					if is_instance_valid(_g):
+						var dir_to_target = (end_pos - start_pos).normalized()
+						var face_rot = atan2(dir_to_target.x, dir_to_target.z)
+						
+						# คำนวณตำแหน่งปืนหลังหันหน้าไปเป้า
+						var local_offset = current_final_shooter.to_local(_g.global_position)
+						var rotated_x = local_offset.x * cos(face_rot) - local_offset.z * sin(face_rot)
+						var rotated_z = local_offset.x * sin(face_rot) + local_offset.z * cos(face_rot)
+						var gun_center = current_final_shooter.global_position + Vector3(rotated_x, local_offset.y + 0.75, rotated_z)
+						
+						# แกนซ้าย-ขวาของปืน
+						var right_axis = dir_to_target.cross(Vector3.UP).normalized()
+						var gun_half_width = 0.6 # ครึ่งความกว้างปืน ปรับได้
+						
+						# ยิง 3 เส้น: ซ้าย / กลาง / ขวา
+						var ray_origins = [
+							gun_center,
+							gun_center + right_axis * gun_half_width,
+							gun_center - right_axis * gun_half_width,
+						]
+						
+						for ray_origin in ray_origins:
+							var gun_query = PhysicsRayQueryParameters3D.create(ray_origin, end_pos)
+							gun_query.exclude = excludes
+							var gun_result = space_state.intersect_ray(gun_query)
+							
+							if gun_result and gun_result.collider:
+								var hit = gun_result.collider
+								if not "tile_key" in hit and hit.get_parent() and "tile_key" in hit.get_parent():
+									hit = hit.get_parent()
+								# โดนบล็อกตัวเอง (ศัตรู) → snap
+								if "unit_name" in hit and is_enemy_unit(str(hit.get("unit_name")).to_lower()):
+									if hit.get("is_dead") != true:
+										print("🔫 [GUN CHECK] ray โดนบล็อกศัตรู → snap!")
+										hit_friendly_node = hit
+										break # เจอแล้วหยุดเช็คเส้นอื่น
+							# ถ้าโดนบล็อกผู้เล่น → ไม่ทำอะไร ยิงทะลุไปเลย
 				
 				# ==========================================
 				# 🌟 2. สแกนหาเพื่อนใน "กรวย 3 มิติ"
@@ -3913,7 +4779,17 @@ func run_enemy_ai():
 				break
 				
 			if is_blocked:
-				continue 
+				# 🌟 [SNAP SYSTEM] ลองหาจุด Snap ก่อนยอมแพ้!
+				var snap_p = find_enemy_snap_pos(current_shooter, target)
+				if snap_p != Vector3.ZERO:
+					print("🧱 โดนบัง! แต่เจอจุด Snap → ศัตรูจะโผล่ออกมายิง")
+					# ใส่ข้อมูลไว้ใน dict เพื่อส่งให้ตัดสินใจข้างล่าง
+					can_shoot_units[can_shoot_units.find(shooter_data)]["snap_pos"] = snap_p
+					# ถือว่า "ยิงได้" (แบบ snap)
+					final_shooter = current_shooter
+					final_target  = target
+					break
+				continue
 			else:
 				final_shooter = current_final_shooter
 				final_target = target
@@ -3922,16 +4798,11 @@ func run_enemy_ai():
 		# ==========================================
 		# 🎯 ตัดสินใจขั้นเด็ดขาด!
 		if final_shooter == null:
-			print("⚠️ AI: โดนบังมิดหมดเลย! ช่างมัน ยิงอัดไปเลยละกัน ถอยไม่ได้แล้ว!")
-			# 🌟 [อัปเกรด!] ดึงแผนสำรอง (หยิบศัตรูตัวแรกสุดในคิวที่พร้อมยิง) มาลั่นไกแบบไม่สนโลก! ยิงทะลวงศพหรือบล็อกไปเลย!
-			if can_shoot_units.size() > 0:
-				final_shooter = can_shoot_units[0]["unit"]
-				final_target = can_shoot_units[0]["target"]
-			else:
-				# เผื่อกรณีคิวว่างจริงๆ จะได้ไม่ Error
-				current_state = Turn.WAITING_PHYSICS
-				next_turn = Turn.PLAYER
-				return
+			print("⚠️ AI: โดนบังมิดหมด ไม่มีจุด Snap → ข้ามเทิร์นนี้")
+			# 🌟 ไม่ยิงทิ้ง! รอเทิร์นหน้าหรือให้ตัวอื่นเคลื่อนที่มาแทน
+			current_state = Turn.WAITING_PHYSICS
+			next_turn = Turn.PLAYER
+			return
 			
 		print("🎯 ", final_shooter.name, " รับหน้าที่ลั่นไก!")
 		var gun = final_shooter.get_meta("linked_gun")
@@ -3944,9 +4815,26 @@ func run_enemy_ai():
 		
 		if is_instance_valid(gun):
 			gun.global_rotation.y = final_shooter.global_rotation.y + final_shooter.get_meta("saved_gun_local_rot")
-			
-		# 🌟 [แก้ตรงนี้!] ใส่คำว่า await นำหน้า เพื่อรอให้ AI เล็งและรัวปืนจนจบจริงๆ ก่อน!
-		await enemy_fire_weapon(final_shooter, final_target)
+		
+		
+		
+		
+		# 🌟 เช็คว่าต้อง Snap ก่อนยิงไหม?
+		var snap_data = null
+		for sd in can_shoot_units:
+			if sd["unit"] == final_shooter and sd.has("snap_pos"):
+				snap_data = sd
+				break
+
+		if snap_data:
+			# โหมด Snap: สไลด์ออกมายิง แล้วหดกลับ
+			await enemy_snap_and_fire(final_shooter, final_target, snap_data["snap_pos"])
+		else:
+			# โหมดปกติ: ยิงเลย
+			await enemy_fire_weapon(final_shooter, final_target)
+		
+		
+		
 		
 		# 🌟 [แก้ตรงนี้!] ลดเวลาลงเหลือ 0.5 เพราะมันเสียเวลารอในฟังก์ชันยิงไปแล้ว
 		await get_tree().create_timer(0.5).timeout
@@ -4235,29 +5123,299 @@ func enemy_kamikaze(enemy: Node3D, target: Node3D, can_jump: bool = false):
 	)
 
 
+
+
+
+
+
+
+# ==========================================
+# 🌟 หาตำแหน่ง Snap สำหรับศัตรู (ขยับออกมาจนมองเห็นเป้า)
+# ==========================================
+func find_enemy_snap_pos(enemy: Node3D, target: Node3D) -> Vector3:
+	var space_state = get_world_3d().direct_space_state
+	var start_pos = enemy.global_position
+	
+	var dir_to_target = (target.global_position - start_pos)
+	dir_to_target.y = 0.0
+	if dir_to_target == Vector3.ZERO: return Vector3.ZERO
+	dir_to_target = dir_to_target.normalized()
+	
+	var face_angle = atan2(dir_to_target.x, dir_to_target.z)
+	var right_dir = dir_to_target.cross(Vector3.UP).normalized()
+	var left_dir = -right_dir
+	
+	var max_dist = 7.0
+	var steps = int(max_dist / snap_step)
+	
+	var body_shape = BoxShape3D.new()
+	body_shape.size = Vector3(0.8, 1.8, 0.8)
+	var shape_query = PhysicsShapeQueryParameters3D.new()
+	shape_query.shape = body_shape
+	shape_query.exclude = [enemy.get_rid()]
+	
+	var gun_local_pos = Vector3(0, 1.2, 0)
+	var gun_name = "" 
+	
+	if enemy.has_meta("saved_gun_local_pos"):
+		gun_local_pos = enemy.get_meta("saved_gun_local_pos")
+		
+	if enemy.has_meta("linked_gun"):
+		var gun = enemy.get_meta("linked_gun")
+		if is_instance_valid(gun) and gun is CollisionObject3D:
+			gun_name = str(gun.get("unit_name")).to_lower() if gun.get("unit_name") != null else gun.name.to_lower()
+			shape_query.exclude.append(gun.get_rid())
+			for child in gun.find_children("*", "CollisionObject3D"):
+				shape_query.exclude.append(child.get_rid())
+				
+	var clean_name = gun_name.split("_id_")[0]
+	
+	# ==========================================
+	# 🌟 ความอ้วนของเรดาร์
+	# ==========================================
+	var clearance_width = 0.35 
+	if "shotgun" in clean_name: clearance_width = 1.2  
+	elif "machine_gun" in clean_name: clearance_width = 0.8  
+	elif "semi_auto" in clean_name: clearance_width = 0.5  
+	elif "sniper" in clean_name: clearance_width = 0.25 
+	# ==========================================
+
+	var plan_b_pos = Vector3.ZERO 
+	
+	# ----------------------------------------------------
+	# 🎯 เริ่มกระบวนการสไลด์ซ้าย-ขวา หาทีละสเต็ป
+	# ----------------------------------------------------
+	for i in range(1, steps + 1):
+		var current_dist = i * snap_step
+		
+		for dir in [right_dir, left_dir]:
+			var test_pos = start_pos + (dir * current_dist)
+			test_pos.x = snapped(test_pos.x, snap_step)
+			test_pos.z = snapped(test_pos.z, snap_step)
+			test_pos.y = start_pos.y 
+			
+			# 🧱 Step A: เช็คพุงติดกำแพง
+			shape_query.transform = Transform3D(Basis(), test_pos + Vector3(0, 1.0, 0))
+			var collisions = space_state.intersect_shape(shape_query)
+			
+			if collisions.size() > 0:
+				continue 
+				
+			# 🔫 Step B: เช็คเรดาร์ 2 ชั้น (หน้าอก + ปลายปืน 5 เส้น)
+			var eye_pos = test_pos + Vector3(0, 1.4, 0) 
+			var rotated_gun_pos = Vector3(gun_local_pos.x, gun_local_pos.y, gun_local_pos.z).rotated(Vector3.UP, face_angle)
+			var ghost_gun_pos = test_pos + rotated_gun_pos
+			var target_chest = target.global_position + Vector3(0, 0.75, 0)
+			
+			var bullet_dir = (target_chest - ghost_gun_pos).normalized()
+			var bullet_fatness = bullet_dir.cross(Vector3.UP).normalized() * clearance_width 
+			
+			var ray_origins = [
+				eye_pos,                               
+				ghost_gun_pos,                         
+				ghost_gun_pos + bullet_fatness,        
+				ghost_gun_pos - bullet_fatness,        
+				ghost_gun_pos + (bullet_fatness * 0.5),
+				ghost_gun_pos - (bullet_fatness * 0.5) 
+			]
+			
+			var hit_our_wall = false
+			var saw_player = false
+			var saw_player_cover = false
+			
+			for origin in ray_origins:
+				var los_query = PhysicsRayQueryParameters3D.create(origin, target_chest)
+				los_query.exclude = shape_query.exclude
+				var los_result = space_state.intersect_ray(los_query)
+				
+				if los_result and los_result.collider:
+					var hit = los_result.collider
+					if not "tile_key" in hit and hit.get_parent() != null and "tile_key" in hit.get_parent():
+						hit = hit.get_parent()
+						
+					var hit_name = str(hit.get("unit_name")).to_lower() if hit.get("unit_name") != null else hit.name.to_lower()
+					
+					if is_enemy_unit(hit_name):
+						hit_our_wall = true
+						break 
+					elif is_player_char(hit_name):
+						saw_player = true
+					else:
+						saw_player_cover = true
+				else:
+					saw_player = true
+			
+			# ==========================================
+			# 🎯 สรุปผลจากเรดาร์ และระบบ "แถมก้าว (Over-Peek)"
+			# ==========================================
+			if hit_our_wall:
+				continue # สะกิดกำแพงตัวเอง สไลด์เพิ่ม
+				
+			if saw_player:
+				# 🌟 เจอจุดยิงแล้ว! สั่งแถมให้ 2 ช่อง เพื่อความชัวร์และเท่!
+				var final_pos = test_pos
+				var extra_peek_steps = 2 # จำนวนช่องที่อยากให้ก้าวเลยขอบ (แก้เป็น 1 หรือ 3 ได้ครับ)
+				
+				for e in range(1, extra_peek_steps + 1):
+					var extra_pos = test_pos + (dir * (e * snap_step))
+					extra_pos.x = snapped(extra_pos.x, snap_step)
+					extra_pos.z = snapped(extra_pos.z, snap_step)
+					extra_pos.y = start_pos.y
+					
+					# เช็คว่าก้าวแถมไปเนี่ย ชนตึกอื่นหรือเปล่า?
+					shape_query.transform = Transform3D(Basis(), extra_pos + Vector3(0, 1.0, 0))
+					if space_state.intersect_shape(shape_query).size() == 0:
+						final_pos = extra_pos # ปลอดภัย อัปเดตจุดแถม
+					else:
+						break # ถ้าก้าวแถมไปแล้วติดกำแพงอื่น ก็หยุดแถม เอาแค่นี้แหละ
+						
+				print("🟢 [AI SNAP] เจอจุดยิงแล้ว! แถมก้าวให้อีกพ้นๆ เลย (สไลด์รวม ", start_pos.distance_to(final_pos), "m)")
+				return final_pos
+				
+			elif saw_player_cover and plan_b_pos == Vector3.ZERO:
+				# 🌟 แผนสำรอง ก็แถมก้าวให้เหมือนกัน!
+				var final_plan_b = test_pos
+				for e in range(1, 3):
+					var extra_pos = test_pos + (dir * (e * snap_step))
+					extra_pos.x = snapped(extra_pos.x, snap_step)
+					extra_pos.z = snapped(extra_pos.z, snap_step)
+					extra_pos.y = start_pos.y
+					
+					shape_query.transform = Transform3D(Basis(), extra_pos + Vector3(0, 1.0, 0))
+					if space_state.intersect_shape(shape_query).size() == 0:
+						final_plan_b = extra_pos
+					else:
+						break
+				plan_b_pos = final_plan_b
+				
+	if plan_b_pos != Vector3.ZERO:
+		print("🟡 [AI SNAP] พีคสุดแล้วเห็นแค่กำแพงผู้เล่น งัด Plan B แถมก้าวแล้วยิงอัดเลย!")
+		return plan_b_pos
+		
+	print("🔴 [AI SNAP] สไลด์จนสุด 7.0 เมตร บล็อกฝั่งเราก็ยังบังอยู่... ยอมแพ้!")
+	return Vector3.ZERO
+
+
+
+
+
+
+
+
+# ==========================================
+# 🌟 ศัตรู Snap ออกมายิง แล้วหดกลับ (เหมือนระบบผู้เล่น แต่อัตโนมัติ)
+# ==========================================
+func enemy_snap_and_fire(enemy: Node3D, target: Node3D, snap_pos: Vector3):
+	if not is_instance_valid(enemy) or not is_instance_valid(target): return
+	
+	var base_pos = enemy.global_position
+	enemy.set_meta("base_pos", base_pos)
+	enemy.set_meta("snap_pos", snap_pos)
+
+	# ── 🌟 [จุดแก้ที่ 1] หันหน้าเข้าหาเป้า โดยคำนวณจาก "จุดที่จะพีค" ไม่ใช่จุดเดิม! ──
+	var dir = (target.global_position - snap_pos).normalized()
+	enemy.global_rotation.y = atan2(dir.x, dir.z)
+
+	# ── 🌟 [จุดแก้ที่ 2] ใช้ offset เดิมของปืนที่เซฟไว้ ห้ามคำนวณใหม่เด็ดขาด! ──
+	var gun_local_offset = Vector3(0, 1.2, 0)
+	if enemy.has_meta("saved_gun_local_pos"):
+		gun_local_offset = enemy.get_meta("saved_gun_local_pos")
+		
+	var gun_ref: Node3D = null
+	if enemy.has_meta("linked_gun"):
+		gun_ref = enemy.get_meta("linked_gun")
+		if is_instance_valid(gun_ref):
+			gun_ref.global_rotation.y = enemy.global_rotation.y + enemy.get_meta("saved_gun_local_rot")
+			if gun_ref is RigidBody3D:
+				gun_ref.linear_velocity  = Vector3.ZERO
+				gun_ref.angular_velocity = Vector3.ZERO
+
+	# ── สไลด์ออกไป ──
+	if enemy is RigidBody3D: enemy.freeze = true
+	var tween_out = create_tween()
+	tween_out.tween_property(enemy, "global_position", snap_pos, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+	if is_instance_valid(gun_ref):
+		tween_out.parallel().tween_method(func(_v):
+			if is_instance_valid(enemy) and is_instance_valid(gun_ref):
+				# 🌟 บังคับปืนให้อยู่ในตำแหน่งที่ถูกต้องตลอดเวลาที่สไลด์ (ไม่เบี้ยวแล้ว!)
+				gun_ref.global_position = enemy.to_global(gun_local_offset)
+		, 0.0, 1.0, 0.25)
+
+	tween_out.tween_callback(func():
+		if is_instance_valid(enemy) and enemy is RigidBody3D:
+			enemy.freeze = false
+	)
+
+	await tween_out.finished
+	await get_tree().create_timer(0.15).timeout
+
+	# ── ยิง ──
+	print("🔫 [SNAP] ศัตรู ", enemy.name, " โผล่ออกมายิง!")
+	await enemy_fire_weapon(enemy, target)
+
+	await get_tree().create_timer(0.4).timeout
+
+	# ── สไลด์กลับ ──
+	if not is_instance_valid(enemy): return
+
+	var original_rot = enemy.global_rotation.y
+	if enemy is RigidBody3D: enemy.freeze = true
+
+	var tween_in = create_tween()
+	tween_in.tween_property(enemy, "global_position", base_pos, 0.20).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+	# อัปเดตปืนให้ตาม (ถ้ายังมีปืนอยู่หลังยิง)
+	if enemy.has_meta("linked_gun"):
+		gun_ref = enemy.get_meta("linked_gun")
+		if is_instance_valid(gun_ref) and enemy.has_meta("saved_gun_local_pos"):
+			var l_pos = enemy.get_meta("saved_gun_local_pos")
+			tween_in.parallel().tween_method(func(_v):
+				if is_instance_valid(enemy) and is_instance_valid(gun_ref):
+					gun_ref.global_position = enemy.to_global(l_pos)
+			, 0.0, 1.0, 0.20)
+
+	tween_in.tween_callback(func():
+		if is_instance_valid(enemy):
+			if enemy is RigidBody3D: enemy.freeze = false
+			# หันกลับทิศเดิม
+			var tween_rot = create_tween()
+			var diff = wrapf(original_rot - enemy.global_rotation.y, -PI, PI)
+			tween_rot.tween_property(enemy, "global_rotation:y",
+				enemy.global_rotation.y + diff, 0.3).set_trans(Tween.TRANS_SINE)
+	)
+
+	await tween_in.finished
+	print("🛡️ [SNAP] ", enemy.name, " หดกลับที่กำบังแล้ว!")
+
+
+
+
+
+
+
+
 # ==========================================
 # 🌟 ระบบจำแนกประเภทตัวละครอัตโนมัติ (ฉบับสมบูรณ์!)
 # ==========================================
 func is_player_char(u_name: String) -> bool:
-	var clean_name = u_name.to_lower()
+	var clean_name = u_name.to_lower().split("_id_")[0] # 🌟 ตัด ID ทิ้งก่อนหาชื่อ
 	for data in army_list:
 		if data["name"].to_lower() == clean_name:
 			return data["category"] == "character"
 	return false
 
 func is_enemy_char(u_name: String) -> bool:
-	var clean_name = u_name.to_lower()
+	var clean_name = u_name.to_lower().split("_id_")[0]
 	for data in army_list:
 		if data["name"].to_lower() == clean_name:
-			return data["category"] == "enemy_character" # 🌟 เช็คแค่ว่าเป็นคาแรคเตอร์ศัตรูไหม จบเลย!
+			return data["category"] == "enemy_character" 
 	return false
 
-# เช็คว่ายูนิตนี้เป็นของศัตรูหรือไม่ (รวมหมดทั้งตัวละคร, ปืน, บล็อก)
 func is_enemy_unit(u_name: String) -> bool:
-	var clean_name = u_name.to_lower()
+	var clean_name = u_name.to_lower().split("_id_")[0]
 	for data in army_list:
 		if data["name"].to_lower() == clean_name:
-			# 🌟 ถ้าหมวดหมู่ขึ้นต้นด้วยคำว่า enemy_ ถือว่าเป็นของศัตรูทั้งหมด!
 			return str(data["category"]).begins_with("enemy")
 	return false
 
@@ -4839,7 +5997,11 @@ func _start_multi_move_from_world():
 	if multi_selected_units.size() == 0: return
 	
 	print("🚚 เริ่มลากย้ายกลุ่มยูนิต (ฟรี! ไม่เสีย Energy)")
-	
+	# ==========================================
+	# 🌟 บังคับล้างบิล! จะได้ไม่เอาบิลพิมพ์เขียวที่ค้างอยู่มาคิดเงินซ้ำ
+	multi_drag_cost = 0.0 
+	multi_drag_hp = 0
+	# ==========================================
 	# 1. หาจุดศูนย์กลาง และหา "จุดที่ต่ำที่สุด (AABB)" ของกลุ่ม
 	var center_pos = Vector3.ZERO
 	var min_aabb_y = 99999.0 # 🌟 สร้างตัวแปรดักจับความสูง
@@ -5054,6 +6216,21 @@ func _on_blueprint_item_selected(file_name: String):
 	# 3. สแกนลูกสมุนในพิมพ์เขียว 
 	for child in blueprint_root.get_children():
 		var u_name = child.get("unit_name").to_lower() if child.get("unit_name") != null else child.name.to_lower()
+		# ==========================================
+		# 🌟 [แก้บั๊กที่ 2: ด่านตรวจบล็อกเถื่อน!]
+		# ==========================================
+		if "allowed_units" in self and allowed_units != null and allowed_units.size() > 0:
+			var is_allowed = false
+			for allowed_name in allowed_units:
+				if allowed_name.to_lower() == u_name:
+					is_allowed = true
+					break
+			
+			if not is_allowed:
+				print("🚫 ตัด ", u_name, " ออก! (ด่านนี้ไม่อนุญาตให้ใช้บล็อกชนิดนี้)")
+				child.queue_free() # เตะทิ้งไปเลย!
+				continue # ข้ามตัวนี้ไปสแกนตัวถัดไป
+		# ==========================================
 		var target_data = null
 		
 		for data in army_list:
@@ -5092,30 +6269,46 @@ func _on_blueprint_item_selected(file_name: String):
 				if is_instance_valid(old): old.queue_free()
 		if dragging_unit and is_instance_valid(dragging_unit):
 			dragging_unit.queue_free()
-			
-		# ตั้งค่าระบบตัวแปรลากกลุ่ม
-		multi_drag_cost = player_cost
-		multi_drag_hp = player_hp
+		# ==========================================
+		# 🌟 แก้ให้การดึงพิมพ์เขียวออกมาครั้งแรก ต้องเสียเงินตามบิล
+		# ==========================================
+		multi_drag_cost = player_cost # กลับมาใช้ค่าบิลของพิมพ์เขียว
+		multi_drag_hp = player_hp     # กลับมาใช้ค่าบิลของพิมพ์เขียว
+		# ==========================================
 		dragging_multi_units.clear()
 		multi_drag_offsets.clear()
 		
-		# 5. ถอดลูกๆ ออกจากราก แล้วเอามาแปะติดเมาส์
+		# 5. เสกบล็อกใหม่เอี่ยมตามแบบพิมพ์เขียว แล้วเอามาแปะติดเมาส์
 		for item in valid_clones:
-			var clone = item["node"]
-			var offset = clone.position # ตำแหน่งนี้คือระยะห่างที่มันจำไว้ตอนเราเซฟ!
+			var old_clone = item["node"]      # ตัวต้นแบบจากไฟล์พิมพ์เขียว (ตัวเถื่อน)
+			var target_data = item["data"]    # ข้อมูลจาก army_list
+			var offset = old_clone.position   # ระยะห่างที่จำไว้
 			
-			clone.reparent(get_tree().current_scene) # ย้ายมาอยู่โลกหลัก
+			# 🌟 [แก้ที่ต้นตอ!] เสกบล็อก "ตัวใหม่" จากฐานข้อมูลเลย (เหมือนระบบก๊อปปี้)
+			var fresh_clone = target_data["scene"].instantiate() 
+			get_tree().current_scene.add_child(fresh_clone)
 			
-			# 🌟 [เพิ่มบรรทัดนี้!] แปะป้ายบอกว่าตัวนี้ดึงมาจากพิมพ์เขียวนะ!
-			clone.set_meta("from_blueprint", true) 
+			# คัดลอกตำแหน่งและองศาจากตัวต้นแบบ มาใส่ตัวใหม่
+			fresh_clone.global_transform = old_clone.global_transform
+			fresh_clone.set_meta("from_blueprint", true)
+			
+			# ==========================================
+			# 🌟 [จุดแก้บั๊กกิน Energy!] แปะป้ายหลอกระบบว่า 
+			# "บล็อกนี้ถูกผู้เล่นซื้อแล้ว ห้ามคิดเงินซ้ำเวลาลากย้าย!"
+			fresh_clone.set_meta("placed_by_player", true) 
+			# ==========================================
 			
 			multi_drag_offsets.append(offset)
-			dragging_multi_units.append(clone)
+			dragging_multi_units.append(fresh_clone)
 			
-			toggle_collision(clone, true) 
-			set_unit_preview_color(clone, Color(0.0, 1.0, 1.0, 0.502)) # ทำสีฟ้าโปร่งแสง
+			toggle_collision(fresh_clone, true) 
+			set_unit_preview_color(fresh_clone, Color(0.0, 1.0, 1.0, 0.502))
 			
-		blueprint_root.queue_free() # ลบรากที่ว่างเปล่าทิ้ง
+			# ดักไว้ก่อน: ปิดแรงโน้มถ่วงให้บล็อกใหม่ตอนกำลังติดเมาส์
+			if fresh_clone is RigidBody3D:
+				fresh_clone.freeze = true
+			
+		blueprint_root.queue_free() # ลบรากพิมพ์เขียวทิ้ง (ซึ่งจะกวาดล้าง old_clone ตัวเถื่อนทิ้งไปให้หมดเกลี้ยง!)
 		print("📦 โหลดเสร็จสิ้น! ของลอยติดเมาส์แล้ว | บิลผู้เล่น: ", player_cost, " บิลศัตรู: ", enemy_cost)
 	else:
 		if error_sound_player: error_sound_player.play()
@@ -5442,9 +6635,20 @@ func execute_player_walk(unit: Node3D, power: float):
 		# ❌ เอา apply_torque_impulse (แรงบิดสุ่ม) ออกไปเลย ตัวจะได้ไม่หมุนติ้ว!
 	
 	# 🌟 ถ้าย้ายตำแหน่งเดิน ให้ลบตำแหน่ง Snap ทิ้งเลย! ต้องตั้งใหม่
-	unit.remove_meta("snap_pos")
-	unit.remove_meta("base_pos")
+	# ❌ เดิม (crash ถ้าไม่เคย Snap มาก่อน)
+	# unit.remove_meta("snap_pos")
+	# unit.remove_meta("base_pos")
+	
+	# ✅ แก้ใหม่ (เช็คก่อนลบ)
+	if unit.has_meta("snap_pos"): unit.remove_meta("snap_pos")
+	if unit.has_meta("base_pos"): unit.remove_meta("base_pos")
 	clear_snap_ghost(unit)
+	
+	# ==========================================
+	# 🌟 [เพิ่มทริคตรงนี้!] เซฟทับความจำ! หลอกระบบว่านี่แหละคือทิศเริ่มต้น
+	# พอฟังก์ชัน cancel_combat_aim ทำงาน มันจะได้ดึงหน้ากลับมาที่ทิศนี้แทน!
+	initial_aim_rotation = unit.rotation.y 
+	# ==========================================
 	
 	cancel_combat_aim(true, "walk")
 
@@ -5460,8 +6664,6 @@ func execute_player_walk(unit: Node3D, power: float):
 			# 🌟 ดึงตัวให้ตั้งตรง และสั่งหยุดไถลแบบ 100%
 			unit.rotation.x = 0
 			unit.rotation.z = 0 
-			# 🌟 [เพิ่มบรรทัดนี้!] หันหน้ากลับไปทิศทางเดิมก่อนเริ่มเล็งเดิน
-			unit.rotation.y = initial_aim_rotation 
 			
 			unit.linear_velocity = Vector3.ZERO
 			unit.angular_velocity = Vector3.ZERO
@@ -5641,3 +6843,17 @@ func clear_snap_ghost(unit: Node3D):
 				if is_instance_valid(g_gun): g_gun.queue_free()
 			ghost.queue_free()
 		unit.remove_meta("snap_ghost")
+
+
+
+
+
+
+
+# ==========================================
+# 🌟 ฟังก์ชันพิเศษสำหรับทะลวงหาโหนดทั้งหมด
+# ==========================================
+func _grab_all_nodes_recursive(node: Node, arr: Array):
+	for child in node.get_children():
+		arr.append(child)
+		_grab_all_nodes_recursive(child, arr)

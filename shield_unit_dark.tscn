@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bnwwooulx2tuq"]
+
+[ext_resource type="Script" uid="uid://lmt48agr6bqs" path="res://shield_unit.gd" id="1_55qmt"]
+[ext_resource type="Texture2D" uid="uid://cdddfs7ujkbwt" path="res://assets/foto/lightning3.png" id="2_kvghw"]
+[ext_resource type="ArrayMesh" uid="uid://tdrrsdhfyxpt" path="res://assets/model/wbrob02.obj" id="3_kvghw"]
+[ext_resource type="Shader" uid="uid://gs8keq5fjaeo" path="res://Shader/shield_outline.gdshader" id="4_4f60t"]
+[ext_resource type="Texture2D" uid="uid://ctk4fwwsm1pnu" path="res://assets/foto/woodrob-01-export.png" id="4_iv27w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8gqep"]
+render_priority = 0
+shader = ExtResource("4_4f60t")
+shader_parameter/outline_color = Color(0.8, 0.4, 1, 1)
+shader_parameter/outline_thickness = 0.02
+shader_parameter/outline_brightness = 1.0
+shader_parameter/mesh_center = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kvghw"]
+next_pass = SubResource("ShaderMaterial_8gqep")
+albedo_texture = ExtResource("4_iv27w")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iv27w"]
+size = Vector3(1, 3, 0.5)
+
+[node name="shield_unit_dark" type="RigidBody3D" unique_id=364780047]
+mass = 1000.0
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 5
+script = ExtResource("1_55qmt")
+unit_name = "shield_block_dark"
+energy_cost = 20.0
+max_hp = 5
+glint_tex = ExtResource("2_kvghw")
+outline_size = 0.03
+outline_color = Color(1.063, 0.904, 0.474, 0.157)
+glint_color = Color(1.079, 0.933, 0.531, 0.114)
+glint_scale = 0.25
+glint_speed = Vector2(0.025, -0.05)
+damage_color = Color(1.353256, 0, 0, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1789399547]
+transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, 0, 0)
+mesh = ExtResource("3_kvghw")
+surface_material_override/0 = SubResource("StandardMaterial3D_kvghw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=778098192]
+shape = SubResource("BoxShape3D_iv27w")

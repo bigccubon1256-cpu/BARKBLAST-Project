@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://deuqwdjihyppy" path="res://scripts/unit_slot.gd" id="1_g4ca8"]
 
 [node name="UnitSlot" type="Button" unique_id=259195225]
-custom_minimum_size = Vector2(150, 125)
+custom_minimum_size = Vector2(172, 172)
 anchors_preset = -1
 anchor_right = 0.13000001
 anchor_bottom = 0.27800003

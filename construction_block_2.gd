@@ -1,6 +1,6 @@
 extends RigidBody3D
 
-var unit_name = "block_dark"
+var unit_name = "block_2"
 var energy_cost = 1.0      # ราคาของบล็อกตามที่คุณตั้งไว้
 var hp_gain_on_place = 0   # บล็อกไม่เพิ่ม HP ให้กองทัพ (หรือถ้าอยากให้เพิ่มก็ใส่เลขได้)
 var tile_key = ""          # เอาไว้เก็บตำแหน่งตอนวาง (สำคัญมากตอนลบ)

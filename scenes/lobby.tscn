@@ -17,7 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://d1ac68s5inoej" path="res://assets/foto/buttonINVENTORT_2.png" id="7_rgcd7"]
 [ext_resource type="Texture2D" uid="uid://b3u4qtckmf1e1" path="res://assets/foto/buttonSETTING_2.png" id="9_lqo1b"]
 [ext_resource type="Texture2D" uid="uid://c8hoch0tfyl6o" path="res://assets/foto/buttonSETTING_3.png" id="10_o2i1r"]
+[ext_resource type="Texture2D" uid="uid://cwf00rfupy73o" path="res://assets/foto/X_ui.png" id="13_iwi7x"]
 [ext_resource type="Texture2D" uid="uid://ce0fhabwhav3m" path="res://assets/foto/Force-0002-Sheet.png" id="14_o2i1r"]
+[ext_resource type="FontFile" uid="uid://bx3egoaarha46" path="res://assets/Font/Jersey_10/Jersey10-Regular.ttf" id="14_wjff0"]
 [ext_resource type="Texture2D" uid="uid://b471miw5ro6lb" path="res://assets/foto/Sammy-0001-Sheet.png" id="15_iulku"]
 [ext_resource type="Texture2D" uid="uid://dxtw85is1dd8n" path="res://assets/foto/Drakrot-001-Sheet-Sheet.png" id="17_0gjkf"]
 [ext_resource type="Texture2D" uid="uid://c7tfk6fc2641w" path="res://assets/foto/Darklot-002-Sheet.png" id="21_0jb4q"]
@@ -2439,7 +2441,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="MainMenuCamera3D/CanvasLayer/UI_Root" unique_id=1782191576]
+[node name="MainMenuPanel" type="Control" parent="MainMenuCamera3D/CanvasLayer/UI_Root" unique_id=185472095]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel" unique_id=1782191576]
 layout_mode = 0
 offset_left = -152.0
 offset_top = -51.0
@@ -2448,20 +2458,20 @@ offset_bottom = 284.0
 scale = Vector2(1.0702857, 1.0702857)
 texture = ExtResource("6_yad6j")
 
-[node name="play" type="VBoxContainer" parent="MainMenuCamera3D/CanvasLayer/UI_Root" unique_id=1979971772]
+[node name="play" type="VBoxContainer" parent="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel" unique_id=1979971772]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 15.0
-offset_top = 129.12811
+offset_top = 56.128113
 offset_right = 522.0
-offset_bottom = 187.12811
+offset_bottom = 114.12811
 grow_vertical = 2
 rotation = -0.00025270972
 scale = Vector2(0.9999953, 1.112522)
 
-[node name="PlayButton" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/play" unique_id=475069284]
+[node name="PlayButton" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel/play" unique_id=475069284]
 texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = SubResource("SystemFont_m1sns")
@@ -2471,19 +2481,19 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_q6qq2")
 theme_override_styles/hover = SubResource("StyleBoxTexture_rgcd7")
 text = " "
 
-[node name="inventory" type="VBoxContainer" parent="MainMenuCamera3D/CanvasLayer/UI_Root" unique_id=1757840418]
+[node name="inventory" type="VBoxContainer" parent="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel" unique_id=1757840418]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 15.0
-offset_top = 189.12811
+offset_top = 116.128174
 offset_right = 924.52405
-offset_bottom = 285.20276
+offset_bottom = 212.20276
 grow_vertical = 2
 scale = Vector2(0.5579362, 0.63438195)
 
-[node name="Button" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/inventory" unique_id=784033806]
+[node name="Button" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel/inventory" unique_id=784033806]
 layout_mode = 2
 theme_override_fonts/font = SubResource("SystemFont_rgcd7")
 theme_override_font_sizes/font_size = 64
@@ -2492,20 +2502,20 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_0gjkf")
 theme_override_styles/hover = SubResource("StyleBoxTexture_o2i1r")
 text = " "
 
-[node name="setting" type="VBoxContainer" parent="MainMenuCamera3D/CanvasLayer/UI_Root" unique_id=706781541]
+[node name="setting" type="VBoxContainer" parent="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel" unique_id=706781541]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 15.000002
-offset_top = 250.12811
+offset_top = 177.12811
 offset_right = 876.7622
-offset_bottom = 346.12817
+offset_bottom = 273.1281
 grow_vertical = 2
 rotation = -0.00025270972
 scale = Vector2(0.5890927, 0.63658595)
 
-[node name="Button" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/setting" unique_id=1381471007]
+[node name="Button" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel/setting" unique_id=1381471007]
 layout_mode = 2
 theme_override_fonts/font = SubResource("SystemFont_iulku")
 theme_override_font_sizes/font_size = 64
@@ -2513,6 +2523,49 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_dfnwm")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_0jb4q")
 theme_override_styles/hover = SubResource("StyleBoxTexture_vwf6o")
 text = " "
+
+[node name="ModeSelectPanel" type="Control" parent="MainMenuCamera3D/CanvasLayer/UI_Root" unique_id=1536785521]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -450.0
+offset_right = 750.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="MainMenuCamera3D/CanvasLayer/UI_Root/ModeSelectPanel" unique_id=1748319161]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BtnBack" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/ModeSelectPanel" unique_id=606160126]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(2, 2)
+icon = ExtResource("13_iwi7x")
+
+[node name="BtnLevelTest" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/ModeSelectPanel" unique_id=555025344]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("14_wjff0")
+theme_override_font_sizes/font_size = 128
+text = "TEST LEVEL"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1493377499]
 transform = Transform3D(0.78510696, -0.20061979, 0.5859691, 0.13835633, 0.9789875, 0.14980273, -0.6037092, -0.036538627, 0.79636633, -11.566177, -1.9801226, 10.901459)
@@ -2856,4 +2909,6 @@ light_energy = 0.429
 spot_range = 25.687355
 spot_angle = 35.189728
 
-[connection signal="pressed" from="MainMenuCamera3D/CanvasLayer/UI_Root/play/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MainMenuCamera3D/CanvasLayer/UI_Root/MainMenuPanel/play/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MainMenuCamera3D/CanvasLayer/UI_Root/ModeSelectPanel/BtnBack" to="." method="_on_btn_back_pressed"]
+[connection signal="pressed" from="MainMenuCamera3D/CanvasLayer/UI_Root/ModeSelectPanel/BtnLevelTest" to="." method="_on_btn_level_test_pressed"]
