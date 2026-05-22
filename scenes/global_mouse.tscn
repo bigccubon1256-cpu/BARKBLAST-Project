@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c6ps75a2t05d5"]
+
+[ext_resource type="Script" uid="uid://hxhhsju1bw44" path="res://scripts/GlobalMouse.gd" id="1_vcckw"]
+
+[node name="GlobalMouse" type="Node3D" unique_id=1227063931]
+script = ExtResource("1_vcckw")

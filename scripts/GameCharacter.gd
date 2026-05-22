@@ -12,10 +12,10 @@ extends Node3D
 @onready var error_sound_player = $ErrorSoundPlayer
 
 var army_list = [
-	{"name": "forces", "category": "character", "cost": 1.0, "hp_gain": 10, "scene": preload("res://forces.tscn"), "icon": preload("res://assets/foto/ForceforUI.png"), "max_count": -1},
-	{"name": "soren", "category": "character", "cost": 0.0, "hp_gain": 10, "scene": preload("res://soren.tscn"), "icon": preload("res://assets/foto/SammyforUI.png"), "max_count": 1},
-	{"name": "block", "category": "block", "cost": 0.5, "scene": preload("res://construction_block.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1}, 
-	{"name": "gun", "category": "gun", "cost": 2.0, "scene": preload("res://gun.tscn"), "icon": preload("res://assets/foto/gun01forUI.png"), "max_count": -1}
+	{"name": "forces", "category": "character", "cost": 1.0, "hp_gain": 10, "scene": preload("res://scenes/characters/forces.tscn"), "icon": preload("res://assets/foto/ForceforUI.png"), "max_count": -1},
+	{"name": "soren", "category": "character", "cost": 0.0, "hp_gain": 10, "scene": preload("res://scenes/characters/soren.tscn"), "icon": preload("res://assets/foto/SammyforUI.png"), "max_count": 1},
+	{"name": "block", "category": "block", "cost": 0.5, "scene": preload("res://scenes/construction_block.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1}, 
+	{"name": "gun", "category": "gun", "cost": 2.0, "scene": preload("res://scenes/guns/gun.tscn"), "icon": preload("res://assets/foto/gun01forUI.png"), "max_count": -1}
 ]
 
 var total_hp: int = 0

@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://duw5jkfqekcwr"]
 
-[ext_resource type="Script" uid="uid://bw1c0434v2gtk" path="res://scenes/leveltest_selection.gd" id="1_cgxtj"]
+[ext_resource type="Script" uid="uid://bw1c0434v2gtk" path="res://scripts/leveltest_selection.gd" id="1_cgxtj"]
 [ext_resource type="Texture2D" uid="uid://b54mma313nxvp" path="res://assets/foto/261009_0.jpg" id="2_kyqwy"]
 [ext_resource type="Texture2D" uid="uid://cwf00rfupy73o" path="res://assets/foto/X_ui.png" id="3_67erc"]
 [ext_resource type="FontFile" uid="uid://bx3egoaarha46" path="res://assets/Font/Jersey_10/Jersey10-Regular.ttf" id="4_7i6qv"]
-[ext_resource type="Script" uid="uid://e35ahp618yae" path="res://scenes/btn_level_1.gd" id="5_kyqwy"]
+[ext_resource type="Script" uid="uid://e35ahp618yae" path="res://scripts/btn_level_1.gd" id="5_kyqwy"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sm06h"]
 texture = ExtResource("2_kyqwy")

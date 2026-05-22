@@ -84,47 +84,47 @@ var total_enemy_energy_used: float = 0.0
 
 
 
-var army_list = [{"name": "soren", "category": "character", "cost": 0, "hp_gain": 10, "scene": preload("res://soren.tscn"), "icon": preload("res://assets/foto/SammyforUI.png"), "max_count": 1},
-	{"name": "forces", "category": "character", "cost": 5, "hp_gain": 10, "scene": preload("res://forces.tscn"), "icon": preload("res://assets/foto/ForceforUI.png"), "max_count": -1},
+var army_list = [{"name": "soren", "category": "character", "cost": 0, "hp_gain": 10, "scene": preload("res://scenes/characters/soren.tscn"), "icon": preload("res://assets/foto/SammyforUI.png"), "max_count": 1},
+	{"name": "forces", "category": "character", "cost": 5, "hp_gain": 10, "scene": preload("res://scenes/characters/forces.tscn"), "icon": preload("res://assets/foto/ForceforUI.png"), "max_count": -1},
 	
-	{"name": "block", "display_name": "OAK BLOCK", "category": "block", "cost": 0.5, "scene": preload("res://construction_block.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1}, 
-	{"name": "block_2", "display_name": "ROSEWOOD BLOCK", "category": "block", "cost": 1.0, "scene": preload("res://construction_block_2.tscn"), "icon": preload("res://assets/foto/wbrob02forUI.png"), "max_count": -1}, 
+	{"name": "block", "display_name": "OAK BLOCK", "category": "block", "cost": 0.5, "scene": preload("res://scenes/construction_block.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1}, 
+	{"name": "block_2", "display_name": "ROSEWOOD BLOCK", "category": "block", "cost": 1.0, "scene": preload("res://scenes/construction_block_2.tscn"), "icon": preload("res://assets/foto/wbrob02forUI.png"), "max_count": -1}, 
 	
-	{"name": "gun", "display_name": "PISTOL", "category": "gun", "cost": 2, "scene": preload("res://gun.tscn"), "icon": preload("res://assets/foto/gun01forUI.png"), "max_count": -1},
-	{"name": "spear", "category": "gun", "cost": 7, "scene": preload("res://spear.tscn"), "icon": preload("res://assets/foto/wbspearforUI.png"), "max_count": -1 }, 
-	{"name": "shotgun", "display_name": "SG", "category": "gun", "cost": 10, "scene": preload("res://shotgun.tscn"), "icon": preload("res://assets/foto/wbgun02forUI.png"), "max_count": -1},
-	{"name": "shotgun_triple", "display_name": "SG TRIPLE", "category": "gun", "cost": 15, "scene": preload("res://shotgun_triple.tscn"), "icon": preload("res://assets/foto/wbgun02-2forUI.png"), "max_count": -1},
-	{"name": "machine_gun_mini", "display_name": "MG 1", "category": "gun", "cost": 6, "scene": preload("res://machine_gun_mini.tscn"), "icon": preload("res://assets/foto/wbgun03-2forUI.png"), "max_count": -1},
-	{"name": "machine_gun", "display_name": "MG 2", "category": "gun", "cost": 9, "scene": preload("res://machine_gun.tscn"), "icon": preload("res://assets/foto/wbgun03forUI.png"), "max_count": -1},
-	{"name": "machine_gun_heavy", "display_name": "MG 3", "category": "gun", "cost": 12, "scene": preload("res://machine_gun_heavy.tscn"), "icon": preload("res://assets/foto/wbgun03-3forUI.png"), "max_count": -1},
-	{"name": "semi_auto_gun", "display_name": "SEMI", "category": "gun", "cost": 4, "scene": preload("res://semi_auto_gun.tscn"), "icon": preload("res://assets/foto/wbgun04forUI.png"), "max_count": -1},
-	{"name": "sniper", "category": "gun", "cost": 30, "scene": preload("res://sniper.tscn"), "icon": preload("res://assets/foto/wbsniperforUI.png"), "max_count": -1}, 
+	{"name": "gun", "display_name": "PISTOL", "category": "gun", "cost": 2, "scene": preload("res://scenes/guns/gun.tscn"), "icon": preload("res://assets/foto/gun01forUI.png"), "max_count": -1},
+	{"name": "spear", "category": "gun", "cost": 7, "scene": preload("res://scenes/guns/spear.tscn"), "icon": preload("res://assets/foto/wbspearforUI.png"), "max_count": -1 }, 
+	{"name": "shotgun", "display_name": "SG", "category": "gun", "cost": 10, "scene": preload("res://scenes/guns/shotgun.tscn"), "icon": preload("res://assets/foto/wbgun02forUI.png"), "max_count": -1},
+	{"name": "shotgun_triple", "display_name": "SG TRIPLE", "category": "gun", "cost": 15, "scene": preload("res://scenes/guns/shotgun_triple.tscn"), "icon": preload("res://assets/foto/wbgun02-2forUI.png"), "max_count": -1},
+	{"name": "machine_gun_mini", "display_name": "MG 1", "category": "gun", "cost": 6, "scene": preload("res://scenes/guns/machine_gun_mini.tscn"), "icon": preload("res://assets/foto/wbgun03-2forUI.png"), "max_count": -1},
+	{"name": "machine_gun", "display_name": "MG 2", "category": "gun", "cost": 9, "scene": preload("res://scenes/guns/machine_gun.tscn"), "icon": preload("res://assets/foto/wbgun03forUI.png"), "max_count": -1},
+	{"name": "machine_gun_heavy", "display_name": "MG 3", "category": "gun", "cost": 12, "scene": preload("res://scenes/guns/machine_gun_heavy.tscn"), "icon": preload("res://assets/foto/wbgun03-3forUI.png"), "max_count": -1},
+	{"name": "semi_auto_gun", "display_name": "SEMI", "category": "gun", "cost": 4, "scene": preload("res://scenes/guns/semi_auto_gun.tscn"), "icon": preload("res://assets/foto/wbgun04forUI.png"), "max_count": -1},
+	{"name": "sniper", "category": "gun", "cost": 30, "scene": preload("res://scenes/guns/sniper.tscn"), "icon": preload("res://assets/foto/wbsniperforUI.png"), "max_count": -1}, 
 	
 	
-	{"name": "shield_block", "display_name": "OAK SHIELD", "category": "shield", "cost": 10, "scene": preload("res://shield_unit.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1},
-	{"name": "shield_block_dark", "display_name": "DARK OAK SHIELD", "category": "shield", "cost": 20, "scene": preload("res://shield_unit_dark.tscn"), "icon": preload("res://assets/foto/wbrob02forUI.png"), "max_count": -1},
+	{"name": "shield_block", "display_name": "OAK SHIELD", "category": "shield", "cost": 10, "scene": preload("res://scenes/shield_unit.tscn"), "icon": preload("res://assets/foto/wb023forUI.png"), "max_count": -1},
+	{"name": "shield_block_dark", "display_name": "DARK OAK SHIELD", "category": "shield", "cost": 20, "scene": preload("res://scenes/shield_unit_dark.tscn"), "icon": preload("res://assets/foto/wbrob02forUI.png"), "max_count": -1},
 	
 	#=====================================ศัตรู========================================
 	#=====================================ศัตรู========================================
 	
-	{"name": "lotcher", "category": "enemy_character", "cost": 5, "scene": preload("res://lotcher.tscn"), "icon": preload("res://assets/foto/loter2.png"), "max_count": -1},
+	{"name": "lotcher", "category": "enemy_character", "cost": 5, "scene": preload("res://scenes/characters/lotcher.tscn"), "icon": preload("res://assets/foto/loter2.png"), "max_count": -1},
 	
-	{"name": "block_lot_1", "category": "enemy_block", "cost": 0.5, "scene": preload("res://construction_block_lot_1.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
-	{"name": "block_lot_2", "category": "enemy_block", "cost": 1.0, "scene": preload("res://construction_block_lot_2.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
+	{"name": "block_lot_1", "category": "enemy_block", "cost": 0.5, "scene": preload("res://scenes/construction_block_lot_1.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
+	{"name": "block_lot_2", "category": "enemy_block", "cost": 1.0, "scene": preload("res://scenes/construction_block_lot_2.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
 	
-	{"name": "gun_lot", "category": "enemy_gun", "cost": 2, "scene": preload("res://gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124955.png"), "max_range": 98.0 , "max_count": -1},
-	{"name": "sniper_lot", "category": "enemy_gun", "cost": 30, "scene": preload("res://sniper_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 125007.png"), "max_range": 256.0 , "max_count": -1},
-	{"name": "shotgun_lot", "category": "enemy_gun", "cost": 10, "scene": preload("res://shotgun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-31 172132.png"), "max_range": 72.0 , "max_count": -1},
-	{"name": "shotgun_triple_lot", "category": "enemy_gun", "cost": 15, "scene": preload("res://shotgun_triple_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-01 131725.png"), "max_range": 98.0 , "max_count": -1},
-	{"name": "spear_lot", "category": "enemy_gun", "cost": 7, "scene": preload("res://spear_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-01 140147.png"), "max_range": 128.0 , "max_count": -1 }, 
-	{"name": "machine_gun_mini_lot", "category": "enemy_gun", "cost": 6, "scene": preload("res://machine_gun_mini_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 153810.png"), "max_range": 128.0 , "max_count": -1},
-	{"name": "machine_gun_lot", "category": "enemy_gun", "cost": 9, "scene": preload("res://machine_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 121249.png"), "max_range": 128.0 , "max_count": -1},
-	{"name": "machine_gun_heavy_lot", "category": "enemy_gun", "cost": 12, "scene": preload("res://machine_gun_heavy_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 120126.png"), "max_range": 128.0 , "max_count": -1},
-	{"name": "semi_auto_gun_lot", "category": "enemy_gun", "cost": 4, "scene": preload("res://semi_auto_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 122335.png"), "max_range": 98.0 , "max_count": -1},
+	{"name": "gun_lot", "category": "enemy_gun", "cost": 2, "scene": preload("res://scenes/guns/gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124955.png"), "max_range": 98.0 , "max_count": -1},
+	{"name": "sniper_lot", "category": "enemy_gun", "cost": 30, "scene": preload("res://scenes/guns/sniper_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 125007.png"), "max_range": 256.0 , "max_count": -1},
+	{"name": "shotgun_lot", "category": "enemy_gun", "cost": 10, "scene": preload("res://scenes/guns/shotgun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-31 172132.png"), "max_range": 72.0 , "max_count": -1},
+	{"name": "shotgun_triple_lot", "category": "enemy_gun", "cost": 15, "scene": preload("res://scenes/guns/shotgun_triple_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-01 131725.png"), "max_range": 98.0 , "max_count": -1},
+	{"name": "spear_lot", "category": "enemy_gun", "cost": 7, "scene": preload("res://scenes/guns/spear_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-01 140147.png"), "max_range": 128.0 , "max_count": -1 }, 
+	{"name": "machine_gun_mini_lot", "category": "enemy_gun", "cost": 6, "scene": preload("res://scenes/guns/machine_gun_mini_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 153810.png"), "max_range": 128.0 , "max_count": -1},
+	{"name": "machine_gun_lot", "category": "enemy_gun", "cost": 9, "scene": preload("res://scenes/guns/machine_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-03 121249.png"), "max_range": 128.0 , "max_count": -1},
+	{"name": "machine_gun_heavy_lot", "category": "enemy_gun", "cost": 12, "scene": preload("res://scenes/guns/machine_gun_heavy_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 120126.png"), "max_range": 128.0 , "max_count": -1},
+	{"name": "semi_auto_gun_lot", "category": "enemy_gun", "cost": 4, "scene": preload("res://scenes/guns/semi_auto_gun_lot.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-04-04 122335.png"), "max_range": 98.0 , "max_count": -1},
 	
 	
-	{"name": "shield_block_lot_1", "category": "enemy_shield", "cost": 10, "scene": preload("res://shield_block_lot_1.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
-	{"name": "shield_block_lot_2", "category": "enemy_shield", "cost": 20, "scene": preload("res://shield_block_lot_2.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
+	{"name": "shield_block_lot_1", "category": "enemy_shield", "cost": 10, "scene": preload("res://scenes/shield_block_lot_1.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
+	{"name": "shield_block_lot_2", "category": "enemy_shield", "cost": 20, "scene": preload("res://scenes/shield_block_lot_2.tscn"), "icon": preload("res://assets/foto/สกรีนช็อต 2026-03-30 124945.png"), "max_count": -1},
 	
 	]
 
@@ -4066,7 +4066,7 @@ func save_level_scene():
 		
 		# ถ้าเป็นโรงงาน ให้ปั๊มเป็น Dev_SavedLevel
 		if save_path == "" or "main" in s_name or "theme" in s_name or "factory" in s_name:
-			save_path = "res://Dev_SavedLevel.tscn"
+			save_path = "res://scenes/Dev_SavedLevel.tscn"
 			
 		var save_err = ResourceSaver.save(packed_scene, save_path)
 		
@@ -4459,7 +4459,7 @@ func _on_btn_restart_pressed():
 	Global.next_scene_path = current_scene_path
 	
 	# 2. ตั้งค่า Path ของหน้าโหลด (ถ้าลูกพี่เก็บไว้โฟลเดอร์อื่น อย่าลืมแก้ให้ตรงนะครับ)
-	var loading_screen_path = "res://loading_screen.tscn"
+	var loading_screen_path = "res://scenes/loading_screen.tscn"
 	
 	if ResourceLoader.exists(loading_screen_path):
 		get_tree().change_scene_to_file(loading_screen_path)
@@ -4501,7 +4501,7 @@ func _on_btn_next_level_pressed():
 	Global.next_scene_path = next_level_scene
 	
 	# 2. ตั้งค่า Path ของหน้าโหลด (ถ้าลูกพี่เซฟหน้าโหลดไว้ที่อื่น อย่าลืมแก้ตรงนี้นะครับ)
-	var loading_screen_path = "res://loading_screen.tscn"
+	var loading_screen_path = "res://scenes/loading_screen.tscn"
 	
 	if ResourceLoader.exists(loading_screen_path):
 		get_tree().change_scene_to_file(loading_screen_path)

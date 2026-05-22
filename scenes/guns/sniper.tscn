@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://6ibav5ob2svp"]
+
+[ext_resource type="Script" uid="uid://bmtbwcq4btgob" path="res://scripts/sniper.gd" id="1_okkp5"]
+[ext_resource type="Texture2D" uid="uid://ds4xhll4xwdro" path="res://assets/foto/wbT023-export.png" id="2_okkp5"]
+[ext_resource type="ArrayMesh" uid="uid://cfhf010f5nv58" path="res://assets/model/wbgun01-2forModel.obj" id="2_pyhkq"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_okkp5"]
+friction = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pyhkq"]
+resource_local_to_scene = true
+albedo_color = Color(1, 0.9624919, 0.8769623, 1)
+albedo_texture = ExtResource("2_okkp5")
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r8j6d"]
+size = Vector3(1, 4.5, 0.5)
+
+[node name="sniper" type="RigidBody3D" unique_id=1173581073]
+transform = Transform3D(1.9106855e-15, -4.371139e-08, 1, -1, -4.371139e-08, 0, 4.371139e-08, -1, -4.371139e-08, 0, 0, 0)
+mass = 1.5
+physics_material_override = SubResource("PhysicsMaterial_okkp5")
+freeze = true
+continuous_cd = true
+script = ExtResource("1_okkp5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=795993552]
+transform = Transform3D(16.000002, 0, 0, 0, 16, 0, 0, 0, 16, 0, 0, 0)
+mesh = ExtResource("2_pyhkq")
+surface_material_override/0 = SubResource("StandardMaterial3D_pyhkq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1054580000]
+shape = SubResource("BoxShape3D_r8j6d")

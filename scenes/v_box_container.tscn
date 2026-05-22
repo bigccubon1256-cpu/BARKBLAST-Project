@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://olw3bjp261ga"]
+
+[node name="VBoxContainer" type="VBoxContainer" unique_id=56781412]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2118907839]
+layout_mode = 2
+
+[node name="BtnTabChar" type="Button" parent="HBoxContainer" unique_id=1228890661]
+layout_mode = 2
+
+[node name="BtnTabGun" type="Button" parent="HBoxContainer" unique_id=1553946742]
+layout_mode = 2
+
+[node name="BtnTabBlock" type="Button" parent="HBoxContainer" unique_id=1844551940]
+layout_mode = 2
+
+[node name="BtnTabShield" type="Button" parent="HBoxContainer" unique_id=191876937]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=752140365]
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="UnitList" type="HBoxContainer" parent="ScrollContainer" unique_id=244754359]
+layout_mode = 2
