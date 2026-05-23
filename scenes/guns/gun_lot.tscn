@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://f71yaprdsoef" path="res://scripts/gun_lot.gd" id="1_tn0vs"]
 [ext_resource type="ArrayMesh" uid="uid://b2d8yfrsyribl" path="res://assets/model/wbrot01.obj" id="2_lah32"]
 [ext_resource type="Texture2D" uid="uid://bf4ywd8q04y07" path="res://assets/foto/greenbast01.png" id="3_ryjbs"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="4_5a66o"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="5_5a66o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hqmlh"]
 albedo_color = Color(2.454227, 2.454227, 2.454227, 1)
@@ -24,3 +26,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_hqmlh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=284202598]
 shape = SubResource("BoxShape3D_pmlf4")
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=221993173]
+script = ExtResource("4_5a66o")
+base_material = ExtResource("5_5a66o")

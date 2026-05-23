@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bmh3gn75prij5"]
+
+[ext_resource type="Shader" uid="uid://nwqtdvl7xrvo" path="res://Shader/SilhouetteMaterial.gdshader" id="1_silmat"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_silmat")
+shader_parameter/silhouette_color = Color(1, 1, 1, 1)

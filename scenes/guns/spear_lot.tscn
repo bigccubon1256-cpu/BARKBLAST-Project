@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://cmrkve4nn3v8d" path="res://scripts/spear_lot.gd" id="1_be0kb"]
 [ext_resource type="ArrayMesh" uid="uid://cvg2ix27f57gh" path="res://assets/model/wbspear_lotforEVERYTHING.obj" id="1_mn8l0"]
 [ext_resource type="Texture2D" uid="uid://bf4ywd8q04y07" path="res://assets/foto/greenbast01.png" id="2_be0kb"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="4_qgbsb"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="5_qgbsb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_op6tg"]
 resource_local_to_scene = true
@@ -26,3 +28,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_op6tg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1814698857]
 shape = SubResource("BoxShape3D_75oee")
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=175019885]
+script = ExtResource("4_qgbsb")
+base_material = ExtResource("5_qgbsb")

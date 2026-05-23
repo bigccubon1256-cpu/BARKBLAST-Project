@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bep38rma31fep" path="res://scripts/spear.gd" id="1_f1ptq"]
 [ext_resource type="ArrayMesh" uid="uid://35mefs1kk3wq" path="res://assets/model/wbspearforModel.obj" id="2_3bygj"]
 [ext_resource type="Texture2D" uid="uid://ds4xhll4xwdro" path="res://assets/foto/wbT023-export.png" id="2_m0qcn"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="4_8buam"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="5_8buam"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7pgk8"]
 resource_local_to_scene = true
@@ -26,3 +28,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_7pgk8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1814698857]
 shape = SubResource("BoxShape3D_75oee")
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=1508431415]
+script = ExtResource("4_8buam")
+base_material = ExtResource("5_8buam")

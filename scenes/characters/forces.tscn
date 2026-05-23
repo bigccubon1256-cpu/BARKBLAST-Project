@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://q22dxo7sx13x" path="res://assets/foto/260977_0pixel.png" id="1_le7is"]
 [ext_resource type="Texture2D" uid="uid://ce0fhabwhav3m" path="res://assets/foto/Force-0002-Sheet.png" id="2_bvht3"]
 [ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="3_d47et"]
-[ext_resource type="Material" uid="uid://crs4uy5oe3b4g" path="res://HighlightMaterial.tres" id="4_birnt"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="4_fn0rc"]
 
 [sub_resource type="GDScript" id="GDScript_kll0w"]
 script/source = "extends RigidBody3D
@@ -756,4 +756,4 @@ autoplay = "Force idle"
 
 [node name="HighlightPulsingComponent" type="Node" parent="." unique_id=1611827858]
 script = ExtResource("3_d47et")
-base_material = ExtResource("4_birnt")
+base_material = ExtResource("4_fn0rc")

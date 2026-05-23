@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bq2ogoqnodp01" path="res://scripts/gun.gd" id="1_dk5gl"]
 [ext_resource type="Texture2D" uid="uid://ds4xhll4xwdro" path="res://assets/foto/wbT023-export.png" id="2_dk5gl"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="3_pjg8f"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="4_pjg8f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0biqt"]
 resource_name = "m_bde82f1b-4e00-a68c-9581-3cc9a05eca02"
@@ -61,3 +63,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_kw0bs")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=157362184]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15528798, 0.027)
 shape = SubResource("BoxShape3D_8iju2")
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=629811505]
+script = ExtResource("3_pjg8f")
+base_material = ExtResource("4_pjg8f")

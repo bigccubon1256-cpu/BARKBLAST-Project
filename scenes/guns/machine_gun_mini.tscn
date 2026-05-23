@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cwiv3smmkgrfr" path="res://scripts/machine_gun_mini.gd" id="1_0m4of"]
 [ext_resource type="Texture2D" uid="uid://ds4xhll4xwdro" path="res://assets/foto/wbT023-export.png" id="2_wkbqx"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="3_wvfc0"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="4_wvfc0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0biqt"]
 resource_name = "m_bde82f1b-4e00-a68c-9581-3cc9a05eca02"
@@ -74,3 +76,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j17pe")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=1781772116]
 shape = SubResource("BoxShape3D_obop2")
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=1547606389]
+script = ExtResource("3_wvfc0")
+base_material = ExtResource("4_wvfc0")

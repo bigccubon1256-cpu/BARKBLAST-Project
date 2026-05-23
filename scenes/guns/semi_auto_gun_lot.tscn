@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://c3d44yfoxy8gp" path="res://scripts/semi_auto_gun_lot.gd" id="1_b8u8x"]
 [ext_resource type="ArrayMesh" uid="uid://b2d8yfrsyribl" path="res://assets/model/wbrot01.obj" id="2_rrgcr"]
 [ext_resource type="Texture2D" uid="uid://bf4ywd8q04y07" path="res://assets/foto/greenbast01.png" id="3_4763x"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="4_kn861"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="5_kn861"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xhf8v"]
 resource_local_to_scene = true
@@ -53,3 +55,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_2isfo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2" unique_id=1728483403]
 shape = SubResource("BoxShape3D_gt7hm")
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=1483674335]
+script = ExtResource("4_kn861")
+base_material = ExtResource("5_kn861")

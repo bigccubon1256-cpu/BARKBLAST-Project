@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://dig5gkwsnk74x" path="res://scripts/sniper_lot.gd" id="1_0y5iu"]
 [ext_resource type="ArrayMesh" uid="uid://clp7difnskoom" path="res://assets/model/wbgun01-2_lotforModel.obj" id="2_e6p6y"]
 [ext_resource type="Texture2D" uid="uid://bf4ywd8q04y07" path="res://assets/foto/greenbast01.png" id="3_mpxfo"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="4_6cubi"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="5_6cubi"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e6p6y"]
 friction = 0.5
@@ -27,3 +29,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_2wa5f")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1554825713]
 shape = SubResource("BoxShape3D_e4ts5")
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=1555885842]
+script = ExtResource("4_6cubi")
+base_material = ExtResource("5_6cubi")

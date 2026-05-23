@@ -288,6 +288,7 @@ transform = Transform3D(1, 0, 0, 0, 0.7071067, 0.7071067, 0, -0.7071067, 0.70710
 
 [node name="Camera3D" type="Camera3D" parent="CameraPosition/CameraRotationX/CameraZoomPivot" unique_id=1483350558]
 transform = Transform3D(1, -2.6902917e-08, -1.8330958e-08, 1.8330958e-08, 0.930667, -0.3658679, 2.6902931e-08, 0.3658679, 0.930667, 0, 0, 0)
+cull_mask = 524287
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1994742543]
 

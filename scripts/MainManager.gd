@@ -1004,7 +1004,7 @@ func _process(delta: float) -> void:
 						if hl_sys:
 							# 🎯 กฎเหล็ก: สั่งเปิดไฟ "เฉพาะยูนิตตัวละครฝั่งผู้เล่นเท่านั้น"
 							if is_valid_target and is_player_char(t_name):
-								hl_sys.enable_highlight(Color(1.0, 1.0, 1.0, 0.5), true, 1.5, 0.01) # สั่งกะพริบสีขาว!
+								hl_sys.enable_highlight(Color(1.353, 1.353, 1.353, 1.0), true, 1.5, 0.01) # สั่งกะพริบสีขาว!
 							else:
 								# ถ้าเป็นตัวละครศัตรู หรือตัวที่ใส่ไม่ได้ ให้ดับไฟซะ
 								hl_sys.disable_highlight()
@@ -2512,6 +2512,39 @@ func _on_btn_duplicate_pressed():
 
 
 func _on_btn_combat_shoot_pressed():
+	print("🔴 กด Shoot: สั่งไฮไลท์ศัตรูทั้งหมดกะพริบสีแดง 1 วินาที")
+	
+	# ==========================================
+	# 🌟 สั่งไฮไลท์ศัตรู + ปืนศัตรู ทะลุกำแพง 1 วินาที! (ตอนเล็งยิง)
+	# ==========================================
+	for unit in get_children():
+		if is_instance_valid(unit):
+			var u_name = str(unit.get("unit_name")).to_lower() if unit.get("unit_name") != null else unit.name.to_lower()
+			
+			# 🔍 กรองหาเฉพาะ "ตัวละครฝั่งศัตรู"
+			if is_enemy_char(u_name) and not "block" in u_name:
+				
+				# 🌟 ดักคนตาย
+				if unit.get("is_dead") == true:
+					continue
+				
+				# 🔴 สีแดงเรืองแสง (ใช้ Alpha 0.294 ตามที่ลูกพี่ต้องการ)
+				var red_flash = Color(1.353, 0.0, 0.0, 1.0) 
+				
+				# 1. สั่งให้ Component ของตัวละครศัตรู แฟลชไฟสีแดง (ปรับจังหวะ 3.0 และหรี่สุด 0.1)
+				var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
+				if hl_sys:
+					hl_sys.flash_highlight(1.0, red_flash, 2.0, 0.1)
+					
+				# 🌟 2. สั่งให้ Component ของปืนศัตรู (ถ้ามี) แฟลชไฟตามไปด้วย (ปรับจังหวะ 3.0 และหรี่สุด 0.1)
+				if unit.has_meta("linked_gun"):
+					var gun = unit.get_meta("linked_gun")
+					if is_instance_valid(gun):
+						var gun_hl = gun.get_node_or_null("HighlightPulsingComponent")
+						if gun_hl:
+							gun_hl.flash_highlight(1.0, red_flash, 3.0, 0.1)
+	# ==========================================
+	# ==========================================
 	# 🛡️ [ยามเฝ้าประตู] ถ้ากำลังเล็ง หรือ กำลังยิง ห้ามกดซ้ำเด็ดขาด!
 	if not selected_unit or not is_instance_valid(selected_unit): return
 	
@@ -3405,6 +3438,33 @@ func show_turn_banner(is_player_turn: bool):
 
 	if is_player_turn:
 		turn_banner_label.text = "YOUR TURN"
+
+		# ==========================================
+		# 🌟 [จุดที่แทรกโค้ด!] สั่งไฮไลท์ยูนิตผู้เล่น + ปืน ทะลุกำแพง 1 วินาที!
+		# ==========================================
+		# ==========================================
+		# 🔵 สั่งไฮไลท์ "ฝั่งผู้เล่น" ทะลุกำแพง 1 วินาที!
+		# ==========================================
+		var blue_flash = Color(0.0, 1.353, 1.353, 1.0) # สีฟ้า
+		
+		for unit in get_children():
+			if is_instance_valid(unit):
+				var u_name = str(unit.get("unit_name")).to_lower() if unit.get("unit_name") != null else unit.name.to_lower()
+				
+				if is_player_char(u_name) and not "block" in u_name:
+					if unit.get("is_dead") == true: continue
+					
+					# 1. เปิดไฟตัวละครเรา
+					var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
+					if hl_sys: hl_sys.flash_highlight(1.0, blue_flash, 2.0, 0.1)
+						
+					# 2. เปิดไฟปืนของเรา (ถ้ามี)
+					if unit.has_meta("linked_gun"):
+						var gun = unit.get_meta("linked_gun")
+						if is_instance_valid(gun):
+							var gun_hl = gun.get_node_or_null("HighlightPulsingComponent")
+							if gun_hl: gun_hl.flash_highlight(1.0, blue_flash, 3.0, 0.1)
+		# ==========================================
 
 		# เริ่ม: ซ้าย + โปร่งใส
 		turn_banner_label.position = Vector2(off_left, center_y - turn_banner_label.size.y / 2.0)
