@@ -3,6 +3,7 @@ extends CanvasLayer
 var mouse_sprite: Sprite2D
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 128
 	mouse_sprite = Sprite2D.new()
 	add_child(mouse_sprite)
@@ -21,13 +22,16 @@ func _ready() -> void:
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
+	var viewport_rect = get_viewport().get_visible_rect()
 	var target_pos = get_viewport().get_mouse_position()
 	
-	# 4. [แก้กระตุก/หน่วง] 
-	# เลข 20.0 คือความนุ่ม (ยิ่งน้อยยิ่งหน่วง ยิ่งมากยิ่งไว)
-	# ถ้าอยากให้เมาส์ "ติดมือ" เป๊ะๆ เลย ให้เปลี่ยน 20.0 เป็น 60.0 หรือ 100.0 ครับ
-	mouse_sprite.global_position = mouse_sprite.global_position.lerp(target_pos, 40.0 * delta)
+	# จำกัดตำแหน่งเมาส์ไม่ให้หลุดขอบหน้าจอเด็ดขาด (แก้ปัญหาเมาส์ปลิวหาย)
+	target_pos.x = clamp(target_pos.x, 0.0, viewport_rect.size.x)
+	target_pos.y = clamp(target_pos.y, 0.0, viewport_rect.size.y)
+	
+	# สแนปตรงตามการเคลื่อนไหวทันที (Instant Snap) ป้องกันอาการหน่วง สั่น หรือกระตุก
+	mouse_sprite.global_position = target_pos
 	
 	# ส่วนเสริม: เอฟเฟกต์สี (ลบทิ้งได้ถ้าไม่ชอบครับ)
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
@@ -36,3 +40,4 @@ func _physics_process(delta: float) -> void:
 	else:
 		mouse_sprite.modulate = Color.WHITE
 		mouse_sprite.scale = mouse_sprite.scale.lerp(Vector2(0.3, 0.3), 0.2)
+

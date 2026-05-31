@@ -106,13 +106,21 @@ func enable_highlight(custom_color: Color = Color.WHITE,
 		blink_speed: float = 1.0,
 		min_alpha: float = 0.2) -> void:
 
+	var color_changed = (_hl_color != custom_color)
+	var speed_changed = (_hl_speed != blink_speed)
+	var min_a_changed = (_hl_min_a != min_alpha)
+
 	_hl_color   = custom_color
 	_is_blinking = start_blink
 	_hl_speed   = blink_speed
 	_hl_min_a   = min_alpha
 	_flash_dur  = 0.0
 	_flash_t    = 0.0
-	_t          = 0.0
+	
+	# รีเซ็ตอนิเมชันคลื่นเฉพาะเมื่อเปิดใช้งานครั้งแรก หรือมีการเปลี่ยนค่าสปีด/สีอย่างมีนัยสำคัญ
+	# ช่วยป้องกันอาการไฟค้างหรือดับลงไปสนิทตอนเมาส์ลากผ่านในทุกๆ เฟรม
+	if not _is_active or color_changed or speed_changed or min_a_changed:
+		_t = 0.0
 
 	_ensure_highlight_system_setup()
 
@@ -179,10 +187,11 @@ func _process(delta: float) -> void:
 			disable_highlight()
 			return
 
-	# Pulse animation
+	# Pulse/Blinking animation (สไตล์ AAA ค่อยๆ สว่างขึ้นและดับลงสมบูรณ์แบบ)
 	if _is_blinking and _inst_mat:
 		_t += delta
-		var s = (sin(_t * _hl_speed * TAU) + 1.0) * 0.5
+		# ใช้ลบโคไซน์ (-cos) เพื่อให้ค่าคลื่นเริ่มจาก 0.0 (ดับสนิท) ขึ้นไปสูงสุด และจบที่ 0.0 (ดับสนิท) เสมอ
+		var s = (-cos(_t * _hl_speed * TAU) + 1.0) * 0.5
 		var a = lerp(_hl_min_a, _hl_color.a, s)
 		_inst_mat.set_shader_parameter("silhouette_color",
 			Color(_hl_color.r, _hl_color.g, _hl_color.b, a))

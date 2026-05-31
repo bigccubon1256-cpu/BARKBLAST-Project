@@ -1004,7 +1004,7 @@ func _process(delta: float) -> void:
 						if hl_sys:
 							# 🎯 กฎเหล็ก: สั่งเปิดไฟ "เฉพาะยูนิตตัวละครฝั่งผู้เล่นเท่านั้น"
 							if is_valid_target and is_player_char(t_name):
-								hl_sys.enable_highlight(Color(1.353, 1.353, 1.353, 1.0), true, 1.5, 0.01) # สั่งกะพริบสีขาว!
+								hl_sys.enable_highlight(Color(1.353, 1.353, 1.353, 1.0), true, 1.25, 0.0) # สั่งกะพริบสีขาวเป็นจังหวะ!
 							else:
 								# ถ้าเป็นตัวละครศัตรู หรือตัวที่ใส่ไม่ได้ ให้ดับไฟซะ
 								hl_sys.disable_highlight()
@@ -1186,6 +1186,97 @@ func _process(delta: float) -> void:
 		# 🌟 หยุดแรงหมุน/แรงเหวี่ยงทั้งหมด ไม่ให้มันดีดเป็นนินจาโก
 		active_combat_unit.angular_velocity = Vector3.ZERO
 		active_combat_unit.linear_velocity = Vector3.ZERO
+		
+		if combat_action_mode == "walk":
+			# ==========================================
+			# 🚶 ระบบเดินด้วยปุ่ม WASD แบบจำกัดรัศมี (เวอร์ชัน 3D Rigidity + Tank Controls)
+			# ==========================================
+			# ปรับขจัดความเพี้ยนทางฟิสิกส์: ล็อกแกน X และ Z ให้ตั้งตรง 100% ไม่เอียง ไม่จมดิน
+			active_combat_unit.rotation.x = 0
+			active_combat_unit.rotation.z = 0
+			active_combat_unit.angular_velocity = Vector3.ZERO
+			active_combat_unit.linear_velocity = Vector3.ZERO
+			
+			# แช่แข็งทางฟิสิกส์ชั่วคราวเพื่อกันแรงชนอื่นดีดตัวลอยหรือหน้าทิ่มดิน
+			if active_combat_unit is RigidBody3D:
+				active_combat_unit.freeze = true
+				
+			# 1. 🔄 ปุ่ม A/D คุมการหมุนหันหน้าซ้ายขวา (Tank controls)
+			var rotate_speed = 1.5 # ความเร็วการหันหน้า (ปรับลดลงจาก 2.5)
+			var rotate_input = int(Input.is_physical_key_pressed(KEY_A)) - int(Input.is_physical_key_pressed(KEY_D))
+			if rotate_input != 0:
+				active_combat_unit.global_rotation.y += rotate_input * rotate_speed * delta
+				
+			# 2. 🚶 ปุ่ม W/S คุมการเดินหน้าถอยหลัง
+			var move_dir = Vector3.ZERO
+			var forward = active_combat_unit.global_transform.basis.z.normalized()
+			
+			if Input.is_physical_key_pressed(KEY_W):
+				move_dir += forward
+			if Input.is_physical_key_pressed(KEY_S):
+				move_dir -= forward
+				
+			if move_dir != Vector3.ZERO:
+				move_dir = move_dir.normalized()
+				var walk_speed = 4.0
+				var proposed_pos = active_combat_unit.global_position + move_dir * walk_speed * delta
+				
+				# ตรวจสอบขอบเขตรัศมี 12.0 เมตรจากจุดเริ่มต้น
+				var start_pos = active_combat_unit.global_position
+				if active_combat_unit.has_meta("walk_start_pos"):
+					start_pos = active_combat_unit.get_meta("walk_start_pos")
+					
+				# 🌟 บังคับความสูงคงระดับที่จุดเริ่มเดิน 100% ป้องกันปัญหาทะลุดินหรือลอยฟ้า
+				proposed_pos.y = start_pos.y
+				
+				var max_radius = 12.0
+				var dist = start_pos.distance_to(proposed_pos)
+				if dist > max_radius:
+					var direction = (proposed_pos - start_pos).normalized()
+					proposed_pos = start_pos + direction * max_radius
+					
+				# 🌟 บังคับให้อยู่ในขอบเขตตารางสร้าง (Team Building Territory) ป้องกันเดินเลยตารางออกนอกแมพ
+				var min_x = build_offset_x - build_boundary_x
+				var max_x = build_offset_x + build_boundary_x
+				var min_z = build_offset_z - build_boundary_z
+				var max_z = build_offset_z + build_boundary_z
+				proposed_pos.x = clamp(proposed_pos.x, min_x, max_x)
+				proposed_pos.z = clamp(proposed_pos.z, min_z, max_z)
+				
+				active_combat_unit.global_position = proposed_pos
+				
+			# อัปเดตตำแหน่งปืนให้ล็อกติดกับตัวละครและหมุนรอบอย่างสมบูรณ์แบบ (อิงจาก local transform ดั้งเดิม ไม่ฝืนแกน)
+			if active_combat_unit.has_meta("walk_local_transform"):
+				var attached_gun = active_combat_unit.get_meta("linked_gun")
+				if is_instance_valid(attached_gun):
+					var local_trans = active_combat_unit.get_meta("walk_local_transform")
+					attached_gun.global_transform = active_combat_unit.global_transform * local_trans
+				
+			# ดักจับการกดปุ่ม SPACE หรือ ENTER เพื่อยืนยันพิกัดการเดิน
+			if Input.is_physical_key_pressed(KEY_SPACE) or Input.is_physical_key_pressed(KEY_ENTER):
+				print("🚶 ยืนยันการเดินด้วยปุ่ม WASD! จบเทิร์น")
+				
+				# 🌟 [จุดสำคัญ!] ต้องสั่งแจ้งเตือนจบเทิร์นก่อนดึงกล้องกลับ/เคลียร์ข้อมูล เพื่อให้มีค่ายูนิตอ้างอิงอยู่จริง
+				if has_method("post_shoot_turn_check"):
+					post_shoot_turn_check(active_combat_unit, true, true)
+				
+				# ปลดล็อกระบบแช่แข็งฟิสิกส์ให้ยูนิต
+				if active_combat_unit is RigidBody3D:
+					active_combat_unit.freeze = false
+				
+				# ทำความสะอาด UI คำแนะนำ
+				var lbl = $HUD.get_node_or_null("WalkInstruction")
+				if lbl: lbl.queue_free()
+				
+				# ปิดระบบเส้นและตาราง
+				if has_node("SnapVisualizer"): $SnapVisualizer.hide()
+				if has_node("GridVisualizer"): $GridVisualizer.hide()
+				toggle_invisible_walls(false)
+				
+				# คืนกล้อง OTS กลับสู่ปกติ
+				cancel_combat_aim(true, "walk")
+					
+			return # ข้ามการเล็งและการยิงทั้งหมด!
 		
 		
 		# 1. รับค่า Input หมุนซ้ายขวา (A/D)
@@ -1651,8 +1742,8 @@ func check_for_unit_selection():
 
 
 func combat_check_selection():
-	# 🛡️ [ยามเฝ้าประตู] ถ้ากำลังเล็ง (ง้างปืน) หรือกระสุนกำลังวิ่ง ห้ามกดเปลี่ยนตัวเด็ดขาด!
-	if is_combat_aiming or is_firing: return
+	# 🛡️ [ยามเฝ้าประตู] ถ้ากำลังเล็ง (ง้างปืน) หรือกระสุนกำลังวิ่ง หรือเลือกตัวละครไว้แล้ว ห้ามกดเปลี่ยนตัวตรงๆ จนกว่าจะยกเลิกก่อน!
+	if is_combat_aiming or is_firing or is_instance_valid(selected_unit): return
 	
 	if dragging_unit or current_state != Turn.PLAYER: return 
 	
@@ -1675,6 +1766,17 @@ func combat_check_selection():
 				
 			if is_locked == true:
 				print("🚫 ตัวละครนี้ติดสถานะ Reload หรือใช้สิทธิ์ยิงไปแล้ว!")
+				
+				# เช็คว่าเป็นสไนเปอร์ที่ติดสถานะรีโหลดหรือไม่
+				var is_sniper = false
+				if result.collider.has_meta("saved_gun_name"):
+					var g_name = str(result.collider.get_meta("saved_gun_name")).to_lower()
+					if "sniper" in g_name:
+						is_sniper = true
+						
+				if is_sniper:
+					show_reload_notification(result.collider)
+					
 				return # ❌ ปล่อยผ่านไปเลย ห้ามดึงกล้องกลับ!
 				
 			# ==========================================
@@ -2531,18 +2633,18 @@ func _on_btn_combat_shoot_pressed():
 				# 🔴 สีแดงเรืองแสง (ใช้ Alpha 0.294 ตามที่ลูกพี่ต้องการ)
 				var red_flash = Color(1.353, 0.0, 0.0, 1.0) 
 				
-				# 1. สั่งให้ Component ของตัวละครศัตรู แฟลชไฟสีแดง (ปรับจังหวะ 3.0 และหรี่สุด 0.1)
+				# 1. สั่งให้ Component ของตัวละครศัตรู แฟลชไฟสีแดง (ปรับจังหวะ 1.25 และหรี่สุด 0.0)
 				var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
 				if hl_sys:
-					hl_sys.flash_highlight(1.0, red_flash, 2.0, 0.1)
+					hl_sys.flash_highlight(1.6, red_flash, 1.25, 0.0)
 					
-				# 🌟 2. สั่งให้ Component ของปืนศัตรู (ถ้ามี) แฟลชไฟตามไปด้วย (ปรับจังหวะ 3.0 และหรี่สุด 0.1)
+				# 🌟 2. สั่งให้ Component ของปืนศัตรู (ถ้ามี) แฟลชไฟตามไปด้วย (ปรับจังหวะ 1.25 และหรี่สุด 0.0)
 				if unit.has_meta("linked_gun"):
 					var gun = unit.get_meta("linked_gun")
 					if is_instance_valid(gun):
 						var gun_hl = gun.get_node_or_null("HighlightPulsingComponent")
 						if gun_hl:
-							gun_hl.flash_highlight(1.0, red_flash, 3.0, 0.1)
+							gun_hl.flash_highlight(1.6, red_flash, 1.25, 0.0)
 	# ==========================================
 	# ==========================================
 	# 🛡️ [ยามเฝ้าประตู] ถ้ากำลังเล็ง หรือ กำลังยิง ห้ามกดซ้ำเด็ดขาด!
@@ -2739,7 +2841,33 @@ func cancel_combat_aim(just_shot: bool = false, fired_gun_name: String = ""):
 			
 		if combat_action_mode == "walk":
 			if has_node("GridVisualizer"): $GridVisualizer.hide()
+			if has_node("SnapVisualizer"): $SnapVisualizer.hide()
 			toggle_invisible_walls(false) 
+			
+			# ทำความสะอาด UI คำแนะนำ
+			var lbl = $HUD.get_node_or_null("WalkInstruction")
+			if lbl: lbl.queue_free()
+			
+			# คืนค่าตำแหน่งและองศาของตัวละครและปืนกลับไปที่จุดเริ่มต้นเดิมหากผู้เล่นกดยกเลิก
+			if not just_shot and is_instance_valid(active_combat_unit):
+				if active_combat_unit.has_meta("walk_char_start_pos"):
+					active_combat_unit.global_position = active_combat_unit.get_meta("walk_char_start_pos")
+				if active_combat_unit.has_meta("walk_char_start_rot"):
+					active_combat_unit.global_rotation = active_combat_unit.get_meta("walk_char_start_rot")
+					active_combat_unit.force_update_transform()
+					
+				if active_combat_unit.has_meta("linked_gun"):
+					var gun = active_combat_unit.get_meta("linked_gun")
+					if is_instance_valid(gun):
+						if active_combat_unit.has_meta("walk_gun_start_pos"):
+							gun.global_position = active_combat_unit.get_meta("walk_gun_start_pos")
+						if active_combat_unit.has_meta("walk_gun_start_rot"):
+							gun.global_rotation = active_combat_unit.get_meta("walk_gun_start_rot")
+							gun.force_update_transform()
+							
+			# ปลดล็อกระบบแช่แข็งฟิสิกส์ให้ยูนิตเมื่อออกจากโหมดเดิน
+			if is_instance_valid(active_combat_unit) and active_combat_unit is RigidBody3D:
+				active_combat_unit.freeze = false 
 			
 		# ==========================================
 		if is_instance_valid(active_combat_unit):
@@ -2857,7 +2985,8 @@ func cancel_combat_aim(just_shot: bool = false, fired_gun_name: String = ""):
 				var height_compensate = pullback_dist * 0.42 
 				cam_rig.move_target.y -= height_compensate
 			
-		post_shoot_turn_check(shooter_unit)
+		if fired_gun_name != "walk":
+			post_shoot_turn_check(shooter_unit)
 		
 	else:
 		# ==========================================
@@ -3407,9 +3536,9 @@ func play_turn_start_sequence(is_player: bool):
 	# 1. รอแบนเนอร์เทิร์นวิ่งผ่านหน้าจอให้เสร็จก่อน (ใช้ await เพื่อรอมันจบ)
 	await show_turn_banner(is_player)
 	
-	# 2. ถ้าเป็นตาผู้เล่น พอแบนเนอร์หายไป ค่อยเฟดปุ่ม End Turn ให้โผล่มา
+	# 2. ถ้าเป็นตาผู้เล่น พอแบนเนอร์หายไป ค่อยเฟดปุ่ม End Turn ให้โผล่มา (เช็คก่อนว่าผู้เล่นไม่ได้แอบกดคลิกเลือกตัวละครไปก่อนแล้ว!)
 	if is_player:
-		if btn_end_turn:
+		if btn_end_turn and not selected_unit and not active_combat_unit:
 			btn_end_turn.modulate.a = 0.0 # เริ่มจากโปร่งใส
 			btn_end_turn.show()
 			
@@ -3454,16 +3583,32 @@ func show_turn_banner(is_player_turn: bool):
 				if is_player_char(u_name) and not "block" in u_name:
 					if unit.get("is_dead") == true: continue
 					
-					# 1. เปิดไฟตัวละครเรา
-					var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
-					if hl_sys: hl_sys.flash_highlight(1.0, blue_flash, 2.0, 0.1)
+					# เช็คว่าเป็นสไนเปอร์ที่กำลังโหลดกระสุน (คูลดาวน์) หรือไม่
+					var is_sniper = false
+					if unit.has_meta("saved_gun_name"):
+						var g_name = str(unit.get_meta("saved_gun_name")).to_lower()
+						if "sniper" in g_name:
+							is_sniper = true
+							
+					var is_reloading = false
+					if is_sniper and unit.has_meta("has_attacked_this_turn"):
+						is_reloading = unit.get_meta("has_attacked_this_turn")
 						
-					# 2. เปิดไฟปืนของเรา (ถ้ามี)
-					if unit.has_meta("linked_gun"):
-						var gun = unit.get_meta("linked_gun")
-						if is_instance_valid(gun):
-							var gun_hl = gun.get_node_or_null("HighlightPulsingComponent")
-							if gun_hl: gun_hl.flash_highlight(1.0, blue_flash, 3.0, 0.1)
+					if is_reloading:
+						# ยูนิตสไนเปอร์กำลังรีโหลด: ให้แจ้งเตือนด้วยไฟสีส้มและตัวหนังสือ RELOADING...
+						show_reload_notification(unit)
+					else:
+						# ตัวละครทั่วไป หรือสไนเปอร์ที่พร้อมยิง: เปิดไฟสีฟ้า
+						# 1. เปิดไฟตัวละครเรา
+						var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
+						if hl_sys: hl_sys.flash_highlight(1.6, blue_flash, 1.25, 0.0)
+							
+						# 2. เปิดไฟปืนของเรา (ถ้ามี)
+						if unit.has_meta("linked_gun"):
+							var gun = unit.get_meta("linked_gun")
+							if is_instance_valid(gun):
+								var gun_hl = gun.get_node_or_null("HighlightPulsingComponent")
+								if gun_hl: gun_hl.flash_highlight(1.6, blue_flash, 1.25, 0.0)
 		# ==========================================
 
 		# เริ่ม: ซ้าย + โปร่งใส
@@ -4316,8 +4461,8 @@ func proceed_to_next_turn():
 		# 1. รอแบนเนอร์วิ่งผ่านหน้าจอให้เสร็จก่อน
 		await show_turn_banner(true)
 		
-		# 2. พอป้ายหายไป ค่อยเฟดปุ่ม End Turn ให้โผล่มาอย่างนุ่มนวล
-		if btn_end_turn:
+		# 2. พอป้ายหายไป ค่อยเฟดปุ่ม End Turn ให้โผล่มาอย่างนุ่มนวล (เช็คก่อนว่าผู้เล่นไม่ได้แอบกดคลิกเลือกตัวละครไปก่อนแล้ว!)
+		if btn_end_turn and not selected_unit and not active_combat_unit:
 			btn_end_turn.modulate.a = 0.0
 			btn_end_turn.show()
 			btn_end_turn.disabled = false # เปิดให้กดได้
@@ -4578,18 +4723,22 @@ func _on_btn_next_level_pressed():
 # ==========================================
 # 🌟 ระบบตรวจสอบหลังยิงเสร็จ (รองรับทั้งนัดเดียวและหลายนัด)
 # ==========================================
-func post_shoot_turn_check(unit: Node3D, is_last_shot: bool = true):
+func post_shoot_turn_check(unit: Node3D, is_last_shot: bool = true, is_walk: bool = false):
 	if is_instance_valid(unit):
 		if is_last_shot:
 			unit.set("has_attacked_this_turn", true)
-			unit.set_meta("needs_reload", true) 
 			
-			# 🌟 [เพิ่มตรงนี้!] ถ้าเป็นสไนเปอร์ ให้ติดป้าย "ต้องพักตาหน้า"
-			if unit.has_meta("saved_gun_name"):
-				var g_name = str(unit.get_meta("saved_gun_name")).to_lower()
-				if "sniper" in g_name:
-					unit.set_meta("sniper_wait_turn", true)
-					print("🎯 Sniper [", unit.name, "] ยิงแล้ว! ติดสถานะรอคูลดาวน์ตาหน้า")
+			if not is_walk:
+				unit.set_meta("needs_reload", true) 
+				
+				# 🌟 [เพิ่มตรงนี้!] ถ้าเป็นสไนเปอร์ ให้ติดป้าย "ต้องพักตาหน้า"
+				if unit.has_meta("saved_gun_name"):
+					var g_name = str(unit.get_meta("saved_gun_name")).to_lower()
+					if "sniper" in g_name:
+						unit.set_meta("sniper_wait_turn", true)
+						print("🎯 Sniper [", unit.name, "] ยิงแล้ว! ติดสถานะรอคูลดาวน์ตาหน้า")
+			else:
+				print("🚶 [WALK CHECK] ยูนิต ", unit.name, " แค่ขยับตัว ไม่ได้ยิงปืน จึงไม่ติดสถานะรอคูลดาวน์สไนเปอร์")
 			
 			current_state = Turn.WAITING_PHYSICS
 			next_turn = Turn.ENEMY
@@ -6219,10 +6368,10 @@ func refresh_blueprint_list():
 				# 4. เสกปุ่มรายชื่อขึ้นมา
 				var btn = Button.new()
 				btn.text = file_name.replace(".tscn", "") # ตัดนามสกุลไฟล์ออกให้ดูสวยๆ
-				btn.custom_minimum_size = Vector2(0, 40) # ตั้งความสูงปุ่มหน่อย จะได้กดง่าย
+				btn.custom_minimum_size = Vector2(0, 64) # ตั้งความสูงปุ่มหน่อย จะได้กดง่ายขึ้นกับขนาดฟอนต์ใหม่
 				
 				# 🌟 เพิ่ม 2 บรรทัดนี้เข้าไปครับ!
-				btn.add_theme_font_size_override("font_size", 16) # บังคับขนาดฟอนต์ (เปลี่ยนเลข 18 เล็กใหญ่ได้ตามชอบเลยครับ)
+				btn.add_theme_font_size_override("font_size", 32) # บังคับขนาดฟอนต์ให้อ่านง่ายและสวยงาม (ขนาด 24)
 				btn.clip_text = true # กันเหนียว เผื่อชื่อยาวเกินไป มันจะได้ไม่ล้นทะลุกรอบปุ่ม
 				
 				# 🌟 ผูกปุ่มนี้เข้ากับฟังก์ชัน เตรียมไว้สำหรับการคลิกเพื่อ "โหลดไปวาง"
@@ -6588,21 +6737,46 @@ func _on_btn_combat_walk_pressed():
 	combat_action_mode = "walk" # 🌟 สับสวิตช์เป็นโหมดเดิน!
 	combat_menu.hide()
 	
+	# 🌟 [จุดสำคัญมาก!] สั่งตั้งตรง (X/Z = 0) และอัปเดตเมทริกซ์ทันทีก่อนจดจำพิกัดปืน ป้องกันปืนเอียงเขชี้ฟ้า
+	active_combat_unit.rotation.x = 0
+	active_combat_unit.rotation.z = 0
+	active_combat_unit.force_update_transform()
+	
 	initial_aim_rotation = active_combat_unit.rotation.y
 	current_aim_offset = 0
 	
-	# บังคับเปิด UI ชาร์จพลัง สำหรับโหมดเดิน!
-	if power_ui: power_ui.start_charging(100)
+	# ซ่อน UI ชาร์จพลังสำหรับโหมดเดิน (เราจะใช้ปุ่ม WASD เคลื่อนที่โดยตรงแทน!)
+	if power_ui:
+		power_ui.hide()
+		power_ui.current_power = 0.0
+		power_ui.is_dragging = false
+		
+	# บันทึกตำแหน่งและองศาของตัวละครและปืน ณ จุดเริ่มเดิน
+	active_combat_unit.set_meta("walk_char_start_pos", active_combat_unit.global_position)
+	active_combat_unit.set_meta("walk_char_start_rot", active_combat_unit.global_rotation)
+	active_combat_unit.set_meta("walk_start_pos", active_combat_unit.global_position)
+	
+	if active_combat_unit is RigidBody3D:
+		active_combat_unit.freeze = true
+		active_combat_unit.linear_velocity = Vector3.ZERO
+		active_combat_unit.angular_velocity = Vector3.ZERO
+		
+	# วาดขอบเขตการเดินรัศมี 12.0 เมตร
+	draw_snap_grid(active_combat_unit.global_position, 12.0)
+	
+	# สร้าง UI แนะนำการใช้งานปุ่ม WASD
+	_create_walk_instruction_ui()
 	
 	# ==========================================
 	# 🌟 [จุดแก้บั๊กปืนฟาดหน้าล้ม!]
 	# ต้องสั่งให้มันจำ "ระยะห่างของปืน" (Offset) เหมือนตอนกดปุ่ม Shoot เป๊ะๆ
-	# ไม่งั้น _process จะไม่รู้ว่าต้องเอาปืนไปโคจรรอบๆ ที่พิกัดไหนครับ
 	# ==========================================
 	if active_combat_unit.has_meta("linked_gun"):
 		var attached_gun = active_combat_unit.get_meta("linked_gun")
 		if is_instance_valid(attached_gun):
 			initial_gun_rotation = attached_gun.global_rotation.y
+			active_combat_unit.set_meta("walk_gun_start_pos", attached_gun.global_position)
+			active_combat_unit.set_meta("walk_gun_start_rot", attached_gun.global_rotation)
 			var local_trans = active_combat_unit.global_transform.affine_inverse() * attached_gun.global_transform
 			active_combat_unit.set_meta("walk_local_transform", local_trans)
 	# ==========================================
@@ -6742,7 +6916,7 @@ func execute_player_walk(unit: Node3D, power: float):
 			
 			print("🚶 เดินเสร็จ! จบเทิร์น")
 			if has_method("post_shoot_turn_check"):
-				post_shoot_turn_check(unit) 
+				post_shoot_turn_check(unit, true, true) 
 	)
 
 
@@ -6786,7 +6960,10 @@ func draw_snap_grid(center_pos: Vector3, radius: float):
 	var final_bound = bound_color * glow
 	var final_grid = grid_line_color * 1.2 # ตารางข้างในไม่ต้องจ้ามาก
 	
-	var fixed_y = 0.0 # ความสูง
+	var fixed_y = center_pos.y
+	if is_instance_valid(active_combat_unit):
+		var aabb = get_unit_global_aabb(active_combat_unit.global_position, active_combat_unit.global_transform.basis, active_combat_unit)
+		fixed_y = active_combat_unit.global_position.y - (aabb.size.y / 2.0) + 0.05 # อยู่ระดับเท้าตัวละครพอดี + กันจมดิน
 	
 	# ---------------------------------------------------------
 	# 1. วาดเส้นตารางภายใน
@@ -6917,3 +7094,154 @@ func _grab_all_nodes_recursive(node: Node, arr: Array):
 	for child in node.get_children():
 		arr.append(child)
 		_grab_all_nodes_recursive(child, arr)
+
+# ==========================================
+# 🌟 ระบบแจ้งเตือนการ Reload สำหรับสไนเปอร์
+# ==========================================
+func show_reload_notification(unit: Node3D):
+	if not is_instance_valid(unit): return
+	
+	# ป้องกันการแสดงผลซ้ำซ้อน โดยการลบของเก่าทิ้งถ้ามี
+	for child in unit.get_children():
+		if child.name == "ReloadingLabel":
+			child.queue_free()
+			
+	# ไฮไลท์ตัวละครเป็นสีส้มสว่างจ้า (Orange)
+	var hl_sys = unit.get_node_or_null("HighlightPulsingComponent")
+	var orange_flash = Color(1.353, 0.5, 0.0, 1.0)
+	if hl_sys:
+		hl_sys.flash_highlight(1.6, orange_flash, 1.25, 0.0)
+		
+	# ไฮไลท์ปืนที่เชื่อมอยู่เป็นสีส้มสว่างจ้าด้วย (ถ้ามี)
+	if unit.has_meta("linked_gun"):
+		var gun = unit.get_meta("linked_gun")
+		if is_instance_valid(gun):
+			var gun_hl = gun.get_node_or_null("HighlightPulsingComponent")
+			if gun_hl:
+				gun_hl.flash_highlight(1.6, orange_flash, 1.25, 0.0)
+				
+	# เสกตัวหนังสือ 3D บอกสถานะ RELOADING...
+	var ReloadingLabelScript = load("res://scripts/ReloadingLabel.gd")
+	if ReloadingLabelScript:
+		var label = Label3D.new()
+		label.name = "ReloadingLabel"
+		label.set_script(ReloadingLabelScript)
+		unit.add_child(label)
+
+# ==========================================
+# 🌟 สร้าง UI คำแนะนำการเดิน WASD
+# ==========================================
+func _create_walk_instruction_ui():
+	var hud = $HUD
+	if not hud: return
+	
+	var inst_lbl = hud.get_node_or_null("WalkInstruction")
+	if not inst_lbl:
+		inst_lbl = Label.new()
+		inst_lbl.name = "WalkInstruction"
+		hud.add_child(inst_lbl)
+		
+	var pixel_font = load("res://assets/Font/Jersey_10/Jersey10-Regular.ttf")
+	if pixel_font:
+		inst_lbl.add_theme_font_override("font", pixel_font)
+	
+	inst_lbl.text = "WASD to Move | SPACE to Confirm Position"
+	inst_lbl.add_theme_font_size_override("font_size", 32)
+	inst_lbl.add_theme_color_override("font_color", Color.WHITE)
+	inst_lbl.add_theme_color_override("font_outline_color", Color.BLACK)
+	inst_lbl.add_theme_constant_override("outline_size", 8)
+	
+	# ปรับให้อยู่ตรงกลางด้านล่างหน้าจอแบบปลอดภัย 100%
+	inst_lbl.horizontal_alignment = 1 # HORIZONTAL_ALIGNMENT_CENTER
+	inst_lbl.vertical_alignment = 1   # VERTICAL_ALIGNMENT_CENTER
+	
+	var viewport_size = get_viewport().get_visible_rect().size
+	inst_lbl.size = Vector2(viewport_size.x, 80)
+	inst_lbl.position = Vector2(0, viewport_size.y - 120)
+
+
+# ==========================================
+# ⏸️ ระบบหยุดเกม และหน้าเมนูตั้งค่า/ออกจากเกม (Game Pause & Settings System)
+# ==========================================
+func _on_btn_stop_pressed():
+	print("⏸️ หยุดเกม!")
+	get_tree().paused = true
+	var pm = get_node_or_null("HUD/PauseMenu")
+	if pm:
+		pm.show()
+
+func _on_pause_resume_pressed():
+	print("▶️ เล่นต่อ!")
+	get_tree().paused = false
+	var pm = get_node_or_null("HUD/PauseMenu")
+	if pm:
+		pm.hide()
+
+func _on_pause_settings_pressed():
+	print("⚙️ เปิดหน้าต่าง Settings!")
+	var pm = get_node_or_null("HUD/PauseMenu")
+	var sm = get_node_or_null("HUD/SettingsMenu")
+	if pm:
+		pm.hide()
+	if sm:
+		sm.show()
+
+func _on_pause_exit_pressed():
+	print("🚪 กลับหน้าเลือกด่าน!")
+	get_tree().paused = false
+	_on_btn_main_menu_pressed()
+
+func _on_settings_close_pressed():
+	print("⬅️ ปิดหน้าต่าง Settings!")
+	var pm = get_node_or_null("HUD/PauseMenu")
+	var sm = get_node_or_null("HUD/SettingsMenu")
+	if sm:
+		sm.hide()
+	if pm:
+		pm.show()
+
+# ==========================================
+# ⌨️ ตัวควบคุมการกดปุ่ม ESC ส่วนกลาง (Global ESC/Cancel Handler)
+# ==========================================
+func handle_esc_press():
+	print("⌨️ กดปุ่ม ESC!")
+	
+	# 1. ถ้าหน้าต่างตั้งค่า SettingsMenu เปิดอยู่ -> ปิดมันแล้วเปิด PauseMenu กลับมา
+	var sm = get_node_or_null("HUD/SettingsMenu")
+	var pm = get_node_or_null("HUD/PauseMenu")
+	if sm and sm.visible:
+		_on_settings_close_pressed()
+		return
+
+	# 2. ถ้าหน้าต่างกรอกชื่อเซฟ BlueprintSaveUI เปิดอยู่ -> ปิดมัน
+	if blueprint_save_ui and blueprint_save_ui.visible:
+		_on_blueprint_cancel_save_pressed()
+		return
+
+	# 3. ถ้าสมุดบันทึกโมเดล BlueprintLibraryUI เปิดอยู่ -> ปิดมัน
+	if blueprint_library_ui and blueprint_library_ui.visible:
+		_on_btn_close_library_pressed()
+		return
+
+	# 4. ถ้าเมนูคลิกขวาบลูปริ้น BlueprintContextMenu เปิดอยู่ -> ปิดมัน
+	if blueprint_context_menu and blueprint_context_menu.visible:
+		blueprint_context_menu.hide()
+		return
+
+	# 5. ถ้าหน้ายืนยันการลบ DeleteConfirmUI เปิดอยู่ -> ปิดมัน (เทียบเท่ากด No)
+	if delete_confirm_ui and delete_confirm_ui.visible:
+		delete_confirm_ui.hide()
+		return
+
+	# 6. ถ้าหน้าต่างเปลี่ยนชื่อยูนิต RenamePopup เปิดอยู่ -> ปิดมัน
+	if rename_popup and rename_popup.visible:
+		rename_popup.hide()
+		return
+
+	# 7. ถ้ากำลังโชว์เมนูหยุดเกม PauseMenu -> ปิดมันแล้วดำเนินเกมต่อ (Resume)
+	if pm and pm.visible:
+		_on_pause_resume_pressed()
+		return
+
+	# 8. ถ้าไม่มีหน้าต่างใดๆ เปิดอยู่เลย -> ทำการหยุดเกม (Pause)
+	_on_btn_stop_pressed()

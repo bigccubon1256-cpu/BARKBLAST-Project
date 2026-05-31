@@ -79,6 +79,11 @@ func _gui_input(event: InputEvent) -> void:
 
 	elif event is InputEventMouseMotion and is_dragging:
 		var diff_y = event.position.y - drag_start_y
-		current_power = max(0.0, diff_y * drag_sensitivity)
+		var thumb_top_pos = -(thumb.size.y / 20.0)
+		var thumb_bottom_pos = power_bar.size.y - (thumb.size.y / 4)
+		var total_travel = (thumb_bottom_pos - thumb_top_pos) * power_bar.scale.y
+		
+		var dynamic_sensitivity = max_power / total_travel
+		current_power = max(0.0, diff_y * dynamic_sensitivity)
 		current_power = clamp(current_power, 0.0, max_power)
 		update_display()

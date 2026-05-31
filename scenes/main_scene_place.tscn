@@ -21,18 +21,32 @@
 [ext_resource type="Texture2D" uid="uid://d1q8xbvatfkk6" path="res://assets/foto/wblot03forUI.png" id="10_djdxu"]
 [ext_resource type="Texture2D" uid="uid://cytd2e8gb27u5" path="res://assets/foto/gun_slider_fill.png" id="11_akibp"]
 [ext_resource type="Texture2D" uid="uid://d04oyp1h5tix5" path="res://assets/foto/gun_slider_bg2.png" id="11_e63ln"]
-[ext_resource type="Texture2D" uid="uid://ga4hlyuvvmw6" path="res://assets/foto/selecber-003.png" id="11_n0ka0"]
 [ext_resource type="Texture2D" uid="uid://chmtg6ll6vvgf" path="res://assets/foto/healthbar_02_front.png" id="11_omahq"]
 [ext_resource type="Texture2D" uid="uid://bk28pvynp3agx" path="res://assets/foto/gun_slider_thumb.png" id="12_0u0al"]
-[ext_resource type="Texture2D" uid="uid://dkqhhfhbmeini" path="res://assets/foto/ButtonUI01.png" id="13_omahq"]
+[ext_resource type="Texture2D" uid="uid://ctu7jl0l17h1g" path="res://assets/foto/paper01-flat.png" id="12_rxjj0"]
+[ext_resource type="Texture2D" uid="uid://bdvaevp4ajxn4" path="res://assets/foto/shootUI.png" id="22_j4qd4"]
 [ext_resource type="Texture2D" uid="uid://dlb1i417r2hss" path="res://assets/foto/UI-Place.png" id="22_n0ka0"]
+[ext_resource type="Texture2D" uid="uid://mx0jmh2gqwvd" path="res://assets/foto/peekUI.png" id="23_0u6oj"]
 [ext_resource type="Texture2D" uid="uid://d2fc87gckly81" path="res://assets/foto/Save_UI.png" id="23_omahq"]
+[ext_resource type="Texture2D" uid="uid://bp54tnr14ftqj" path="res://assets/foto/moveUI.png" id="24_3qr7y"]
 [ext_resource type="Texture2D" uid="uid://cwf00rfupy73o" path="res://assets/foto/X_ui.png" id="24_omahq"]
-[ext_resource type="Texture2D" uid="uid://bnqnn1cxja8ot" path="res://assets/foto/selecber-0002.png" id="25_k4o7o"]
+[ext_resource type="Texture2D" uid="uid://uro4uf1x1m37" path="res://assets/foto/paper03-flat.png" id="29_dn8gl"]
 [ext_resource type="Texture2D" uid="uid://do1jcsv3ndqxv" path="res://assets/foto/SETUP PHASE-ui01.png" id="29_qthju"]
+[ext_resource type="Texture2D" uid="uid://bboansmcxi4kd" path="res://assets/foto/paper03-slim.png" id="30_0u6oj"]
+[ext_resource type="Texture2D" uid="uid://g8djdmbe6uu7" path="res://assets/foto/button_green.png" id="30_abmj5"]
 [ext_resource type="Texture2D" uid="uid://btdts6o8p1x5m" path="res://assets/foto/gamestart-ui01.png" id="30_qthju"]
 [ext_resource type="Texture2D" uid="uid://dil00qrbv5yso" path="res://assets/foto/blue-shade-01.png" id="31_0uwhg"]
+[ext_resource type="Texture2D" uid="uid://dopnsgc6rk8ec" path="res://assets/foto/button_wood-02.png" id="31_3sce4"]
 [ext_resource type="Texture2D" uid="uid://bdeiwi0bej020" path="res://assets/foto/red-shade-01.png" id="32_iobm0"]
+[ext_resource type="Texture2D" uid="uid://ss38ouypa0y0" path="res://assets/foto/paper02.png" id="35_lf5n2"]
+[ext_resource type="Texture2D" uid="uid://ynyoog3jfxdi" path="res://assets/foto/button_red.png" id="36_quj86"]
+[ext_resource type="Texture2D" uid="uid://2su8dlbsx4go" path="res://assets/foto/button_wood-02-down.png" id="41_3sce4"]
+[ext_resource type="Texture2D" uid="uid://b5okd4nyw58g" path="res://assets/foto/button_green-down.png" id="42_lf5n2"]
+[ext_resource type="Script" uid="uid://bw0jwmhpndq8" path="res://scripts/AnimatedButton.gd.gd" id="42_quj86"]
+[ext_resource type="Texture2D" uid="uid://cnbwss6jj6dka" path="res://assets/foto/button_red-down.png" id="43_red_down"]
+[ext_resource type="Script" uid="uid://cdsk5l3sfggf7" path="res://scripts/PauseController.gd" id="pause_controller_script"]
+[ext_resource type="Texture2D" uid="uid://brtpuog6ckroi" path="res://assets/foto/settingUI.png" id="settingUI_tex"]
+[ext_resource type="Texture2D" uid="uid://dswctbumvpiuh" path="res://assets/foto/stopUI.png" id="stopUI_tex"]
 
 [sub_resource type="Environment" id="Environment_rogxy"]
 background_mode = 1
@@ -90,7 +104,7 @@ texture = ExtResource("10_djdxu")
 load_path = "res://.godot/imported/healthbar_02_back.png-6fcd6ba674406b471a5a0c4162e35a5d.ctex"
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n0ka0"]
-texture = ExtResource("11_n0ka0")
+texture = ExtResource("12_rxjj0")
 
 [sub_resource type="ImageTexture" id="ImageTexture_akibp"]
 
@@ -178,9 +192,38 @@ HScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_o642o")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_akibp"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l7cpn"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6tbrj"]
+texture = ExtResource("31_3sce4")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ltbj"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_quj86"]
+texture = ExtResource("41_3sce4")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quj86"]
+bg_color = Color(0, 0, 0, 0.47058824)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y036r"]
+bg_color = Color(0, 0, 0, 0.65882355)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5k878"]
+bg_color = Color(0.5019608, 0.5019608, 0.5019608, 0.23529412)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2f71"]
+bg_color = Color(0, 0, 0, 0.47058824)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0cupr"]
+bg_color = Color(0, 0, 0, 0.65882355)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ovf0"]
+bg_color = Color(0.5019608, 0.5019608, 0.5019608, 0.23529412)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_unoa6"]
+bg_color = Color(0, 0, 0, 0.47058824)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tvhrh"]
+bg_color = Color(0, 0, 0, 0.65882355)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7xh5"]
+bg_color = Color(0.5019608, 0.5019608, 0.5019608, 0.23529412)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rogxy"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -190,20 +233,77 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.8116174, 1.8247963, 1.8247963, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_djdxu"]
-texture = ExtResource("25_k4o7o")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5k878"]
+texture = ExtResource("29_dn8gl")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l7cpn"]
-texture = ExtResource("25_k4o7o")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s2f71"]
+texture = ExtResource("30_abmj5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3sce4"]
+texture = ExtResource("42_lf5n2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0cupr"]
+texture = ExtResource("31_3sce4")
+
+[sub_resource type="Theme" id="Theme_lf5n2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3qr7y"]
+texture = ExtResource("30_0u6oj")
+
+[sub_resource type="Theme" id="Theme_quj86"]
+default_font = ExtResource("8_lj6eb")
+default_font_size = 64
+ItemList/colors/font_color = Color(0.65, 0.65, 0.65, 1)
+ItemList/colors/font_hovered_color = Color(0.95, 0.95, 0.95, 1)
+ItemList/colors/font_hovered_selected_color = Color(1, 1, 1, 1)
+ItemList/colors/font_outline_color = Color(0, 0, 0, 1)
+ItemList/colors/font_selected_color = Color(1, 1, 1, 1)
+ItemList/colors/guide_color = Color(0.7, 0.7, 0.7, 0.25)
+ItemList/colors/scroll_hint_color = Color(0, 0, 0, 1)
+ItemList/constants/h_separation = 4
+ItemList/constants/icon_margin = 4
+ItemList/constants/line_separation = 2
+ItemList/constants/outline_size = 0
+ItemList/constants/v_separation = 4
+ItemList/font_sizes/font_size = 64
+ItemList/fonts/font = ExtResource("8_lj6eb")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6ovf0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p7xh5"]
+texture = ExtResource("36_quj86")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_red_down"]
+texture = ExtResource("43_red_down")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1qaeu"]
-texture = ExtResource("25_k4o7o")
+texture = ExtResource("35_lf5n2")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_unoa6"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8u6aj"]
+texture = ExtResource("30_abmj5")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gv4xv"]
 texture = ExtResource("29_qthju")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0uwhg"]
 texture = ExtResource("30_qthju")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lf5n2"]
+bg_color = Color(0, 0, 0, 0.65882355)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m3b2n"]
+texture = ExtResource("31_3sce4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y036r"]
+texture = ExtResource("41_3sce4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxjj0"]
+texture = ExtResource("31_3sce4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_arfrw"]
+texture = ExtResource("30_abmj5")
 
 [node name="Main Scene Place" type="Node3D" unique_id=2103157186 node_paths=PackedStringArray("game_over_panel", "game_over_label", "btn_next_level", "turn_status_label")]
 script = ExtResource("1_jcp40")
@@ -214,7 +314,6 @@ game_over_label = NodePath("HUD/GameOverPanel/ResultLabel")
 btn_next_level = NodePath("HUD/GameOverPanel/BtnNextLevel")
 return_menu_scene = "uid://duw5jkfqekcwr"
 next_level_scene = "uid://duw5jkfqekcwr"
-first_turn_side = "Enemy"
 turn_status_label = NodePath("HUD/SetupBanner/you go")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=959964239]
@@ -348,36 +447,6 @@ theme_override_fonts/font = ExtResource("8_lj6eb")
 theme_override_font_sizes/font_size = 32
 text = "0/0"
 
-[node name="EnergyBar" type="TextureProgressBar" parent="HUD" unique_id=1162179713]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -306.0
-offset_top = -243.0
-offset_right = -50.0
-offset_bottom = -227.0
-grow_horizontal = 2
-grow_vertical = 0
-scale = Vector2(2.5, 2.5)
-value = 100.0
-nine_patch_stretch = true
-texture_under = ExtResource("7_n0ka0")
-texture_progress = ExtResource("8_xns47")
-
-[node name="EnergyLabel" type="Label" parent="HUD/EnergyBar" unique_id=1746449981]
-layout_mode = 1
-offset_left = -49.6
-offset_right = 19.40001
-offset_bottom = 35.0
-scale = Vector2(0.5, 0.5)
-theme_override_colors/font_color = Color(1.8832343, 1.8832343, 1.8832343, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("8_lj6eb")
-theme_override_font_sizes/font_size = 32
-text = "0.0/0.0"
-
 [node name="EnemyShow" type="Label" parent="HUD" unique_id=46250472]
 anchors_preset = 1
 anchor_left = 1.0
@@ -467,6 +536,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 9.599999
+offset_top = -31.199999
+offset_right = -22.400024
+offset_bottom = 0.80000305
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -478,10 +551,10 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 19.999983
-offset_top = -144.0
-offset_right = 740.0
-offset_bottom = 44.0
+offset_left = 14.399983
+offset_top = -143.20001
+offset_right = 734.39996
+offset_bottom = 44.799988
 grow_vertical = 0
 scale = Vector2(0.7, 0.7)
 mouse_filter = 2
@@ -541,6 +614,42 @@ text = "Eblock"
 layout_mode = 2
 text = "Eshield"
 
+[node name="EnergyBar" type="TextureProgressBar" parent="HUD" unique_id=1162179713]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -312.0
+offset_top = -235.0
+offset_right = -56.0
+offset_bottom = -219.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2.45, 2.45)
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("7_n0ka0")
+texture_progress = ExtResource("8_xns47")
+
+[node name="EnergyLabel" type="Label" parent="HUD/EnergyBar" unique_id=1746449981]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -16.979584
+offset_top = -18.775509
+offset_right = 52.020416
+offset_bottom = 16.224491
+grow_horizontal = 2
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(1.8832343, 1.8832343, 1.8832343, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
+text = "0.0/0.0"
+horizontal_alignment = 1
+
 [node name="BtnEndTurn" type="Button" parent="HUD" unique_id=1351231283]
 anchors_preset = 6
 anchor_left = 1.0
@@ -549,13 +658,17 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -138.0
 offset_top = -40.0
-offset_right = 118.0
-offset_bottom = 56.0
+offset_right = -74.0
+offset_bottom = -8.0
 grow_horizontal = 0
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_l7cpn")
-icon = ExtResource("13_omahq")
+scale = Vector2(2, 2)
+theme_override_styles/normal = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quj86")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_6tbrj")
+script = ExtResource("42_quj86")
 
 [node name="Label" type="Label" parent="HUD/BtnEndTurn" unique_id=540835675]
 layout_mode = 1
@@ -564,16 +677,19 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -108.0
-offset_top = -32.0
-offset_right = 161.0
-offset_bottom = 45.0
+offset_left = -27.500004
+offset_top = -12.000001
+offset_right = 164.5
+offset_bottom = 58.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8, 0.8)
+scale = Vector2(0.3, 0.3)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_constants/shadow_outline_size = 8
-theme_override_font_sizes/font_size = 56
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 64
 text = "ENDTURN"
 
 [node name="BtnStart" type="Button" parent="HUD" unique_id=512985376]
@@ -583,14 +699,18 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -138.0
-offset_top = -90.0
-offset_right = 118.0
-offset_bottom = 6.0
+offset_top = -96.0
+offset_right = -74.0
+offset_bottom = -64.0
 grow_horizontal = 0
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_2ltbj")
-icon = ExtResource("13_omahq")
+scale = Vector2(2, 2)
+theme_override_styles/normal = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quj86")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_6tbrj")
+script = ExtResource("42_quj86")
 
 [node name="Label" type="Label" parent="HUD/BtnStart" unique_id=1361907178]
 layout_mode = 1
@@ -599,15 +719,19 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -24.0
-offset_top = -11.5
-offset_right = 24.0
-offset_bottom = 11.5
+offset_left = -22.500004
+offset_top = -13.500002
+offset_right = 107.5
+offset_bottom = 56.5
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.35, 0.35)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_constants/shadow_outline_size = 8
-theme_override_font_sizes/font_size = 56
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 64
 text = "START"
 
 [node name="BtnSaveLevel" type="Button" parent="HUD" unique_id=1135238959]
@@ -710,44 +834,54 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -389.99988
-offset_top = -42.99997
-offset_right = -349.99988
-offset_bottom = -2.9999695
+offset_left = -390.0
+offset_top = -90.0
+offset_right = -350.0
+offset_bottom = -50.0
 grow_horizontal = 0
 grow_vertical = 2
-scale = Vector2(2.147874, 2.147874)
 
 [node name="BtnCombatShoot" type="Button" parent="HUD/CombatMenu" unique_id=1804905582]
 layout_mode = 0
-offset_left = -3.259067
-offset_right = 114.74094
-offset_bottom = 52.999996
-scale = Vector2(0.3028628, 0.3028628)
+offset_left = 8.999981
+offset_top = -15.999996
+offset_right = 72.999985
+offset_bottom = 48.000004
+rotation = 0.7853982
 theme_override_font_sizes/font_size = 32
-text = "SHOOT"
+theme_override_styles/normal = SubResource("StyleBoxFlat_quj86")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_y036r")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5k878")
+icon = ExtResource("22_j4qd4")
 
 [node name="BtnCombatSnap" type="Button" parent="HUD/CombatMenu" unique_id=2141541480]
 layout_mode = 0
-offset_left = -2.3279133
-offset_top = 17.226332
-offset_right = 95.67209
-offset_bottom = 70.22633
-scale = Vector2(0.3028628, 0.3028628)
+offset_left = 56.000034
+offset_top = 31.000011
+offset_right = 120.00003
+offset_bottom = 95.000015
+rotation = 0.7853982
 theme_override_font_sizes/font_size = 32
-text = "PEEK"
+theme_override_styles/normal = SubResource("StyleBoxFlat_s2f71")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0cupr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6ovf0")
+icon = ExtResource("23_0u6oj")
 
 [node name="BtnCombatWalk" type="Button" parent="HUD/CombatMenu" unique_id=567641619]
 layout_mode = 0
-offset_left = -0.46560287
-offset_top = 33.98709
-offset_right = 99.53439
-offset_bottom = 86.98709
-scale = Vector2(0.3028628, 0.3028628)
+offset_left = 9.0000515
+offset_top = 78.000015
+offset_right = 73.00005
+offset_bottom = 142.00002
+rotation = 0.7853982
 theme_override_font_sizes/font_size = 32
-text = "MOVE"
+theme_override_styles/normal = SubResource("StyleBoxFlat_unoa6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tvhrh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_p7xh5")
+icon = ExtResource("24_3qr7y")
 
 [node name="ShootingPowerUI" type="Control" parent="HUD" unique_id=190700143]
+visible = false
 layout_mode = 3
 anchors_preset = 6
 anchor_left = 1.0
@@ -756,16 +890,26 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -445.0
 offset_top = -256.0
-offset_right = -445.0
-offset_bottom = -256.0
+offset_right = -317.0
+offset_bottom = 256.0
 grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("9_siewb")
 
 [node name="PowerBar" type="TextureProgressBar" parent="HUD/ShootingPowerUI" unique_id=333756142]
-layout_mode = 0
-offset_right = 1.0
-offset_bottom = 1.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -47.0
+offset_top = -264.0
+offset_right = 17.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
 mouse_filter = 2
 fill_mode = 2
 texture_under = ExtResource("11_akibp")
@@ -780,11 +924,14 @@ scale = Vector2(1.016199, 1.016199)
 texture = ExtResource("12_0u0al")
 
 [node name="PowerLabel" type="Label" parent="HUD/ShootingPowerUI" unique_id=560791098]
-layout_mode = 0
-offset_left = 16.999998
-offset_top = 402.0
-offset_right = 57.0
-offset_bottom = 425.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 40.0
+offset_bottom = 11.5
+grow_vertical = 2
 scale = Vector2(0.7485006, 0.7485006)
 theme_override_colors/font_color = Color(1, 1, 1, 0)
 text = "0/0"
@@ -855,60 +1002,132 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -211.0
-offset_top = -159.99998
-offset_right = 189.0
-offset_bottom = 40.0
+offset_left = -256.0
+offset_top = -185.0
+offset_right = 256.0
+offset_bottom = 7.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5k878")
 
 [node name="RenameInput" type="LineEdit" parent="HUD/RenamePopup" unique_id=850897662]
-layout_mode = 0
-offset_left = 53.0
-offset_top = 47.99998
-offset_right = 353.0
-offset_bottom = 78.999985
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -222.0
+offset_top = 32.0
+offset_right = 224.0
+offset_bottom = 83.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
 text = "..."
 
 [node name="BtnRenameConfirm" type="Button" parent="HUD/RenamePopup" unique_id=355667429]
 layout_mode = 0
-offset_left = 52.0
-offset_top = 111.999985
-offset_right = 117.0
-offset_bottom = 153.99998
+offset_left = 45.0
+offset_top = 91.999985
+offset_right = 173.0
+offset_bottom = 155.99998
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_s2f71")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3sce4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_s2f71")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_s2f71")
+theme_override_styles/focus = SubResource("StyleBoxTexture_s2f71")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/RenamePopup/BtnRenameConfirm" unique_id=1927386387]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.00001
+offset_top = -26.000006
+offset_right = 35.999985
+offset_bottom = 19.999992
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 42
 text = "SAVE"
 
 [node name="BtnRenameCancel" type="Button" parent="HUD/RenamePopup" unique_id=516596559]
 layout_mode = 0
-offset_left = 252.0
-offset_top = 111.999985
-offset_right = 352.0
-offset_bottom = 153.99998
+offset_left = 340.0
+offset_top = 91.999985
+offset_right = 468.0
+offset_bottom = 155.99998
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_0cupr")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quj86")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0cupr")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_0cupr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_0cupr")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/RenamePopup/BtnRenameCancel" unique_id=30467026]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.00001
+offset_top = -26.000006
+offset_right = 54.999985
+offset_bottom = 19.999992
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 42
 text = "CANCEL"
 
 [node name="BtnOpenLibrary" type="Button" parent="HUD" unique_id=1291799855]
-offset_left = 7.0
-offset_top = 131.0
-offset_right = 47.0
-offset_bottom = 171.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -62.0
+offset_top = -438.0
+offset_right = -22.0
+offset_bottom = -398.0
+grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(1.2, 1.2)
 icon = ExtResource("23_omahq")
 
 [node name="BlueprintLibraryUI" type="Panel" parent="HUD" unique_id=1402689427]
-offset_left = 7.0
-offset_top = 182.0
-offset_right = 207.0
-offset_bottom = 582.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -388.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = SubResource("Theme_lf5n2")
+theme_override_styles/panel = SubResource("StyleBoxTexture_3qr7y")
 
 [node name="BtnCloseLibrary" type="Button" parent="HUD/BlueprintLibraryUI" unique_id=1294962776]
 layout_mode = 0
-offset_left = 179.0
-offset_top = -20.000006
-offset_right = 219.0
-offset_bottom = 19.999994
-scale = Vector2(0.5, 0.5)
+offset_left = 202.0
+offset_top = -46.000008
+offset_right = 242.0
+offset_bottom = -6.0000076
 icon = ExtResource("24_omahq")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HUD/BlueprintLibraryUI" unique_id=1475193366]
@@ -923,33 +1142,92 @@ scroll_hint_mode = 3
 [node name="BlueprintList" type="VBoxContainer" parent="HUD/BlueprintLibraryUI/ScrollContainer" unique_id=20792984]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = SubResource("Theme_quj86")
 
 [node name="BlueprintContextMenu" type="Panel" parent="HUD" unique_id=1296615793]
-offset_left = -335.0
+offset_left = -374.0
 offset_top = 312.0
-offset_right = -255.0
-offset_bottom = 376.0
+offset_right = -278.0
+offset_bottom = 387.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_6ovf0")
 
 [node name="BtnMenuRename" type="Button" parent="HUD/BlueprintContextMenu" unique_id=132987516]
 layout_mode = 0
-offset_right = 80.0
-offset_bottom = 31.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_djdxu")
-text = "Rename"
+offset_top = -5.0
+offset_right = 64.0
+offset_bottom = 27.0
+scale = Vector2(1.5, 1.5)
+theme_override_styles/normal = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quj86")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_6tbrj")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/BlueprintContextMenu/BtnMenuRename" unique_id=1983335796]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.33333
+offset_top = -12.666666
+offset_right = 56.66667
+offset_bottom = 22.333336
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.65, 0.65)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
+text = "RENAME"
 
 [node name="BtnMenuDelete" type="Button" parent="HUD/BlueprintContextMenu" unique_id=57584058]
 layout_mode = 0
-offset_top = 33.0
-offset_right = 80.0
-offset_bottom = 64.0
-theme_override_styles/normal = SubResource("StyleBoxTexture_l7cpn")
-text = "Delete"
+offset_top = 37.0
+offset_right = 64.0
+offset_bottom = 69.0
+scale = Vector2(1.5, 1.5)
+theme_override_styles/normal = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_red_down")
+theme_override_styles/hover = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/focus = SubResource("StyleBoxTexture_p7xh5")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/BlueprintContextMenu/BtnMenuDelete" unique_id=1858954778]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.666666
+offset_top = -14.666667
+offset_right = 45.333336
+offset_bottom = 20.333332
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
+text = "DELETE"
 
 [node name="DeleteConfirmUI" type="ColorRect" parent="HUD" unique_id=971165638]
-offset_left = -251.0
-offset_top = 312.0
-offset_right = -51.0
-offset_bottom = 432.0
+offset_left = -271.0
+offset_top = 314.0
+offset_right = -15.0
+offset_bottom = 506.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
@@ -958,6 +1236,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -367.0
+offset_top = -116.0
+offset_right = -367.0
+offset_bottom = -116.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -968,36 +1250,105 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -78.0
-offset_top = 19.0
-offset_right = 79.0
-offset_bottom = 53.0
+offset_left = -116.0
+offset_top = 22.0
+offset_right = 117.0
+offset_bottom = 74.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 48
 text = "Are you sure?"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/DeleteConfirmUI/Panel" unique_id=487618815]
-layout_mode = 0
-offset_left = 46.0
-offset_top = 59.0
-offset_right = 149.0
-offset_bottom = 99.0
+[node name="HBoxContainer" type="Panel" parent="HUD/DeleteConfirmUI/Panel" unique_id=2014886860]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -51.0
+offset_top = -62.0
+offset_right = 52.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_unoa6")
 
 [node name="BtnYes" type="Button" parent="HUD/DeleteConfirmUI/Panel/HBoxContainer" unique_id=614934499]
-layout_mode = 2
-text = "  Yes  "
+layout_mode = 0
+offset_left = -54.0
+offset_top = -29.0
+offset_right = 10.0
+offset_bottom = 3.0
+scale = Vector2(1.5, 1.5)
+theme_override_styles/normal = SubResource("StyleBoxTexture_8u6aj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3sce4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8u6aj")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_8u6aj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_8u6aj")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/DeleteConfirmUI/Panel/HBoxContainer/BtnYes" unique_id=1580260630]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -19.333334
+offset_right = 21.0
+offset_bottom = 15.666666
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
+text = "YES"
 
 [node name="BtnNo" type="Button" parent="HUD/DeleteConfirmUI/Panel/HBoxContainer" unique_id=1183536519]
-layout_mode = 2
-text = "  No  "
+layout_mode = 0
+offset_left = 62.0
+offset_top = -29.0
+offset_right = 126.0
+offset_bottom = 3.0
+scale = Vector2(1.5, 1.5)
+theme_override_styles/normal = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_red_down")
+theme_override_styles/hover = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/focus = SubResource("StyleBoxTexture_p7xh5")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/DeleteConfirmUI/Panel/HBoxContainer/BtnNo" unique_id=439323496]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -18.666666
+offset_right = 15.0
+offset_bottom = 16.333336
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
+text = "NO"
 
 [node name="SetupBanner" type="Label" parent="HUD" unique_id=1804322700]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -200.0
-offset_right = 200.0
-offset_bottom = 72.0
+offset_left = -211.0
+offset_top = 70.0
+offset_right = 189.0
+offset_bottom = 142.0
 grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_gv4xv")
 
@@ -1090,39 +1441,73 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -200.0
-offset_right = 300.0
-offset_bottom = 50.0
+offset_left = -192.0
+offset_top = -194.0
+offset_right = 192.0
+offset_bottom = 176.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lf5n2")
 
 [node name="ResultLabel" type="Label" parent="HUD/GameOverPanel" unique_id=1522326931]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -176.0
-offset_top = 31.0
-offset_right = 180.0
-offset_bottom = 169.0
+offset_left = -174.0
+offset_top = 24.0
+offset_right = 292.0
+offset_bottom = 162.0
 grow_horizontal = 2
+scale = Vector2(0.75, 0.75)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65882355)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
 theme_override_fonts/font = ExtResource("8_lj6eb")
 theme_override_font_sizes/font_size = 128
-text = "YOU WIN"
+text = "GAME OVER"
+horizontal_alignment = 1
 
 [node name="BtnMainMenu" type="Button" parent="HUD/GameOverPanel" unique_id=514068146]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 61.0
-offset_top = -59.0
-offset_right = 192.0
-offset_bottom = 1.0
+offset_left = 108.99999
+offset_top = -246.0
+offset_right = 237.0
+offset_bottom = -182.0
 grow_vertical = 0
+scale = Vector2(1.25, 1.25)
 theme_override_fonts/font = ExtResource("8_lj6eb")
 theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quj86")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_6tbrj")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/GameOverPanel/BtnMainMenu" unique_id=1388569988]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.8
+offset_top = -26.4
+offset_right = 70.2
+offset_bottom = 25.599998
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 42
 text = "RESUME"
 
 [node name="BtnRestart" type="Button" parent="HUD/GameOverPanel" unique_id=1985913260]
@@ -1132,14 +1517,40 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -68.0
-offset_top = -59.0
-offset_right = 58.0
-offset_bottom = 1.0
+offset_left = -83.0
+offset_top = -174.0
+offset_right = 45.0
+offset_bottom = -110.0
 grow_horizontal = 2
 grow_vertical = 0
+scale = Vector2(1.25, 1.25)
 theme_override_fonts/font = ExtResource("8_lj6eb")
 theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_m3b2n")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_y036r")
+theme_override_styles/hover = SubResource("StyleBoxTexture_rxjj0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_rxjj0")
+theme_override_styles/focus = SubResource("StyleBoxTexture_rxjj0")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/GameOverPanel/BtnRestart" unique_id=1225430348]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.8
+offset_top = -26.4
+offset_right = 70.2
+offset_bottom = 25.599998
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 42
 text = "REPLAY"
 
 [node name="BtnNextLevel" type="Button" parent="HUD/GameOverPanel" unique_id=255836404]
@@ -1149,15 +1560,359 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -201.0
-offset_top = -59.0
-offset_right = -15.0
-offset_bottom = 1.0
+offset_left = -286.0
+offset_top = -102.0
+offset_right = -140.40002
+offset_bottom = -38.0
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(1.25, 1.25)
 theme_override_fonts/font = ExtResource("8_lj6eb")
 theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxTexture_8u6aj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3sce4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_arfrw")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_arfrw")
+theme_override_styles/focus = SubResource("StyleBoxTexture_arfrw")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/GameOverPanel/BtnNextLevel" unique_id=472612938]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.8
+offset_top = -22.4
+offset_right = 91.2
+offset_bottom = 29.599998
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.85, 0.85)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 42
 text = "NEXT LEVEL"
+
+[node name="BtnStop" type="Button" parent="HUD" unique_id=2026101]
+process_mode = 3
+offset_left = 6.0
+offset_top = 135.0
+offset_right = 46.0
+offset_bottom = 175.0
+icon = ExtResource("stopUI_tex")
+
+[node name="PauseMenu" type="Control" parent="HUD" unique_id=2026102]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overlay" type="ColorRect" parent="HUD/PauseMenu" unique_id=2026103]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.490196)
+
+[node name="Panel" type="Panel" parent="HUD/PauseMenu" unique_id=2026104]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -180.0
+offset_right = 160.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5k878")
+
+[node name="Title" type="Label" parent="HUD/PauseMenu/Panel" unique_id=2026105]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 30.0
+offset_right = 100.0
+offset_bottom = 90.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.658824)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 64
+text = "GAME PAUSED"
+horizontal_alignment = 1
+
+[node name="BtnResume" type="Button" parent="HUD/PauseMenu/Panel" unique_id=2026106]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -50.0
+offset_right = 90.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_8u6aj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3sce4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8u6aj")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_8u6aj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_8u6aj")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/PauseMenu/Panel/BtnResume" unique_id=2026107]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -22.0
+offset_right = 60.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 38
+text = "RESUME"
+horizontal_alignment = 1
+
+[node name="BtnSettings" type="Button" parent="HUD/PauseMenu/Panel" unique_id=2026108]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quj86")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6tbrj")
+theme_override_styles/focus = SubResource("StyleBoxTexture_6tbrj")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/PauseMenu/Panel/BtnSettings" unique_id=2026109]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -22.0
+offset_right = 60.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 38
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="BtnExit" type="Button" parent="HUD/PauseMenu/Panel" unique_id=2026110]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = 100.0
+offset_right = 90.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_red_down")
+theme_override_styles/hover = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/focus = SubResource("StyleBoxTexture_p7xh5")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/PauseMenu/Panel/BtnExit" unique_id=2026111]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -22.0
+offset_right = 60.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 38
+text = "EXIT"
+horizontal_alignment = 1
+
+[node name="SettingsMenu" type="Control" parent="HUD" unique_id=2026112]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overlay" type="ColorRect" parent="HUD/SettingsMenu" unique_id=2026113]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.490196)
+
+[node name="Panel" type="Panel" parent="HUD/SettingsMenu" unique_id=2026114]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -150.0
+offset_right = 160.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5k878")
+
+[node name="Title" type="Label" parent="HUD/SettingsMenu/Panel" unique_id=2026115]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 30.0
+offset_right = 100.0
+offset_bottom = 90.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.658824)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 64
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="SettingIcon" type="TextureRect" parent="HUD/SettingsMenu/Panel" unique_id=2026116]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 100.0
+offset_right = 20.0
+offset_bottom = 140.0
+grow_horizontal = 2
+texture = ExtResource("settingUI_tex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoLabel" type="Label" parent="HUD/SettingsMenu/Panel" unique_id=2026117]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_right = 140.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 28
+text = "SETTINGS SYSTEM PENDING...
+(MUSIC, SFX, CONTROLS)"
+horizontal_alignment = 1
+
+[node name="BtnCloseSettings" type="Button" parent="HUD/SettingsMenu/Panel" unique_id=2026118]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -80.0
+offset_right = 90.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_red_down")
+theme_override_styles/hover = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_p7xh5")
+theme_override_styles/focus = SubResource("StyleBoxTexture_p7xh5")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/SettingsMenu/Panel/BtnCloseSettings" unique_id=2026119]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -22.0
+offset_right = 60.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 38
+text = "BACK"
+horizontal_alignment = 1
+
+[node name="PauseController" type="Node" parent="HUD" unique_id=2026120]
+process_mode = 3
+script = ExtResource("pause_controller_script")
 
 [node name="ErrorSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1161023347]
 stream = ExtResource("6_kk4gi")
@@ -1183,3 +1938,8 @@ stream = ExtResource("6_kk4gi")
 [connection signal="pressed" from="HUD/GameOverPanel/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
 [connection signal="pressed" from="HUD/GameOverPanel/BtnRestart" to="." method="_on_btn_restart_pressed"]
 [connection signal="pressed" from="HUD/GameOverPanel/BtnNextLevel" to="." method="_on_btn_next_level_pressed"]
+[connection signal="pressed" from="HUD/BtnStop" to="." method="_on_btn_stop_pressed"]
+[connection signal="pressed" from="HUD/PauseMenu/Panel/BtnResume" to="." method="_on_pause_resume_pressed"]
+[connection signal="pressed" from="HUD/PauseMenu/Panel/BtnSettings" to="." method="_on_pause_settings_pressed"]
+[connection signal="pressed" from="HUD/PauseMenu/Panel/BtnExit" to="." method="_on_pause_exit_pressed"]
+[connection signal="pressed" from="HUD/SettingsMenu/Panel/BtnCloseSettings" to="." method="_on_settings_close_pressed"]
