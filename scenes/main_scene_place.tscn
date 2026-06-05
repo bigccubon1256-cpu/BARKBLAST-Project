@@ -1413,7 +1413,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerPortraitGlow" type="TextureRect" parent="HUD" unique_id=1186661168]
-modulate = Color(1.290827, 1.290827, 1.290827, 1)
+modulate = Color(0, 1.3749781, 1.3749781, 1)
 z_index = -1
 offset_left = 6.0
 offset_top = 6.0

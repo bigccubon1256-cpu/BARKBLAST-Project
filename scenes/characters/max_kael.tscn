@@ -8,7 +8,7 @@ script/source = "extends CharacterBody3D
 
 @export_group(\"Unit Stats\")
 @export var unit_name: String = \"Max Kael\"
-@export var energy_cost: float = 3.0     # ราคาที่ใช้ตอนวาง (Energy)
+@export var energy_cost: float = 10.0     # ราคาที่ใช้ตอนวาง (Energy)
 @export var hp_gain_on_place: int = 10   # HP ที่กองทัพได้รับเพิ่มเมื่อวางตัวนี้ลง
 @export var hp_loss_on_death: int = 30   # HP ที่กองทัพจะเสียไปเมื่อตัวนี้ตาย (ปรับให้มากกว่าตอนวางได้!)
 

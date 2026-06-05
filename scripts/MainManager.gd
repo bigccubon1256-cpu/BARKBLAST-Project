@@ -4854,158 +4854,201 @@ func run_enemy_ai():
 		if can_shoot_units.is_empty():
 			await get_tree().create_timer(1.2).timeout
 	# ==========================================
-	# 🔫 3. สั่งยิง (ระบบ AI เลือกลำดับความสำคัญในการยิง)
+	# 	# 🔫 3. สั่งยิง (ระบบ AI เลิกตาสุ่ม สแกนความพร้อมของทั้งทีมและจัดลำดับบทบาทอัจฉริยะ)
 	if can_shoot_units.size() > 0:
 		await get_tree().create_timer(0.5).timeout
 		
-		# สลับตำแหน่งแบบสุ่ม เพื่อให้แต่ละเทิร์นกระจายการเช็ค ไม่ซ้ำตัวเดิม
-		can_shoot_units.shuffle() 
+		var space_state = get_world_3d().direct_space_state
+		var los_exclude = _get_all_enemy_team_rids()
 		
+		# สร้างกล่องใส่ยูนิต 3 ประเภทบทบาท
+		var direct_shooters = [] # ยิงตรงตรงๆ ได้เลย
+		var snap_shooters = []   # สแน็ปยิงได้
+		var walk_shooters = []   # ต้องเดินหามุมยิง
+		
+		for shooter_data in can_shoot_units:
+			var s = shooter_data["unit"]
+			var t = shooter_data["target"]
+			
+			# ── 1. ตรวจสอบการยิงตรงแบบขนาน (Direct Shoot Check) ──
+			var start_pos = s.global_position + Vector3(0, 0.75, 0)
+			var end_pos = t.global_position + Vector3(0, 0.75, 0)
+			var bullet_dir = (end_pos - start_pos).normalized()
+			
+			var clearance_width = 0.45 
+			if s.has_meta("linked_gun"):
+				var gun = s.get_meta("linked_gun")
+				if is_instance_valid(gun):
+					var gun_name = str(gun.get("unit_name")).to_lower() if gun.get("unit_name") != null else gun.name.to_lower()
+					var clean_name = gun_name.split("_id_")[0]
+					if "shotgun" in clean_name: clearance_width = 1.4  
+					elif "machine_gun" in clean_name: clearance_width = 0.95  
+					elif "semi_auto" in clean_name: clearance_width = 0.65  
+					elif "sniper" in clean_name: clearance_width = 0.35
+			
+			var bullet_fatness = bullet_dir.cross(Vector3.UP).normalized() * clearance_width
+			
+			var ray_origins = [
+				start_pos + Vector3(0, 0.65, 0), # eye_pos
+				start_pos,
+				start_pos + bullet_fatness,
+				start_pos - bullet_fatness,
+				start_pos + (bullet_fatness * 0.5),
+				start_pos - (bullet_fatness * 0.5)
+			]
+			
+			var ray_targets = [
+				end_pos,
+				end_pos,
+				end_pos + bullet_fatness,
+				end_pos - bullet_fatness,
+				end_pos + (bullet_fatness * 0.5),
+				end_pos - (bullet_fatness * 0.5)
+			]
+			
+			var path_blocked = false
+			for r_idx in range(ray_origins.size()):
+				var origin = ray_origins[r_idx]
+				var dest = ray_targets[r_idx]
+				var los_query = PhysicsRayQueryParameters3D.create(origin, dest)
+				los_query.exclude = los_exclude
+				var los_result = space_state.intersect_ray(los_query)
+				
+				if los_result and los_result.collider:
+					var hit = los_result.collider
+					if not "tile_key" in hit and hit.get_parent() != null and "tile_key" in hit.get_parent():
+						hit = hit.get_parent()
+					var hit_name = str(hit.get("unit_name")).to_lower() if hit.get("unit_name") != null else hit.name.to_lower()
+					
+					if not is_player_char(hit_name) and not is_player_unit(hit_name):
+						# โดนบังโดยบล็อก โล่ หรือสิ่งกีดขวาง (ไม่ถือว่ายิงตรงได้)
+						path_blocked = true
+						break
+			
+			if not path_blocked:
+				direct_shooters.append(shooter_data)
+			else:
+				# ── 2. ตรวจสอบการสแน็ป (Snap Pos Check) ──
+				var snap_p = find_enemy_snap_pos(s, t)
+				if snap_p != Vector3.ZERO:
+					var sd = shooter_data.duplicate()
+					sd["snap_pos"] = snap_p
+					snap_shooters.append(sd)
+				else:
+					# ── 3. ตรวจสอบการเดินทำมุม (Walk Reposition Check) ──
+					var walk_p = find_ai_walk_reposition_pos(s, t)
+					if walk_p != Vector3.ZERO:
+						var wd = shooter_data.duplicate()
+						wd["walk_pos"] = walk_p
+						walk_shooters.append(wd)
+		
+		# ตัวแปรผลลัพธ์สุดท้าย
 		var final_shooter = null
 		var final_target = null
-		var fallback_shooter = null # แผนสำรอง: จำใจต้องยิงอัดบล็อก/เพื่อน
 		
-		# 🧠 AI ลองเช็คระยะทีละตัว หาคนที่ "ทางสะดวกที่สุด" (อัปเกรดระบบ "กรวย 3 มิติ")
-		for shooter_data in can_shoot_units:
-			var current_shooter = shooter_data["unit"]
-			var target = shooter_data["target"]
-			var current_final_shooter = current_shooter
-			var is_blocked = false
+		# 🎯 ตัดสินใจเลือกผู้ยิงตามลำดับความสำคัญระดับทีม (Team Prioritization)
+		if not direct_shooters.is_empty():
+			# 1. ยิงตรงโล่งๆ ก่อนเสมอ! สับลำดับเพื่อความสุ่มน่าตื่นเต้น
+			direct_shooters.shuffle()
+			var selected_data = direct_shooters[0]
+			final_shooter = selected_data["unit"]
+			final_target = selected_data["target"]
+			print("🎯 [AI DIRECT] ยูนิต ", final_shooter.name, " มีมุมยิงตรงโล่งๆ สะดวกสุด ได้รับสิทธิ์ลั่นไกก่อน!")
 			
-			var space_state = get_world_3d().direct_space_state
+		elif not snap_shooters.is_empty():
+			# 2. ค่อยยอมสแน็ปยิง
+			snap_shooters.shuffle()
+			var selected_snap_data = snap_shooters[0]
+			final_shooter = selected_snap_data["unit"]
+			final_target = selected_snap_data["target"]
+			print("🧱 [AI SNAP CHOICE] ยูนิต ", final_shooter.name, " สแน็ปออกไปยิงที่จุด: ", selected_snap_data["snap_pos"])
 			
-			for attempt in range(3): 
-				var start_pos = current_final_shooter.global_position + Vector3(0, 0.75, 0)
-				var end_pos = target.global_position + Vector3(0, 0.75, 0)
-				var base_dir = (end_pos - start_pos).normalized()
-				var target_dist = start_pos.distance_to(end_pos)
-				
-				
-				# 🌟 1. ยิงเรดาร์เส้นหลัก 1 เส้นตรงๆ
-				var query = PhysicsRayQueryParameters3D.create(start_pos, end_pos)
-				query.hit_from_inside = true
-				
-				var excludes = [current_final_shooter.get_rid()]
-				var gun_name = ""
-				if current_final_shooter.has_meta("linked_gun"):
-					var g = current_final_shooter.get_meta("linked_gun")
-					if is_instance_valid(g):
-						gun_name = str(g.get("unit_name")).to_lower()
-						if g is CollisionObject3D: excludes.append(g.get_rid())
-						for child in g.find_children("*", "CollisionObject3D"):
-							excludes.append(child.get_rid())
-				query.exclude = excludes
-				
-				var result = space_state.intersect_ray(query)
-				var hit_friendly_node = null
-				
-				if result and result.collider:
-					var hit_node = result.collider
-					if not "tile_key" in hit_node and hit_node.get_parent() != null:
-						if "tile_key" in hit_node.get_parent(): hit_node = hit_node.get_parent()
-						
-					if "unit_name" in hit_node and is_enemy_unit(str(hit_node.get("unit_name")).to_lower()):
-						if hit_node.get("is_dead") != true:
-							hit_friendly_node = hit_node
-
-				# 🌟 [เพิ่มใหม่] ถ้าตัวโล่ง ให้เช็คตำแหน่งปืนด้วย
-				if hit_friendly_node == null and current_final_shooter.has_meta("linked_gun"):
-					var _g = current_final_shooter.get_meta("linked_gun")
-					if is_instance_valid(_g):
-						var dir_to_target = (end_pos - start_pos).normalized()
-						var face_rot = atan2(dir_to_target.x, dir_to_target.z)
-						
-						# คำนวณตำแหน่งปืนหลังหันหน้าไปเป้า
-						var local_offset = current_final_shooter.to_local(_g.global_position)
-						var rotated_x = local_offset.x * cos(face_rot) - local_offset.z * sin(face_rot)
-						var rotated_z = local_offset.x * sin(face_rot) + local_offset.z * cos(face_rot)
-						var gun_center = current_final_shooter.global_position + Vector3(rotated_x, local_offset.y + 0.75, rotated_z)
-						
-						# แกนซ้าย-ขวาของปืน
-						var right_axis = dir_to_target.cross(Vector3.UP).normalized()
-						var gun_half_width = 0.6 # ครึ่งความกว้างปืน ปรับได้
-						
-						# ยิง 3 เส้น: ซ้าย / กลาง / ขวา
-						var ray_origins = [
-							gun_center,
-							gun_center + right_axis * gun_half_width,
-							gun_center - right_axis * gun_half_width,
-						]
-						
-						for ray_origin in ray_origins:
-							var gun_query = PhysicsRayQueryParameters3D.create(ray_origin, end_pos)
-							gun_query.exclude = excludes
-							var gun_result = space_state.intersect_ray(gun_query)
-							
-							if gun_result and gun_result.collider:
-								var hit = gun_result.collider
-								if not "tile_key" in hit and hit.get_parent() and "tile_key" in hit.get_parent():
-									hit = hit.get_parent()
-								# โดนบล็อกตัวเอง (ศัตรู) → snap
-								if "unit_name" in hit and is_enemy_unit(str(hit.get("unit_name")).to_lower()):
-									if hit.get("is_dead") != true:
-										print("🔫 [GUN CHECK] ray โดนบล็อกศัตรู → snap!")
-										hit_friendly_node = hit
-										break # เจอแล้วหยุดเช็คเส้นอื่น
-							# ถ้าโดนบล็อกผู้เล่น → ไม่ทำอะไร ยิงทะลุไปเลย
-				
-				# ==========================================
-				# 🌟 2. สแกนหาเพื่อนใน "กรวย 3 มิติ"
-				# ==========================================
-				if hit_friendly_node == null and ("shotgun" in gun_name or "machine_gun" in gun_name):
-					var cone_angle = deg_to_rad(15.0) 
-					var closest_friend_dist = target_dist
-					
-					for unit in occupied_tiles.values():
-						if is_instance_valid(unit) and unit != current_final_shooter and "unit_name" in unit:
-							# 🌟 [อัปเกรด!] กรองหาเพื่อนเฉพาะคนที่ "ยังมีชีวิตอยู่" เท่านั้น
-							if is_enemy_unit(str(unit.get("unit_name")).to_lower()) and unit.get("is_dead") != true:
-								var friend_pos = unit.global_position + Vector3(0, 0.75, 0)
-								var vec_to_friend = friend_pos - start_pos
-								var dist_to_friend = vec_to_friend.length()
-								
-								if dist_to_friend < closest_friend_dist:
-									var dir_to_friend = vec_to_friend.normalized()
-									var angle_to_friend = base_dir.angle_to(dir_to_friend) 
-									
-									if angle_to_friend <= cone_angle:
-										hit_friendly_node = unit
-										closest_friend_dist = dist_to_friend 
-				# ==========================================
-
-				# 3. ตัดสินใจ: ไม่ว่าจะโดนจากเรดาร์เส้นหลัก หรืออยู่ในกรวย ก็เข้าสู่ระบบส่งไม้ต่อ
-				if hit_friendly_node != null:
-					var can_delegate = hit_friendly_node.has_meta("linked_gun") and not hit_friendly_node.get("is_dead") and not hit_friendly_node.get("has_attacked_this_turn")
-					
-					if can_delegate:
-						current_final_shooter = hit_friendly_node
-						continue 
-					else:
-						is_blocked = true
-						break
-				
-				# ทางสะดวก 100% 
-				break
-				
-			if is_blocked:
-				# 🌟 [SNAP SYSTEM] ลองหาจุด Snap ก่อนยอมแพ้!
-				var snap_p = find_enemy_snap_pos(current_shooter, target)
-				if snap_p != Vector3.ZERO:
-					print("🧱 โดนบัง! แต่เจอจุด Snap → ศัตรูจะโผล่ออกมายิง")
-					# ใส่ข้อมูลไว้ใน dict เพื่อส่งให้ตัดสินใจข้างล่าง
-					can_shoot_units[can_shoot_units.find(shooter_data)]["snap_pos"] = snap_p
-					# ถือว่า "ยิงได้" (แบบ snap)
-					final_shooter = current_shooter
-					final_target  = target
+			# 🌟 เขียนค่า snap_pos ย้อนกลับเข้า can_shoot_units เพื่อให้บล็อกยิงด้านล่างทำงานได้
+			for sd in can_shoot_units:
+				if sd["unit"] == final_shooter:
+					sd["snap_pos"] = selected_snap_data["snap_pos"]
 					break
-				continue
-			else:
-				final_shooter = current_final_shooter
-				final_target = target
-				break
+			
+		elif not walk_shooters.is_empty():
+			# 3. ค่อยยอมเดินหามุมยิงใหม่ (เลียนแบบการจบเทิร์นเดินของผู้เล่น)
+			walk_shooters.shuffle()
+			var walk_data = walk_shooters[0]
+			var walk_shooter = walk_data["unit"]
+			var walk_pos = walk_data["walk_pos"]
+			var walk_target = walk_data["target"]
+			
+			print("🚶 [AI WALK CHOICE] ยูนิต ", walk_shooter.name, " ไม่มีมุมยิงหรือจุดสแน็ปที่ปลอดภัย ตัดสินใจเดินหามุมยิงใหม่ที่: ", walk_pos)
+			
+			# ดำเนินการเดินหามุมยิงใหม่
+			walk_shooter.set("has_attacked_this_turn", true)
+			if walk_shooter is RigidBody3D:
+				walk_shooter.linear_velocity = Vector3.ZERO
+				walk_shooter.angular_velocity = Vector3.ZERO
+				walk_shooter.freeze = true
 				
-		# ==========================================
-		# 🎯 ตัดสินใจขั้นเด็ดขาด!
+			var gun_ref: Node3D = null
+			var gun_local_offset = Vector3(0, 1.2, 0)
+			if walk_shooter.has_meta("linked_gun"):
+				gun_ref = walk_shooter.get_meta("linked_gun")
+				if is_instance_valid(gun_ref):
+					if walk_shooter.has_meta("saved_gun_local_pos"):
+						gun_local_offset = walk_shooter.get_meta("saved_gun_local_pos")
+					if gun_ref is RigidBody3D:
+						gun_ref.linear_velocity = Vector3.ZERO
+						gun_ref.angular_velocity = Vector3.ZERO
+						gun_ref.freeze = true
+						
+			var walk_dir = (walk_pos - walk_shooter.global_position).normalized()
+			if walk_dir != Vector3.ZERO:
+				walk_shooter.global_rotation.y = atan2(walk_dir.x, walk_dir.z)
+				if is_instance_valid(gun_ref):
+					gun_ref.global_rotation.y = walk_shooter.global_rotation.y + walk_shooter.get_meta("saved_gun_local_rot")
+					
+			var walk_tween = create_tween()
+			walk_tween.tween_property(walk_shooter, "global_position", walk_pos, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			
+			if is_instance_valid(gun_ref):
+				walk_tween.parallel().tween_method(func(_v):
+					if is_instance_valid(walk_shooter) and is_instance_valid(gun_ref):
+						gun_ref.global_position = walk_shooter.to_global(gun_local_offset)
+				, 0.0, 1.0, 0.4)
+				
+			await walk_tween.finished
+			
+			if is_instance_valid(walk_shooter) and is_instance_valid(walk_target):
+				var aim_dir = (walk_target.global_position - walk_shooter.global_position).normalized()
+				var tween_rot = create_tween()
+				tween_rot.tween_property(walk_shooter, "global_rotation:y", atan2(aim_dir.x, aim_dir.z), 0.3).set_trans(Tween.TRANS_SINE)
+				await tween_rot.finished
+				
+			if is_instance_valid(walk_shooter):
+				if walk_shooter is RigidBody3D:
+					walk_shooter.linear_velocity = Vector3.ZERO
+					walk_shooter.angular_velocity = Vector3.ZERO
+					walk_shooter.global_rotation.x = 0.0
+					walk_shooter.global_rotation.z = 0.0
+					walk_shooter.freeze = false
+				if is_instance_valid(gun_ref) and gun_ref is RigidBody3D:
+					gun_ref.linear_velocity = Vector3.ZERO
+					gun_ref.angular_velocity = Vector3.ZERO
+					gun_ref.global_rotation.x = 0.0
+					gun_ref.global_rotation.z = 0.0
+					gun_ref.freeze = false
+					
+			print("🚶 [AI WALK CHOICE Done] เดินเข้าทำมุมยิงสำเร็จเรียบร้อย → จบเทิร์นศัตรู!")
+			current_state = Turn.WAITING_PHYSICS
+			next_turn = Turn.PLAYER
+			return
+			
+		else:
+			# 💥 แผนสำรองสุดท้ายจริง ๆ (ถ้าเดินไปไหนไม่ได้เลยเพราะโดนขังมิด) -> จำใจยิงอัดเลยตรงๆ!
+			can_shoot_units.shuffle()
+			var fb_data = can_shoot_units[0]
+			final_shooter = fb_data["unit"]
+			final_target = fb_data["target"]
+			print("💥 AI: แผนสำรองสุดท้าย (ขยับไม่ได้) บังคับให้ ", final_shooter.name, " ยิงอัดเลยตรงๆ!")
+
+	# 🎯 ตัดสินใจขั้นเด็ดขาด!
 		if final_shooter == null:
 			print("⚠️ AI: โดนบังมิดหมด ไม่มีจุด Snap → ข้ามเทิร์นนี้")
 			# 🌟 ไม่ยิงทิ้ง! รอเทิร์นหน้าหรือให้ตัวอื่นเคลื่อนที่มาแทน
@@ -5262,8 +5305,9 @@ func enemy_kamikaze(enemy: Node3D, target: Node3D, can_jump: bool = false):
 	
 	if enemy.has_meta("linked_gun"):
 		var gun = enemy.get_meta("linked_gun")
-		if is_instance_valid(gun) and gun is RigidBody3D:
+		if is_instance_valid(gun):
 			gun.freeze = true
+			toggle_collision(gun, true)
 			# 🌟 [เพิ่มตรงนี้!] แปะกาวก่อนพุ่งตัวเหมือนกัน
 			var local_trans = enemy.global_transform.affine_inverse() * gun.global_transform
 			enemy.set_meta("ai_slide_transform", local_trans)
@@ -5327,8 +5371,9 @@ func enemy_kamikaze(enemy: Node3D, target: Node3D, can_jump: bool = false):
 			
 			if enemy.has_meta("linked_gun"):
 				var gun = enemy.get_meta("linked_gun")
-				if is_instance_valid(gun) and gun is RigidBody3D:
+				if is_instance_valid(gun):
 					gun.freeze = false
+					toggle_collision(gun, false)
 	)
 
 
@@ -5350,18 +5395,30 @@ func find_enemy_snap_pos(enemy: Node3D, target: Node3D) -> Vector3:
 	if dir_to_target == Vector3.ZERO: return Vector3.ZERO
 	dir_to_target = dir_to_target.normalized()
 	
+	# หันหน้าไปหาเป้าหมาย
 	var face_angle = atan2(dir_to_target.x, dir_to_target.z)
 	var right_dir = dir_to_target.cross(Vector3.UP).normalized()
 	var left_dir = -right_dir
+	var forward_dir = dir_to_target
 	
-	var max_dist = 7.0
-	var steps = int(max_dist / snap_step)
+	# ==========================================
+	# 🌟 สร้างกริดวงกลม 16 ทิศทาง (ซอยย่อย 22.5 องศา) รัศมี 7.0 เมตร
+	# ==========================================
+	var right_angles = [30.0, 45.0, 60.0, 15.0, 75.0, 90.0, 105.0, 120.0]
+	var left_angles = [-30.0, -45.0, -60.0, -15.0, -75.0, -90.0, -105.0, -120.0]
+	var forward_angle = [0.0]
+	
+	var self_rids = []
+	if enemy is CollisionObject3D:
+		self_rids.append(enemy.get_rid())
+	for child in enemy.find_children("*", "CollisionObject3D"):
+		self_rids.append(child.get_rid())
 	
 	var body_shape = BoxShape3D.new()
 	body_shape.size = Vector3(0.8, 1.8, 0.8)
 	var shape_query = PhysicsShapeQueryParameters3D.new()
 	shape_query.shape = body_shape
-	shape_query.exclude = [enemy.get_rid()]
+	shape_query.exclude = self_rids.duplicate()
 	
 	var gun_local_pos = Vector3(0, 1.2, 0)
 	var gun_name = "" 
@@ -5371,149 +5428,325 @@ func find_enemy_snap_pos(enemy: Node3D, target: Node3D) -> Vector3:
 		
 	if enemy.has_meta("linked_gun"):
 		var gun = enemy.get_meta("linked_gun")
-		if is_instance_valid(gun) and gun is CollisionObject3D:
+		if is_instance_valid(gun):
 			gun_name = str(gun.get("unit_name")).to_lower() if gun.get("unit_name") != null else gun.name.to_lower()
-			shape_query.exclude.append(gun.get_rid())
+			if gun is CollisionObject3D:
+				self_rids.append(gun.get_rid())
+				shape_query.exclude.append(gun.get_rid())
 			for child in gun.find_children("*", "CollisionObject3D"):
+				self_rids.append(child.get_rid())
 				shape_query.exclude.append(child.get_rid())
 				
 	var clean_name = gun_name.split("_id_")[0]
+	var los_exclude = _get_all_enemy_team_rids(enemy) + self_rids
 	
-	# ==========================================
-	# 🌟 ความอ้วนของเรดาร์
-	# ==========================================
-	var clearance_width = 0.35 
-	if "shotgun" in clean_name: clearance_width = 1.2  
-	elif "machine_gun" in clean_name: clearance_width = 0.8  
-	elif "semi_auto" in clean_name: clearance_width = 0.5  
-	elif "sniper" in clean_name: clearance_width = 0.25 
-	# ==========================================
-
-	var plan_b_pos = Vector3.ZERO 
+	print("🔍 [SNAP SCAN START] shooter:", enemy.name, " gun_side_x:", gun_local_pos.x, " target:", target.name)
 	
-	# ----------------------------------------------------
-	# 🎯 เริ่มกระบวนการสไลด์ซ้าย-ขวา หาทีละสเต็ป
-	# ----------------------------------------------------
-	for i in range(1, steps + 1):
-		var current_dist = i * snap_step
+	# ค่าความอ้วนความปลอดภัยปืนแบบ Safety Boost
+	var clearance_width = 0.45 
+	if "shotgun" in clean_name: clearance_width = 1.4  
+	elif "machine_gun" in clean_name: clearance_width = 0.95  
+	elif "semi_auto" in clean_name: clearance_width = 0.65  
+	elif "sniper" in clean_name: clearance_width = 0.35 
+	
+	# ตรวจหาฝั่งติดตั้งปืน
+	var is_gun_right = gun_local_pos.x > 0.05
+	var is_gun_left = gun_local_pos.x < -0.05
+	
+	# จัดกลุ่มมุมการสแกนแบ่งเป็น 2 เฟสตามฝั่งติดตั้งปืน
+	var primary_angles = []
+	var secondary_angles = []
+	
+	if is_gun_right:
+		primary_angles = right_angles + forward_angle
+		secondary_angles = left_angles
+	elif is_gun_left:
+		primary_angles = left_angles + forward_angle
+		secondary_angles = right_angles
+	else:
+		primary_angles = forward_angle + right_angles + left_angles
+		secondary_angles = []
 		
-		for dir in [right_dir, left_dir]:
-			var test_pos = start_pos + (dir * current_dist)
-			test_pos.x = snapped(test_pos.x, snap_step)
-			test_pos.z = snapped(test_pos.z, snap_step)
-			test_pos.y = start_pos.y 
+	var max_dist = 7.0
+	var steps = int(max_dist / snap_step)
+	
+	var plan_b_pos = Vector3.ZERO
+	
+	var phases = [
+		{"name": "PRIMARY_GUN_SIDE", "angles": primary_angles},
+		{"name": "SECONDARY_OPPOSITE_SIDE", "angles": secondary_angles}
+	]
+	
+	for phase in phases:
+		var scan_angles = phase["angles"]
+		if scan_angles.is_empty(): continue
+		
+		var blocked_dirs = {}
+		for ang in scan_angles:
+			blocked_dirs[ang] = false
 			
-			# 🧱 Step A: เช็คพุงติดกำแพง
-			shape_query.transform = Transform3D(Basis(), test_pos + Vector3(0, 1.0, 0))
-			var collisions = space_state.intersect_shape(shape_query)
+		for i in range(1, steps + 1):
+			var current_dist = i * snap_step
 			
-			if collisions.size() > 0:
-				continue 
+			for ang in scan_angles:
+				if blocked_dirs[ang]: continue
 				
-			# 🔫 Step B: เช็คเรดาร์ 2 ชั้น (หน้าอก + ปลายปืน 5 เส้น)
-			var eye_pos = test_pos + Vector3(0, 1.4, 0) 
-			var rotated_gun_pos = Vector3(gun_local_pos.x, gun_local_pos.y, gun_local_pos.z).rotated(Vector3.UP, face_angle)
-			var ghost_gun_pos = test_pos + rotated_gun_pos
-			var target_chest = target.global_position + Vector3(0, 0.75, 0)
-			
-			var bullet_dir = (target_chest - ghost_gun_pos).normalized()
-			var bullet_fatness = bullet_dir.cross(Vector3.UP).normalized() * clearance_width 
-			
-			var ray_origins = [
-				eye_pos,                               
-				ghost_gun_pos,                         
-				ghost_gun_pos + bullet_fatness,        
-				ghost_gun_pos - bullet_fatness,        
-				ghost_gun_pos + (bullet_fatness * 0.5),
-				ghost_gun_pos - (bullet_fatness * 0.5) 
-			]
-			
-			var hit_our_wall = false
-			var saw_player = false
-			var saw_player_cover = false
-			
-			for origin in ray_origins:
-				var los_query = PhysicsRayQueryParameters3D.create(origin, target_chest)
-				los_query.exclude = shape_query.exclude
-				var los_result = space_state.intersect_ray(los_query)
+				var rad = face_angle + deg_to_rad(ang)
+				var dir = Vector3(sin(rad), 0, cos(rad)).normalized()
+				var test_pos = start_pos + (dir * current_dist)
+				test_pos.x = snapped(test_pos.x, snap_step)
+				test_pos.z = snapped(test_pos.z, snap_step)
+				test_pos.y = start_pos.y 
 				
-				if los_result and los_result.collider:
-					var hit = los_result.collider
-					if not "tile_key" in hit and hit.get_parent() != null and "tile_key" in hit.get_parent():
-						hit = hit.get_parent()
-						
-					var hit_name = str(hit.get("unit_name")).to_lower() if hit.get("unit_name") != null else hit.name.to_lower()
+				# 🧱 Step A: เช็คพุงติดกำแพง/ทับเพื่อนร่วมทีม
+				shape_query.transform = Transform3D(Basis(), test_pos + Vector3(0, 1.0, 0))
+				var collisions = space_state.intersect_shape(shape_query)
+				
+				if collisions.size() > 0:
+					var hit_names = []
+					for col in collisions:
+						if is_instance_valid(col.collider):
+							hit_names.append(col.collider.name)
+					print("   ❌ [SHAPE COLLIDE] blocked ang:", ang, " dist:", current_dist, " hits:", hit_names)
+					blocked_dirs[ang] = true
+					continue
 					
-					if is_enemy_unit(hit_name):
-						hit_our_wall = true
-						break 
-					elif is_player_char(hit_name):
+				# 🧱 Step A.5: เช็คเหว (ห้ามหลุดขอบ)
+				var floor_query = PhysicsRayQueryParameters3D.create(test_pos + Vector3(0, 0.2, 0), test_pos - Vector3(0, 2.0, 0))
+				floor_query.exclude = self_rids
+				var floor_result = space_state.intersect_ray(floor_query)
+				if not floor_result or not floor_result.collider:
+					print("   ❌ [FLOOR CLIFF] blocked ang:", ang, " dist:", current_dist)
+					blocked_dirs[ang] = true
+					continue
+					
+				# 🧱 Step A.6: เช็คทางกายภาพว่าปืนพ้นจากสิ่งกีดขวางหรือยัง (ป้องกันปากกระบอกปืนฝังในที่บัง)
+				var eye_pos = test_pos + Vector3(0, 1.4, 0)
+				var test_dir_to_target = (target.global_position - test_pos)
+				test_dir_to_target.y = 0.0
+				var test_face_angle = atan2(test_dir_to_target.x, test_dir_to_target.z) if test_dir_to_target != Vector3.ZERO else face_angle
+				var rotated_gun_pos = Vector3(gun_local_pos.x, gun_local_pos.y, gun_local_pos.z).rotated(Vector3.UP, test_face_angle)
+				var ghost_gun_pos = test_pos + rotated_gun_pos
+				
+				var gun_clear_query = PhysicsRayQueryParameters3D.create(eye_pos, ghost_gun_pos)
+				gun_clear_query.exclude = self_rids
+				var gun_clear_result = space_state.intersect_ray(gun_clear_query)
+				if gun_clear_result and gun_clear_result.collider:
+					var hit_c = gun_clear_result.collider
+					var hit_c_name = str(hit_c.get("unit_name")).to_lower() if hit_c.get("unit_name") != null else hit_c.name.to_lower()
+					print("   ❌ [GUN COVERED] ang:", ang, " dist:", current_dist, " gun path blocked by: ", hit_c_name)
+					# ปืนจมอยู่ในที่บัง! ไม่ให้จุดนี้ผ่าน ต้องสไลด์ออกไปอีก
+					continue
+					
+				# 🔫 Step B: เช็คเรดาร์ LOS ด้วยระบบท่อคู่ขนานและองศา Dynamic
+				var target_chest = target.global_position + Vector3(0, 0.75, 0)
+				
+				var bullet_dir = (target_chest - ghost_gun_pos).normalized()
+				var bullet_fatness = bullet_dir.cross(Vector3.UP).normalized() * clearance_width
+				
+				var ray_origins = [
+					eye_pos,
+					ghost_gun_pos,
+					ghost_gun_pos + bullet_fatness,
+					ghost_gun_pos - bullet_fatness,
+					ghost_gun_pos + (bullet_fatness * 0.5),
+					ghost_gun_pos - (bullet_fatness * 0.5)
+				]
+				
+				var ray_targets = [
+					target_chest,
+					target_chest,
+					target_chest + bullet_fatness,
+					target_chest - bullet_fatness,
+					target_chest + (bullet_fatness * 0.5),
+					target_chest - (bullet_fatness * 0.5)
+				]
+				
+				var saw_player = false
+				var saw_player_cover = false
+				var is_blocked = false
+				var block_cause = ""
+				
+				for r_idx in range(ray_origins.size()):
+					var origin = ray_origins[r_idx]
+					var dest = ray_targets[r_idx]
+					var los_query = PhysicsRayQueryParameters3D.create(origin, dest)
+					los_query.exclude = los_exclude
+					var los_result = space_state.intersect_ray(los_query)
+					
+					if los_result and los_result.collider:
+						var hit = los_result.collider
+						if not "tile_key" in hit and hit.get_parent() != null and "tile_key" in hit.get_parent():
+							hit = hit.get_parent()
+							
+						var hit_name = str(hit.get("unit_name")).to_lower() if hit.get("unit_name") != null else hit.name.to_lower()
+						
+						if is_player_char(hit_name):
+							saw_player = true
+						elif is_player_unit(hit_name):
+							saw_player_cover = true
+						else:
+							is_blocked = true
+							block_cause = "hit " + hit_name
+							break
+					else:
 						saw_player = true
-					else:
-						saw_player_cover = true
-				else:
-					saw_player = true
-			
-			# ==========================================
-			# 🎯 สรุปผลจากเรดาร์ และระบบ "แถมก้าว (Over-Peek)"
-			# ==========================================
-			if hit_our_wall:
-				continue # สะกิดกำแพงตัวเอง สไลด์เพิ่ม
-				
-			if saw_player:
-				# 🌟 เจอจุดยิงแล้ว! สั่งแถมให้ 2 ช่อง เพื่อความชัวร์และเท่!
-				var final_pos = test_pos
-				var extra_peek_steps = 2 # จำนวนช่องที่อยากให้ก้าวเลยขอบ (แก้เป็น 1 หรือ 3 ได้ครับ)
-				
-				for e in range(1, extra_peek_steps + 1):
-					var extra_pos = test_pos + (dir * (e * snap_step))
-					extra_pos.x = snapped(extra_pos.x, snap_step)
-					extra_pos.z = snapped(extra_pos.z, snap_step)
-					extra_pos.y = start_pos.y
-					
-					# เช็คว่าก้าวแถมไปเนี่ย ชนตึกอื่นหรือเปล่า?
-					shape_query.transform = Transform3D(Basis(), extra_pos + Vector3(0, 1.0, 0))
-					if space_state.intersect_shape(shape_query).size() == 0:
-						final_pos = extra_pos # ปลอดภัย อัปเดตจุดแถม
-					else:
-						break # ถ้าก้าวแถมไปแล้วติดกำแพงอื่น ก็หยุดแถม เอาแค่นี้แหละ
 						
-				print("🟢 [AI SNAP] เจอจุดยิงแล้ว! แถมก้าวให้อีกพ้นๆ เลย (สไลด์รวม ", start_pos.distance_to(final_pos), "m)")
-				return final_pos
-				
-			elif saw_player_cover and plan_b_pos == Vector3.ZERO:
-				# 🌟 แผนสำรอง ก็แถมก้าวให้เหมือนกัน!
-				var final_plan_b = test_pos
-				for e in range(1, 3):
-					var extra_pos = test_pos + (dir * (e * snap_step))
-					extra_pos.x = snapped(extra_pos.x, snap_step)
-					extra_pos.z = snapped(extra_pos.z, snap_step)
-					extra_pos.y = start_pos.y
+				if is_blocked:
+					saw_player = false
+					saw_player_cover = false
+					#print("   ⚠️ [RAY BLOCKED] ang:", ang, " dist:", current_dist, " cause:", block_cause)
 					
-					shape_query.transform = Transform3D(Basis(), extra_pos + Vector3(0, 1.0, 0))
-					if space_state.intersect_shape(shape_query).size() == 0:
-						final_plan_b = extra_pos
-					else:
-						break
-				plan_b_pos = final_plan_b
-				
+				# 🎯 วิเคราะห์ผลลัพธ์เพื่อเลือกจุดยิง
+				if saw_player:
+					var final_pos = test_pos
+					var extra_peek_steps = 3
+					if phase["name"] == "SECONDARY_OPPOSITE_SIDE":
+						extra_peek_steps = 6 # ปรับระยะพีคเพิ่มขึ้นเมื่อยิงฝั่งตรงข้ามข้างปืน
+					
+					for e in range(1, extra_peek_steps + 1):
+						var extra_pos = test_pos + (dir * (e * snap_step))
+						extra_pos.x = snapped(extra_pos.x, snap_step)
+						extra_pos.z = snapped(extra_pos.z, snap_step)
+						extra_pos.y = start_pos.y
+						
+						shape_query.transform = Transform3D(Basis(), extra_pos + Vector3(0, 1.0, 0))
+						if space_state.intersect_shape(shape_query).size() == 0:
+							var extra_floor_query = PhysicsRayQueryParameters3D.create(extra_pos + Vector3(0, 0.2, 0), extra_pos - Vector3(0, 2.0, 0))
+							extra_floor_query.exclude = self_rids
+							var extra_floor_result = space_state.intersect_ray(extra_floor_query)
+							if extra_floor_result and extra_floor_result.collider:
+								final_pos = extra_pos
+							else:
+								break
+						else:
+							break
+							
+					print("🟢 [AI SNAP CIRCLE (", phase["name"], ")] สไลด์สั้นสุดหาเจอ! ระยะรวม: ", snapped(start_pos.distance_to(final_pos), 0.1), "m, องศา: ", ang)
+					return final_pos
+					
+				elif saw_player_cover and plan_b_pos == Vector3.ZERO:
+					var final_plan_b = test_pos
+					var extra_peek_steps_b = 2
+					if phase["name"] == "SECONDARY_OPPOSITE_SIDE":
+						extra_peek_steps_b = 4
+					for e in range(1, extra_peek_steps_b + 1):
+						var extra_pos = test_pos + (dir * (e * snap_step))
+						extra_pos.x = snapped(extra_pos.x, snap_step)
+						extra_pos.z = snapped(extra_pos.z, snap_step)
+						extra_pos.y = start_pos.y
+						
+						shape_query.transform = Transform3D(Basis(), extra_pos + Vector3(0, 1.0, 0))
+						if space_state.intersect_shape(shape_query).size() == 0:
+							var extra_floor_query = PhysicsRayQueryParameters3D.create(extra_pos + Vector3(0, 0.2, 0), extra_pos - Vector3(0, 2.0, 0))
+							extra_floor_query.exclude = self_rids
+							var extra_floor_result = space_state.intersect_ray(extra_floor_query)
+							if extra_floor_result and extra_floor_result.collider:
+								final_plan_b = extra_pos
+							else:
+								break
+						else:
+							break
+					plan_b_pos = final_plan_b
+		
+		if plan_b_pos != Vector3.ZERO:
+			break
+			
 	if plan_b_pos != Vector3.ZERO:
-		print("🟡 [AI SNAP] พีคสุดแล้วเห็นแค่กำแพงผู้เล่น งัด Plan B แถมก้าวแล้วยิงอัดเลย!")
+		print("🟡 [AI SNAP CIRCLE PLAN B] สแน็ปยิงอัดบล็อกเป้าหมายสำเร็จ!")
 		return plan_b_pos
 		
-	print("🔴 [AI SNAP] สไลด์จนสุด 7.0 เมตร บล็อกฝั่งเราก็ยังบังอยู่... ยอมแพ้!")
+	print("🔴 [AI SNAP CIRCLE] ลองรอบวงกลมแล้ว มองไม่เห็นผู้เล่นเลยจริงๆ!")
 	return Vector3.ZERO
 
+func find_ai_walk_reposition_pos(enemy: Node3D, target: Node3D) -> Vector3:
+	var space_state = get_world_3d().direct_space_state
+	var start_pos = enemy.global_position
+	
+	var dir_to_target = (target.global_position - start_pos)
+	dir_to_target.y = 0.0
+	if dir_to_target == Vector3.ZERO: return Vector3.ZERO
+	var forward_dir = dir_to_target.normalized()
+	
+	var right_dir = forward_dir.cross(Vector3.UP).normalized()
+	var left_dir = -right_dir
+	var backward_dir = -forward_dir
+	
+	var scan_dirs = [
+		right_dir, 
+		left_dir, 
+		backward_dir,
+		(right_dir + backward_dir).normalized(),
+		(left_dir + backward_dir).normalized(),
+		(right_dir + forward_dir).normalized(),
+		(left_dir + forward_dir).normalized(),
+		forward_dir
+	]
+	
+	var distances = [1.0, 1.5, 2.0, 2.5]
+	
+	var self_rids = []
+	if enemy is CollisionObject3D:
+		self_rids.append(enemy.get_rid())
+	for child in enemy.find_children("*", "CollisionObject3D"):
+		self_rids.append(child.get_rid())
+	if enemy.has_meta("linked_gun"):
+		var gun = enemy.get_meta("linked_gun")
+		if is_instance_valid(gun):
+			if gun is CollisionObject3D:
+				self_rids.append(gun.get_rid())
+			for child in gun.find_children("*", "CollisionObject3D"):
+				self_rids.append(child.get_rid())
+	
+	var body_shape = BoxShape3D.new()
+	body_shape.size = Vector3(0.8, 1.8, 0.8)
+	var shape_query = PhysicsShapeQueryParameters3D.new()
+	shape_query.shape = body_shape
+	shape_query.exclude = self_rids.duplicate()
+		
+	var los_exclude = _get_all_enemy_team_rids(enemy) + self_rids
+	
+	var best_pos = Vector3.ZERO
+	var min_dist_to_original = 9999.0
+	
+	var blocked_dirs = {}
+	for d_dir in scan_dirs:
+		blocked_dirs[d_dir] = false
+		
+	for d in distances:
+		for dir in scan_dirs:
+			if blocked_dirs[dir]: continue
+			
+			var test_pos = start_pos + (dir * d)
+			test_pos.x = snapped(test_pos.x, 0.25)
+			test_pos.z = snapped(test_pos.z, 0.25)
+			test_pos.y = start_pos.y
+			
+			# 🧱 1. เช็คชนกำแพง/พวกเดียวกัน
+			shape_query.transform = Transform3D(Basis(), test_pos + Vector3(0, 1.0, 0))
+			if space_state.intersect_shape(shape_query).size() > 0:
+				blocked_dirs[dir] = true
+				continue
+				
+			# 🧱 2. เช็คเหว
+			var floor_query = PhysicsRayQueryParameters3D.create(test_pos + Vector3(0, 0.2, 0), test_pos - Vector3(0, 2.0, 0))
+			floor_query.exclude = self_rids
+			var floor_result = space_state.intersect_ray(floor_query)
+			if not floor_result or not floor_result.collider:
+				blocked_dirs[dir] = true
+				continue
+				
+			# 🧱 3. เช็ค LOS ตาสว่าง
+			var can_see = not _is_los_blocked_smart(test_pos, target, los_exclude)
+			
+			if can_see:
+				var dist_to_orig = start_pos.distance_to(test_pos)
+				if dist_to_orig < min_dist_to_original:
+					min_dist_to_original = dist_to_orig
+					best_pos = test_pos
+					
+	return best_pos
 
-
-
-
-
-
-
-# ==========================================
-# 🌟 ศัตรู Snap ออกมายิง แล้วหดกลับ (เหมือนระบบผู้เล่น แต่อัตโนมัติ)
-# ==========================================
 func enemy_snap_and_fire(enemy: Node3D, target: Node3D, snap_pos: Vector3):
 	if not is_instance_valid(enemy) or not is_instance_valid(target): return
 	
@@ -5612,6 +5845,58 @@ func is_player_char(u_name: String) -> bool:
 	for data in army_list:
 		if data["name"].to_lower() == clean_name:
 			return data["category"] == "character"
+	return false
+
+func is_player_unit(u_name: String) -> bool:
+	var clean_name = u_name.to_lower().split("_id_")[0]
+	for data in army_list:
+		if data["name"].to_lower() == clean_name:
+			return not str(data["category"]).begins_with("enemy")
+	return false
+
+func _get_all_enemy_team_rids(exclude_self: Node3D = null) -> Array:
+	var rids = []
+	for unit in occupied_tiles.values():
+		if not is_instance_valid(unit) or not "unit_name" in unit: continue
+		var u_name = str(unit.get("unit_name")).to_lower()
+		if not is_enemy_char(u_name): continue
+		if unit.get("is_dead") == true: continue
+		if exclude_self != null and unit == exclude_self: continue
+		# เพิ่ม RID ของตัวยูนิตเอง
+		if unit is CollisionObject3D:
+			rids.append(unit.get_rid())
+		for child in unit.find_children("*", "CollisionObject3D"):
+			rids.append(child.get_rid())
+		# เพิ่ม RID ของปืนที่ถืออยู่
+		if unit.has_meta("linked_gun"):
+			var gun = unit.get_meta("linked_gun")
+			if is_instance_valid(gun):
+				if gun is CollisionObject3D:
+					rids.append(gun.get_rid())
+				for child in gun.find_children("*", "CollisionObject3D"):
+					rids.append(child.get_rid())
+	return rids
+
+func _is_los_blocked_smart(from_pos: Vector3, target: Node3D, exclude_rids: Array) -> bool:
+	var space_state = get_world_3d().direct_space_state
+	var start_ray = from_pos + Vector3(0, 1.4, 0)
+	var end_ray = target.global_position + Vector3(0, 0.75, 0)
+	
+	var query = PhysicsRayQueryParameters3D.create(start_ray, end_ray)
+	query.exclude = exclude_rids
+	query.hit_from_inside = true
+	
+	var result = space_state.intersect_ray(query)
+	if result and result.collider:
+		var hit = result.collider
+		if not "tile_key" in hit and hit.get_parent() != null and "tile_key" in hit.get_parent():
+			hit = hit.get_parent()
+		var hit_name = str(hit.get("unit_name")).to_lower() if hit.get("unit_name") != null else hit.name.to_lower()
+		if is_player_char(hit_name):
+			return false
+		if is_player_unit(hit_name):
+			return false
+		return true
 	return false
 
 func is_enemy_char(u_name: String) -> bool:

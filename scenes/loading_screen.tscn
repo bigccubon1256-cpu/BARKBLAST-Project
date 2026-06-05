@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://7kl55bx34lio" path="res://scripts/loading_screen.gd" id="1_pa1l2"]
 [ext_resource type="Texture2D" uid="uid://0nnx7hbyp8wo" path="res://assets/foto/lightning2.png" id="2_401ed"]
-[ext_resource type="Texture2D" uid="uid://b28asavx3asfs" path="res://assets/foto/PvanforUI.png" id="3_38ncu"]
+[ext_resource type="Texture2D" uid="uid://b28asavx3asfs" path="res://assets/foto/MaxKealforUI.png" id="3_38ncu"]
 [ext_resource type="Texture2D" uid="uid://ky8k3sqlnquf" path="res://assets/foto/VexforUI.png" id="4_jrdmd"]
 [ext_resource type="Texture2D" uid="uid://d1q8xbvatfkk6" path="res://assets/foto/wblot03forUI.png" id="5_qx0w1"]
 [ext_resource type="FontFile" uid="uid://bx3egoaarha46" path="res://assets/Font/Jersey_10/Jersey10-Regular.ttf" id="6_a0ihe"]
+
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pa1l2"]
 bg_color = Color(0.6, 0.6, 0.6, 0)

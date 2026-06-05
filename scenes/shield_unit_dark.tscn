@@ -25,7 +25,6 @@ size = Vector3(1, 3, 0.5)
 mass = 1000.0
 continuous_cd = true
 contact_monitor = true
-max_contacts_reported = 5
 script = ExtResource("1_55qmt")
 unit_name = "shield_block_dark"
 energy_cost = 20.0
