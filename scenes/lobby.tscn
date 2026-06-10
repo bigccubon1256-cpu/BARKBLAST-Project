@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://d1ac68s5inoej" path="res://assets/foto/buttonINVENTORT_2.png" id="7_rgcd7"]
 [ext_resource type="Texture2D" uid="uid://b3u4qtckmf1e1" path="res://assets/foto/buttonSETTING_2.png" id="9_lqo1b"]
 [ext_resource type="Texture2D" uid="uid://c8hoch0tfyl6o" path="res://assets/foto/buttonSETTING_3.png" id="10_o2i1r"]
-[ext_resource type="Texture2D" uid="uid://coqe0ikq0had1" path="res://assets/foto/blackUI.png" id="13_iwi7x"]
+[ext_resource type="Texture2D" uid="uid://coe8t7y6g3uxk" path="res://assets/foto/left-UI.png" id="14_iwi7x"]
 [ext_resource type="Texture2D" uid="uid://ce0fhabwhav3m" path="res://assets/foto/Force-0002-Sheet.png" id="14_o2i1r"]
 [ext_resource type="FontFile" uid="uid://bx3egoaarha46" path="res://assets/Font/Jersey_10/Jersey10-Regular.ttf" id="14_wjff0"]
 [ext_resource type="Texture2D" uid="uid://b471miw5ro6lb" path="res://assets/foto/Sammy-0001-Sheet.png" id="15_iulku"]
@@ -33,9 +33,12 @@ ambient_light_source = 3
 ambient_light_color = Color(0.7251262, 0.6825915, 0, 1)
 tonemap_exposure = 1.13
 glow_enabled = true
-glow_strength = 2.0
-glow_bloom = 0.95
-glow_blend_mode = 2
+glow_levels/1 = 1.0
+glow_levels/2 = 1.0
+glow_levels/3 = 0.6
+glow_levels/4 = 0.3
+glow_intensity = 1.0
+glow_map_strength = 0.0
 fog_enabled = true
 fog_light_color = Color(0.5775623, 0.7642916, 0.7180478, 1)
 fog_density = 0.005
@@ -2550,8 +2553,10 @@ grow_vertical = 2
 layout_mode = 1
 offset_right = 40.0
 offset_bottom = 40.0
-scale = Vector2(2, 2)
-icon = ExtResource("13_iwi7x")
+theme_override_fonts/font = ExtResource("14_wjff0")
+theme_override_font_sizes/font_size = 48
+text = " BACK"
+icon = ExtResource("14_iwi7x")
 
 [node name="BtnLevelTest" type="Button" parent="MainMenuCamera3D/CanvasLayer/UI_Root/ModeSelectPanel" unique_id=555025344]
 layout_mode = 1

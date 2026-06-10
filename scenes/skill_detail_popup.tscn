@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://bavp6x4xkx4ci"]
+
+[ext_resource type="Script" uid="uid://db7v2j8q56mc3" path="res://scripts/SkillDetailPopup.gd" id="1_popup"]
+[ext_resource type="FontFile" uid="uid://bx3egoaarha46" path="res://assets/Font/Jersey_10/Jersey10-Regular.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass"]
+bg_color = Color(0, 0, 0, 0.47058824)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1.8247963, 1.8247963, 1.8247963, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.501961)
+shadow_size = 12
+
+[node name="SkillDetailPopup" type="Panel" unique_id=528237252]
+custom_minimum_size = Vector2(500, 350)
+offset_right = 500.0
+offset_bottom = 350.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+script = ExtResource("1_popup")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1317429525]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="RichTextLabel" parent="VBox" unique_id=1023697056]
+custom_minimum_size = Vector2(450, 0)
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.04391238, 0.24193671, 0.23672292, 1)
+theme_override_colors/font_outline_color = Color(0.19265309, 0.8794613, 0.8794613, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_fonts/bold_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 38
+bbcode_enabled = true
+text = "Forces Chain Shoot"
+fit_content = true
+autowrap_mode = 2
+
+[node name="DescLabel" type="RichTextLabel" parent="VBox" unique_id=1389867910]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_fonts/bold_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "When a shot kills an enemy, a random eligible Forces unit with a gun is selected to shoot next. If they kill, the chain continues. If any shot misses or fails to kill, the turn ends immediately. Character selection is locked, and options are restricted to Shoot and Snap."
+fit_content = true
+autowrap_mode = 2
+
+[node name="CondLabel" type="RichTextLabel" parent="VBox" unique_id=658485530]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.6550534, 0.6550533, 0.65505326, 1)
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_fonts/bold_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Conditions: Available from Turn 2 onwards, when Player ARMY HP < 50%."
+fit_content = true
+autowrap_mode = 2
+
+[node name="StatusLabel" type="RichTextLabel" parent="VBox" unique_id=1722984403]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(1, 1, 0.34901962, 1)
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_fonts/bold_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "Charge: 0%"
+fit_content = true
+autowrap_mode = 2

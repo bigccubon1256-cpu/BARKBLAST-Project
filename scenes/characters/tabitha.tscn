@@ -2,54 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://q22dxo7sx13x" path="res://assets/foto/260977_0pixel.png" id="1_eovm5"]
 [ext_resource type="Texture2D" uid="uid://c2a0b31j3gcvo" path="res://assets/foto/Tabitha-Sheet.png" id="2_kohv4"]
-
-[sub_resource type="GDScript" id="GDScript_a5mny"]
-script/source = "extends CharacterBody3D
-
-@export_group(\"Unit Stats\")
-@export var unit_name: String = \"Tabitha\"
-@export var energy_cost: float = 4.0     # ราคาที่ใช้ตอนวาง (Energy)
-@export var hp_gain_on_place: int = 20   # HP ที่กองทัพได้รับเพิ่มเมื่อวางตัวนี้ลง
-@export var hp_loss_on_death: int = 20   # HP ที่กองทัพจะเสียไปเมื่อตัวนี้ตาย (ปรับให้มากกว่าตอนวางได้!)
-
-# --- สัญญาณบอก Event ---
-# ส่งค่า hp_loss ไปเพื่อให้สคริปต์หลักลบแต้มได้ถูกต้อง
-signal character_down(hp_to_loss, key)
-
-var is_dead: bool = false
-var tile_key: String = \"\"
-
-func _ready():
-	set_physics_process(false)
-
-
-func start_combat():
-	print(\"ซอเรนพร้อมรบ!\")
-	# ใส่คำสั่งให้เริ่มเล่นแอนิเมชันถือปืน หรือเริ่มเล็งศัตรูตรงนี้
-
-
-func activate_unit(key: String):
-	tile_key = key
-	set_physics_process(true)
-
-func _physics_process(_delta):
-	if is_dead: return
-	
-	# เช็กการล้ม (เหมือนเดิม)
-	var angle = rad_to_deg(global_transform.basis.y.angle_to(Vector3.UP))
-	if angle > 60:
-		die()
-
-func die():
-	if is_dead: return
-	is_dead = true
-	
-	# ส่งค่า \"HP ที่เสียตอนตาย\" กลับไป
-	character_down.emit(hp_loss_on_death, tile_key)
-	
-	print(unit_name, \" ตายแล้ว! เสีย HP กองทัพ: \", hp_loss_on_death)
-	queue_free()
-"
+[ext_resource type="Script" uid="uid://bwgroapr8h3ty" path="res://scripts/tabitha.gd" id="3_script"]
+[ext_resource type="Script" uid="uid://bfqe405dluwvp" path="res://scripts/HighlightComponent.gd" id="4_highlight"]
+[ext_resource type="Material" uid="uid://cq628ulikhkk8" path="res://Shader/OutlineHighlightMaterial.tres" id="5_material"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dhi2y"]
 size = Vector3(1, 3, 0.5)
@@ -901,8 +856,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Tabitha" type="CharacterBody3D" unique_id=1907965456]
-script = SubResource("GDScript_a5mny")
+[node name="Tabitha" type="RigidBody3D" unique_id=1907965456]
+script = ExtResource("3_script")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1991703753]
 shape = SubResource("BoxShape3D_dhi2y")
@@ -917,3 +872,7 @@ transform = Transform3D(0.4516383, 0, -5.9604645e-08, 0, 0.48709095, 0, 4.470348
 sprite_frames = SubResource("SpriteFrames_dhi2y")
 animation = &"TabithaIdle"
 autoplay = "TabithaIdle"
+
+[node name="HighlightPulsingComponent" type="Node" parent="." unique_id=1922531190]
+script = ExtResource("4_highlight")
+base_material = ExtResource("5_material")

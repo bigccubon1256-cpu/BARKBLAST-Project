@@ -44,6 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://b5okd4nyw58g" path="res://assets/foto/button_green-down.png" id="42_lf5n2"]
 [ext_resource type="Script" uid="uid://bw0jwmhpndq8" path="res://scripts/AnimatedButton.gd.gd" id="42_quj86"]
 [ext_resource type="Texture2D" uid="uid://cnbwss6jj6dka" path="res://assets/foto/button_red-down.png" id="43_red_down"]
+[ext_resource type="PackedScene" path="res://scenes/skill_ui_container.tscn" id="47_quj86"]
 [ext_resource type="Script" uid="uid://cdsk5l3sfggf7" path="res://scripts/PauseController.gd" id="pause_controller_script"]
 [ext_resource type="Texture2D" uid="uid://brtpuog6ckroi" path="res://assets/foto/settingUI.png" id="settingUI_tex"]
 [ext_resource type="Texture2D" uid="uid://dswctbumvpiuh" path="res://assets/foto/stopUI.png" id="stopUI_tex"]
@@ -54,6 +55,22 @@ background_color = Color(0.027103946, 0.114819705, 0.092681326, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.4337527, 0.3763091, 1.92523e-07, 1)
 glow_enabled = true
+glow_normalized = false
+glow_intensity = 1.0
+glow_strength = 1.0
+glow_bloom = 0.0
+glow_blend_mode = 1
+glow_hdr_threshold = 1.0
+glow_hdr_scale = 2.0
+glow_hdr_luminance_cap = 12.0
+glow_map_strength = 0.0
+glow_levels/1 = 1.0
+glow_levels/2 = 1.0
+glow_levels/3 = 0.6
+glow_levels/4 = 0.3
+glow_levels/5 = 0.0
+glow_levels/6 = 0.0
+glow_levels/7 = 0.0
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w26js"]
 
@@ -962,37 +979,92 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -211.0
-offset_top = -159.99998
-offset_right = 189.0
-offset_bottom = 40.0
+offset_left = -256.0
+offset_top = -185.0
+offset_right = 256.0
+offset_bottom = 7.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5k878")
 
 [node name="InputName" type="LineEdit" parent="HUD/BlueprintSaveUI" unique_id=786255229]
-layout_mode = 0
-offset_left = 52.999996
-offset_top = 47.99998
-offset_right = 353.0
-offset_bottom = 78.999985
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -222.0
+offset_top = 32.0
+offset_right = 224.0
+offset_bottom = 83.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 32
 text = "..."
 
 [node name="BtnConfirmSave" type="Button" parent="HUD/BlueprintSaveUI" unique_id=1319611863]
 layout_mode = 0
-offset_left = 52.0
-offset_top = 111.999985
-offset_right = 117.0
-offset_bottom = 153.99998
-theme_override_font_sizes/font_size = 24
+offset_left = 45.0
+offset_top = 91.999985
+offset_right = 173.0
+offset_bottom = 155.99998
+theme_override_styles/normal = SubResource("StyleBoxTexture_s2f71")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3sce4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_s2f71")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_s2f71")
+theme_override_styles/focus = SubResource("StyleBoxTexture_s2f71")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/BlueprintSaveUI/BtnConfirmSave" unique_id=1319611864]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.00001
+offset_top = -26.000006
+offset_right = 35.999985
+offset_bottom = 19.999992
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 42
 text = "SAVE"
 
 [node name="BtnCancelSave" type="Button" parent="HUD/BlueprintSaveUI" unique_id=89224669]
 layout_mode = 0
-offset_left = 252.0
-offset_top = 111.999985
-offset_right = 352.0
-offset_bottom = 153.99998
-theme_override_font_sizes/font_size = 24
+offset_left = 340.0
+offset_top = 91.999985
+offset_right = 468.0
+offset_bottom = 155.99998
+theme_override_styles/normal = SubResource("StyleBoxTexture_0cupr")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quj86")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0cupr")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_0cupr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_0cupr")
+script = ExtResource("42_quj86")
+
+[node name="Label" type="Label" parent="HUD/BlueprintSaveUI/BtnCancelSave" unique_id=89224670]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.00001
+offset_top = -26.000006
+offset_right = 54.999985
+offset_bottom = 19.999992
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("8_lj6eb")
+theme_override_font_sizes/font_size = 42
 text = "CANCEL"
 
 [node name="RenamePopup" type="Panel" parent="HUD" unique_id=371754848]
@@ -1914,6 +1986,20 @@ horizontal_alignment = 1
 process_mode = 3
 script = ExtResource("pause_controller_script")
 
+[node name="SkillUIContainer" parent="HUD" unique_id=826643981 instance=ExtResource("47_quj86")]
+
+[node name="SkillButtonAnchorNormal" parent="HUD/SkillUIContainer" index="0"]
+offset_right = -66.0
+offset_bottom = -66.0
+rotation = 0.7853982
+
+[node name="SkillButtonAnchorSelected" parent="HUD/SkillUIContainer" index="1"]
+offset_left = -427.0
+offset_top = -59.0
+offset_right = -363.0
+offset_bottom = 5.0
+rotation = 0.7853982
+
 [node name="ErrorSoundPlayer" type="AudioStreamPlayer" parent="." unique_id=1161023347]
 stream = ExtResource("6_kk4gi")
 
@@ -1943,3 +2029,5 @@ stream = ExtResource("6_kk4gi")
 [connection signal="pressed" from="HUD/PauseMenu/Panel/BtnSettings" to="." method="_on_pause_settings_pressed"]
 [connection signal="pressed" from="HUD/PauseMenu/Panel/BtnExit" to="." method="_on_pause_exit_pressed"]
 [connection signal="pressed" from="HUD/SettingsMenu/Panel/BtnCloseSettings" to="." method="_on_settings_close_pressed"]
+
+[editable path="HUD/SkillUIContainer"]

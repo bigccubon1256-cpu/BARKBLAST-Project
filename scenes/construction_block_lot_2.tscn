@@ -42,12 +42,16 @@ shadow_mesh = SubResource("ArrayMesh_bbdrb")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v8gdf"]
 resource_local_to_scene = true
-albedo_color = Color(4.376549, 5.8510547, 0, 1)
+albedo_color = Color(3.3356972, 4.415934, 0, 1)
 albedo_texture = ExtResource("3_v8gdf")
 texture_filter = 0
 
 [node name="construction_block_lot_2" type="RigidBody3D" unique_id=350566958]
 mass = 3.0
+linear_damp_mode = 1
+linear_damp = 1.0
+angular_damp_mode = 1
+angular_damp = 1.0
 continuous_cd = true
 script = ExtResource("1_5u4hp")
 

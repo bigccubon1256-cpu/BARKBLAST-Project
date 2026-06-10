@@ -15,6 +15,10 @@ texture_filter = 0
 
 [node name="construction_block_lot_1" type="RigidBody3D" unique_id=350566958]
 mass = 2.0
+linear_damp_mode = 1
+linear_damp = 1.0
+angular_damp_mode = 1
+angular_damp = 1.0
 continuous_cd = true
 script = ExtResource("1_5kdwe")
 

@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bw1c0434v2gtk" path="res://scripts/leveltest_selection.gd" id="1_cgxtj"]
 [ext_resource type="Texture2D" uid="uid://b54mma313nxvp" path="res://assets/foto/261009_0.jpg" id="2_kyqwy"]
-[ext_resource type="Texture2D" uid="uid://coqe0ikq0had1" path="res://assets/foto/blackUI.png" id="3_kyqwy"]
 [ext_resource type="FontFile" uid="uid://bx3egoaarha46" path="res://assets/Font/Jersey_10/Jersey10-Regular.ttf" id="4_7i6qv"]
+[ext_resource type="Texture2D" uid="uid://coe8t7y6g3uxk" path="res://assets/foto/left-UI.png" id="4_kyqwy"]
 [ext_resource type="Script" uid="uid://e35ahp618yae" path="res://scripts/btn_level_1.gd" id="5_kyqwy"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sm06h"]
@@ -31,8 +31,10 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_sm06h")
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-scale = Vector2(2.5, 2.5)
-icon = ExtResource("3_kyqwy")
+theme_override_fonts/font = ExtResource("4_7i6qv")
+theme_override_font_sizes/font_size = 48
+text = " BACK"
+icon = ExtResource("4_kyqwy")
 
 [node name="LevelGrid" type="GridContainer" parent="." unique_id=905043347]
 layout_mode = 1
@@ -75,7 +77,16 @@ text = "Level 3"
 script = ExtResource("5_kyqwy")
 level_scene_path = "uid://p8j8bm40tnrc"
 
+[node name="BtnLevel4" type="Button" parent="LevelGrid" unique_id=103251014]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_7i6qv")
+theme_override_font_sizes/font_size = 96
+text = "Level 4"
+script = ExtResource("5_kyqwy")
+level_scene_path = "uid://2xvqmoy00ve2"
+
 [connection signal="pressed" from="BtnBack" to="." method="_on_btn_back_pressed"]
 [connection signal="pressed" from="LevelGrid/BtnLevel1" to="." method="_on_btn_level_1_pressed"]
 [connection signal="pressed" from="LevelGrid/BtnLevel2" to="." method="_on_btn_level_1_pressed"]
 [connection signal="pressed" from="LevelGrid/BtnLevel3" to="." method="_on_btn_level_1_pressed"]
+[connection signal="pressed" from="LevelGrid/BtnLevel4" to="." method="_on_btn_level_1_pressed"]

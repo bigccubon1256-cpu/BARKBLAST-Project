@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/SkillButton.gd" id="1_button"]
+[ext_resource type="Shader" path="res://Shader/skill_progress.gdshader" id="2_shader"]
+[ext_resource type="Shader" path="res://Shader/skill_glow_aura.gdshader" id="3_glow_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_progress"]
+shader = ExtResource("2_shader")
+shader_parameter/progress = 0.0
+shader_parameter/tint = Color(0, 0.9, 1, 1)
+shader_parameter/glow_strength = 1.8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+shader = ExtResource("3_glow_shader")
+shader_parameter/glow_color = Color(0, 0.9, 1, 1)
+shader_parameter/intensity = 1.4
+
+[node name="SkillButton" type="TextureButton"]
+custom_minimum_size = Vector2(80, 80)
+offset_right = 80.0
+offset_bottom = 80.0
+ignore_texture_size = true
+stretch_mode = 6
+script = ExtResource("1_button")
+
+[node name="GlowAura" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_glow")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+mouse_filter = 2
+
+[node name="ProgressBar" type="TextureProgressBar" parent="."]
+material = SubResource("ShaderMaterial_progress")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+fill_mode = 3
+nine_patch_stretch = true
+tint_progress = Color(1, 1, 1, 1)
+mouse_filter = 2

@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/SkillUI.gd" id="1_skill_ui"]
+[ext_resource type="PackedScene" path="res://scenes/skill_detail_popup.tscn" id="2_popup"]
+
+[node name="SkillUIContainer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_skill_ui")
+
+[node name="SkillButtonAnchorNormal" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -130.0
+offset_right = -66.0
+offset_bottom = -66.0
+rotation = 0.7853982
+pivot_offset = Vector2(32, 32)
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SkillButtonAnchorSelected" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -447.0
+offset_top = -59.0
+offset_right = -383.0
+offset_bottom = 5.0
+rotation = 0.7853982
+pivot_offset = Vector2(32, 32)
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="SkillDetailPopup" parent="." instance=ExtResource("2_popup")]
+visible = false
+layout_mode = 1
