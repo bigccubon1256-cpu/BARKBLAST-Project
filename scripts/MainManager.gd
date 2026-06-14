@@ -475,8 +475,74 @@ func _ready():
 		else:
 			turn_status_label.text = "YOU GO SECOND"
 
+	# Setup replay button in the pause menu dynamically
+	_setup_pause_menu_replay_button()
 
+# ==========================================
+# ⏸️ ระบบตั้งค่าปุ่ม REPLAY ในเมนูหยุดเกม (Pause Menu Replay Button Dynamic Setup)
+# ==========================================
+func _setup_pause_menu_replay_button():
+	var pause_menu = get_node_or_null("HUD/PauseMenu")
+	if not pause_menu:
+		print("⚠️ PauseMenu not found in scene.")
+		return
+	var panel = pause_menu.get_node_or_null("Panel")
+	if not panel:
+		print("⚠️ PauseMenu Panel not found.")
+		return
+		
+	# 1. ปรับขนาดของ Panel เพื่อรองรับปุ่ม 4 ปุ่ม (ความสูง 440 แทน 360)
+	panel.offset_top = -220
+	panel.offset_bottom = 220
+	
+	# 2. ดึงปุ่มที่มีอยู่แล้ว
+	var btn_resume = panel.get_node_or_null("BtnResume")
+	var btn_settings = panel.get_node_or_null("BtnSettings")
+	var btn_exit = panel.get_node_or_null("BtnExit")
+	
+	if not btn_resume or not btn_settings or not btn_exit:
+		print("⚠️ One or more pause menu buttons not found.")
+		return
+		
+	# 3. สร้างปุ่ม BtnReplay โดยการก๊อปปี้จาก BtnSettings (ใช้สีไม้แบบเดียวกัน)
+	var btn_replay = panel.get_node_or_null("BtnReplay")
+	if not btn_replay:
+		btn_replay = btn_settings.duplicate()
+		btn_replay.name = "BtnReplay"
+		panel.add_child(btn_replay)
+		
+		# รีเซ็ตสถานะการโหลดของสคริปต์แอนิเมชันปุ่ม
+		btn_replay.set("is_initialized", false)
+		
+		# ล้างการเชื่อมต่อ Event pressed ที่ติดมาจากการก๊อปปี้ปุ่ม Settings
+		for connection in btn_replay.pressed.get_connections():
+			btn_replay.pressed.disconnect(connection.callable)
+			
+		# เชื่อมสัญญาณกดปุ่มไปยังฟังก์ชันรีสตาร์ท
+		btn_replay.pressed.connect(_on_btn_restart_pressed)
+		
+		# เปลี่ยนข้อความในปุ่มเป็น REPLAY
+		var lbl = btn_replay.get_node_or_null("Label")
+		if lbl:
+			lbl.text = "REPLAY"
+			btn_replay.label = lbl
 
+	# 4. จัดเรียงตำแหน่งของทั้ง 4 ปุ่มอย่างสมมาตรพร้อมระยะห่าง 15px
+	# - BtnResume: top = -95, bottom = -35
+	# - BtnReplay: top = -20, bottom = 40
+	# - BtnSettings: top = 55, bottom = 115
+	# - BtnExit: top = 130, bottom = 190
+	btn_resume.offset_top = -95
+	btn_resume.offset_bottom = -35
+	
+	btn_replay.offset_top = -20
+	btn_replay.offset_bottom = 40
+	
+	btn_settings.offset_top = 55
+	btn_settings.offset_bottom = 115
+	
+	btn_exit.offset_top = 130
+	btn_exit.offset_bottom = 190
 
 # ==========================================
 # 🧹 ฟังก์ชันสแกนทะลวงไส้ หาขยะพิมพ์เขียวทุกซอกทุกมุม
