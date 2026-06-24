@@ -233,6 +233,9 @@ var is_max_kael_skill_used: bool = false
 var enemies_killed_this_action: int = 0
 var active_skill_theme_color: Color = Color(0.0, 0.9, 1.0, 1.0)
 var screen_glow_fade: float = 0.0
+var screen_glow_border: ColorRect = null # 🌟 Cached Glow Border
+var last_single_drag_grid_pos: Vector3 = Vector3.INF # 🌟 Cached Drag Grid Pos
+var last_single_drag_rot_y: float = -999.0 # 🌟 Cached Drag Rotation
 var is_tabitha_targeting_mode: bool = false
 var active_tabitha_node: Node3D = null
 var tabitha_revive_popup: Control = null
@@ -337,6 +340,7 @@ func _ready():
 		glow_rect.material = mat
 		glow_rect.hide()
 		hud_node.add_child(glow_rect)
+		screen_glow_border = glow_rect # 🌟 Cache here
 		
 	var btn_shoot = combat_menu.get_node_or_null("BtnCombatShoot")
 	if btn_shoot:
@@ -578,6 +582,9 @@ func _clean_up_deep_garbage(current_node: Node):
 # 🌟 ฟังก์ชันเสก Replay แบบหน่วงเวลา (เวอร์ชันกันกระสุน 100%)
 # ==========================================
 func _start_delayed_replay():
+	# 🌟 [เพิ่มตรงนี้] ดึง Energy และ HP ก่อนกด Start ของตาก่อนกลับมาทันที!
+	current_energy = Global.saved_player_energy
+	total_hp = Global.saved_player_hp
 	
 	# ==========================================
 	# 🧹 กวาดล้างซากพิมพ์เขียว (ไอ้ 18 บล็อก) ที่ตกค้างอยู่ในฉาก
@@ -674,8 +681,8 @@ func _start_delayed_replay():
 				block_instance.global_transform.origin = pos
 			block_instance.global_rotation = data.get("rotation", Vector3.ZERO)
 			
-			current_energy -= data.get("cost", 1.0)
-			total_hp += data.get("hp", 0)
+			# 🌟 [แก้บั๊กการนับคอสตลอดกาล] ข้อมูล Energy และ HP ถูกดึงมาจาก Global รวดเดียวแล้ว 
+			# ดังนั้น ไม่ต้องมาหักลบทีละชิ้นตอน Load อีก! ไม่งั้นถ้าย้อนหลายเทิร์นคอสจะติดลบมหาศาล
 			
 			var tile_key = get_tile_key(pos) + "_" + str(block_instance.get_instance_id())
 			block_instance.tile_key = tile_key
@@ -967,22 +974,21 @@ func is_position_safe(target_pos: Vector3, current_unit: Node3D) -> bool:
 
 func _process(delta: float) -> void:
 	# อัปเดตเอฟเฟกต์ ScreenGlowBorder สำหรับสกิลตัวละคร (พร้อมระบบเฟดลื่นๆ และกระพริบช้าๆ 1 ครั้งต่อ 1.25 วินาที)
-	var glow_rect = $HUD.get_node_or_null("ScreenGlowBorder") if has_node("HUD") else null
-	if glow_rect:
+	if screen_glow_border:
 		if is_max_kael_skill_active or is_tabitha_skill_glow_active:
 			screen_glow_fade = move_toward(screen_glow_fade, 1.0, delta * 3.0) # เฟดเข้าประมาณ 0.3 วินาที
 		else:
 			screen_glow_fade = move_toward(screen_glow_fade, 0.0, delta * 2.0) # เฟดออกประมาณ 0.5 วินาที
 			
 		if screen_glow_fade > 0.0:
-			glow_rect.material.set_shader_parameter("border_color", active_skill_theme_color)
+			screen_glow_border.material.set_shader_parameter("border_color", active_skill_theme_color)
 			var time = Time.get_ticks_msec() / 1000.0
 			# กระพริบช้าๆ คล้ายหลอดไฟหรี่ 1 ครั้งต่อ 1.25 วินาที (2 * PI / 1.25 = 5.026) และหรี่สว่างลงเพื่อไม่ให้ลายตา
 			var flicker = 0.58 + 0.18 * sin(time * 5.026)
-			glow_rect.material.set_shader_parameter("intensity", flicker * screen_glow_fade)
-			glow_rect.show()
+			screen_glow_border.material.set_shader_parameter("intensity", flicker * screen_glow_fade)
+			screen_glow_border.show()
 		else:
-			glow_rect.hide()
+			screen_glow_border.hide()
 
 	# 1. ระบบลากวางตัวละคร (Snap to Grid)
 	if dragging_unit:
@@ -992,54 +998,57 @@ func _process(delta: float) -> void:
 			# 1. คำนวณตำแหน่งพื้นฐาน
 			var snap_x = snapped(pos.x, snap_step)
 			var snap_z = snapped(pos.z, snap_step)
-		
 			
-
-			# --- หลังจากนี้ให้เป็นโค้ด Auto-Stacking และ Is_Safe เดิมของพี่ได้เลย ---
+			var current_snap_pos = Vector3(snap_x, 0.0, snap_z)
+			var current_rot_y = dragging_unit.global_rotation.y
 			
-			# --- [เพิ่มใหม่] โค้ดปรับความสูงตอนบล็อกนอน ---
-			# --- [แก้ไข] โค้ดปรับความสูงตอนบล็อกนอนให้ฉลาดขึ้น ---
-			# --- ระบบคำนวณความสูงอัตโนมัติสำหรับทุกยูนิต (ทั้งบล็อกและตัวละคร) ---
-			# ไม่ว่าจะเป็นใคร หรือหมุนท่าไหน จะคำนวณจากกล่อง AABB จริงๆ
-			# --- ระบบคำนวณความสูงอัตโนมัติอัจฉริยะ ---
-			var current_aabb = get_unit_global_aabb(dragging_unit.global_position, dragging_unit.global_transform.basis, dragging_unit)
-			var local_bottom_offset = current_aabb.position.y - dragging_unit.global_position.y
-			var target_y = 0.0 - local_bottom_offset
-			
-			# 🌟 [อัปเกรด: คืนชีพความแม่นยำ + ความลื่น 1000%]
-			# 1. คำนวณกล่องของตัวเองที่ Y ล่างสุด (ทำแค่ครั้งเดียว)
-			var test_pos = Vector3(snap_x, target_y, snap_z)
-			var my_base_aabb = get_unit_global_aabb(test_pos, dragging_unit.global_transform.basis, dragging_unit, true)
-			
-			# 2. กวาดกล่องของคนอื่นรอบๆ มาเก็บไว้ (เช็คจาก occupied_tiles)
-			var obstacle_aabbs = []
-			for unit in occupied_tiles.values():
-				if is_instance_valid(unit) and unit != dragging_unit:
-					obstacle_aabbs.append(get_unit_global_aabb(unit.global_position, unit.global_transform.basis, unit, false))
-			
-			# 3. ลูปขยับกล่อง AABB จำลองขึ้นทีละ 0.25 (โคตรไว ไม่ต้องขยับโมเดลจริง)
-			var max_stack_levels = 40 
-			var step_count = 0
-			var is_overlap = true
-			
-			while is_overlap and step_count < max_stack_levels:
-				is_overlap = false
-				# จำลองตำแหน่งกล่องที่ขยับขึ้น
-				var current_test_aabb = my_base_aabb
-				current_test_aabb.position.y += (step_count * snap_step)
+			if current_snap_pos != last_single_drag_grid_pos or current_rot_y != last_single_drag_rot_y:
+				last_single_drag_grid_pos = current_snap_pos
+				last_single_drag_rot_y = current_rot_y
 				
-				# เช็คการชนกับกล่องทุกใบ
-				for obs_aabb in obstacle_aabbs:
-					if current_test_aabb.intersects(obs_aabb):
-						is_overlap = true
-						break # ชนปุ๊บ เลิกเช็ค ดันขึ้นชั้นต่อไปทันที
-						
-				if is_overlap:
-					step_count += 1
-			
-			# 4. ได้ความสูงที่ปลอดภัย 100% แล้ว ค่อยขยับโมเดลจริงแค่รอบเดียวจบ!
-			target_y += (step_count * snap_step)
-			dragging_unit.global_position = Vector3(snap_x, target_y, snap_z)
+				# --- ระบบคำนวณความสูงอัตโนมัติอัจฉริยะ ---
+				var current_aabb = get_unit_global_aabb(dragging_unit.global_position, dragging_unit.global_transform.basis, dragging_unit)
+				var local_bottom_offset = current_aabb.position.y - dragging_unit.global_position.y
+				var target_y = 0.0 - local_bottom_offset
+				
+				# 🌟 [อัปเกรด: คืนชีพความแม่นยำ + ความลื่น 1000%]
+				# 1. คำนวณกล่องของตัวเองที่ Y ล่างสุด (ทำแค่ครั้งเดียว)
+				var test_pos = Vector3(snap_x, target_y, snap_z)
+				var my_base_aabb = get_unit_global_aabb(test_pos, dragging_unit.global_transform.basis, dragging_unit, true)
+				
+				# 2. กวาดกล่องของคนอื่นรอบๆ มาเก็บไว้ (เช็คจาก occupied_tiles)
+				var obstacle_aabbs = []
+				for unit in occupied_tiles.values():
+					if is_instance_valid(unit) and unit != dragging_unit:
+						obstacle_aabbs.append(get_unit_global_aabb(unit.global_position, unit.global_transform.basis, unit, false))
+				
+				# 3. ลูปขยับกล่อง AABB จำลองขึ้นทีละ 0.25 (โคตรไว ไม่ต้องขยับโมเดลจริง)
+				var max_stack_levels = 40 
+				var step_count = 0
+				var is_overlap = true
+				
+				while is_overlap and step_count < max_stack_levels:
+					is_overlap = false
+					# จำลองตำแหน่งกล่องที่ขยับขึ้น
+					var current_test_aabb = my_base_aabb
+					current_test_aabb.position.y += (step_count * snap_step)
+					
+					# เช็คการชนกับกล่องทุกใบ
+					for obs_aabb in obstacle_aabbs:
+						if current_test_aabb.intersects(obs_aabb):
+							is_overlap = true
+							break # ชนปุ๊บ เลิกเช็ค ดันขึ้นชั้นต่อไปทันที
+							
+					if is_overlap:
+						step_count += 1
+				
+				# 4. ได้ความสูงที่ปลอดภัย 100% แล้ว ค่อยขยับโมเดลจริงแค่รอบเดียวจบ!
+				target_y += (step_count * snap_step)
+				dragging_unit.global_position = Vector3(snap_x, target_y, snap_z)
+			else:
+				# 🌟 ถ้ารัศมีตารางไม่เปลี่ยน ก็แค่ขยับแกน X, Z พอ ไม่ต้องคำนวณแกน Y ใหม่
+				dragging_unit.global_position.x = snap_x
+				dragging_unit.global_position.z = snap_z
 			
 			# 🌟 [อัปเกรด] ทำให้ระบบดูดหอกรองรับหอกศัตรูด้วย (แค่มีคำว่า spear ในชื่อก็พอ)
 			var dragging_name = str(unit_data.get("name", "")).to_lower()
@@ -3579,6 +3588,8 @@ func _on_btn_tab_enemy_shield_pressed() -> void:
 func _on_btn_start_pressed():
 	print("📸 แชะ! ถ่ายรูปจำตำแหน่งยูนิตก่อนเริ่มยิง...")
 	Global.saved_player_blocks.clear()
+	Global.saved_player_energy = current_energy # 🌟 ถ่ายรูปเก็บจำนวนเงินปัจจุบัน
+	Global.saved_player_hp = total_hp           # 🌟 ถ่ายรูปเก็บ HP ปัจจุบัน
 	var all_nodes = occupied_tiles.values()
 	
 	# ==========================================
@@ -5335,6 +5346,14 @@ func run_enemy_ai():
 	var need_move_units = [] 
 	var unarmed_units = []  
 	
+	# Cache alive player characters to avoid repeating get_children() loops
+	var alive_player_units = []
+	for p_unit in get_children():
+		if is_instance_valid(p_unit) and "unit_name" in p_unit:
+			var u_name = str(p_unit.get("unit_name")).to_lower()
+			if is_player_char(u_name) and not p_unit.get("is_dead"):
+				alive_player_units.append(p_unit)
+	
 	# 1. คัดแยกประเภทศัตรูทั้งหมด
 	for unit in occupied_tiles.values():
 		if is_instance_valid(unit) and "unit_name" in unit:
@@ -5354,18 +5373,20 @@ func run_enemy_ai():
 						print("🎯 [AI COUNTER-TARGET] ศัตรู ", unit.name, " ล็อกเป้ายิงสวนใส่ผู้เล่นตัวล่าสุดที่ยิงมา: ", target.name)
 				if not target:
 					# เพิ่มโอกาส 30% ในการสุ่มเล็งยูนิตผู้เล่นที่ยังมีชีวิตตัวอื่นๆ เพื่อให้เกมหลากหลายขึ้น ไม่ยิงตัวเดิมซ้ำซาก
-					if randf() < 0.30:
-						var player_units = []
-						for p_unit in get_children():
-							if is_instance_valid(p_unit) and "unit_name" in p_unit:
-								if is_player_char(str(p_unit.get("unit_name"))) and not p_unit.get("is_dead"):
-									player_units.append(p_unit)
-						if player_units.size() > 0:
-							target = player_units.pick_random()
-							print("🎲 [AI RANDOM TARGET] ศัตรู ", unit.name, " สุ่มเล็งเป้าหมายใหม่: ", target.name)
+					if randf() < 0.30 and alive_player_units.size() > 0:
+						target = alive_player_units.pick_random()
+						print("🎲 [AI RANDOM TARGET] ศัตรู ", unit.name, " สุ่มเล็งเป้าหมายใหม่: ", target.name)
 					
 					if not target:
-						target = get_closest_player_unit(unit.global_position)
+						# ค้นหายูนิตผู้เล่นที่ใกล้ที่สุดจากข้อมูลที่แคชไว้
+						var closest_unit = null
+						var min_dist = 9999.0
+						for p_unit in alive_player_units:
+							var dist = unit.global_position.distance_to(p_unit.global_position)
+							if dist < min_dist:
+								min_dist = dist
+								closest_unit = p_unit
+						target = closest_unit
 				if not target: continue
 				
 				var dist = unit.global_position.distance_to(target.global_position)
@@ -5466,6 +5487,9 @@ func run_enemy_ai():
 			var s = shooter_data["unit"]
 			var t = shooter_data["target"]
 			
+			if not is_instance_valid(s) or not is_instance_valid(t):
+				continue
+				
 			# ── 1. ตรวจสอบการยิงตรงแบบขนาน (Direct Shoot Check) ──
 			var start_pos = s.global_position + Vector3(0, 0.75, 0)
 			var end_pos = t.global_position + Vector3(0, 0.75, 0)
@@ -5537,6 +5561,11 @@ func run_enemy_ai():
 						var wd = shooter_data.duplicate()
 						wd["walk_pos"] = walk_p
 						walk_shooters.append(wd)
+						
+			# เพื่อป้องกันอาการกระตุก เฟรมเรตร่วงกะทันหัน เราจะให้หยุดรอเคลียร์เฟรมทีละตัว
+			await get_tree().process_frame
+			if not is_instance_valid(self) or not is_game_started:
+				return
 		
 		# --- ระบบยิงแทน (Revenge System Prioritization) ---
 		var revenge_direct = []
@@ -6052,10 +6081,10 @@ func find_enemy_snap_pos(enemy: Node3D, target: Node3D) -> Vector3:
 	var forward_dir = dir_to_target
 	
 	# ==========================================
-	# 🌟 สร้างกริดวงกลม 16 ทิศทาง (ซอยย่อย 22.5 องศา) รัศมี 7.0 เมตร
+	# 🌟 สร้างกริดวงกลม 9 ทิศทาง (ปรับลดจาก 16 ทิศทางเพื่อประหยัดสเปค) รัศมี 7.0 เมตร
 	# ==========================================
-	var right_angles = [30.0, 45.0, 60.0, 15.0, 75.0, 90.0, 105.0, 120.0]
-	var left_angles = [-30.0, -45.0, -60.0, -15.0, -75.0, -90.0, -105.0, -120.0]
+	var right_angles = [30.0, 60.0, 90.0, 120.0]
+	var left_angles = [-30.0, -60.0, -90.0, -120.0]
 	var forward_angle = [0.0]
 	
 	var self_rids = []
@@ -6118,7 +6147,8 @@ func find_enemy_snap_pos(enemy: Node3D, target: Node3D) -> Vector3:
 		secondary_angles = []
 		
 	var max_dist = 7.0
-	var steps = int(max_dist / snap_step)
+	var ai_step = 0.5 # ปรับความกว้างในการสแกนหาตำแหน่งแอบยิงเพื่อลดการคำนวณลงครึ่งหนึ่ง
+	var steps = int(max_dist / ai_step)
 	
 	var plan_b_pos = Vector3.ZERO
 	
@@ -6136,7 +6166,7 @@ func find_enemy_snap_pos(enemy: Node3D, target: Node3D) -> Vector3:
 			blocked_dirs[ang] = false
 			
 		for i in range(1, steps + 1):
-			var current_dist = i * snap_step
+			var current_dist = i * ai_step
 			
 			for ang in scan_angles:
 				if blocked_dirs[ang]: continue

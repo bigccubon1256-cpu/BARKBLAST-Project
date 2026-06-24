@@ -19,6 +19,10 @@ var current_page: int = 0
 var btn_prev: Button = null
 var btn_next: Button = null
 
+# ตัวแปรสำหรับลดภาระ _process
+var scan_timer: float = 0.0
+var cached_skill_units: Array = []
+
 func _ready():
 	if detail_panel:
 		detail_panel.hide()
@@ -46,36 +50,41 @@ func _process(_delta):
 		_hide_detail_panel()
 		return
 		
-	# สแกนหาตัวละครในสนามที่มีสกิล
-	var current_skill_units = []
-	for unit in main_manager.occupied_tiles.values():
-		if is_instance_valid(unit) and not unit.get("is_dead") and unit.get("skill_name") != null:
-			# ตรวจสอบว่าเป็นยูนิตฝั่งเรา (ไม่ใช่ enemy)
-			var u_name = str(unit.get("unit_name")).to_lower()
-			if main_manager.has_method("is_player_char") and main_manager.is_player_char(u_name):
-				current_skill_units.append(unit)
-				
-	# เรียงลำดับตามเวลาสร้าง/วางตัวละคร (ตัวที่วางก่อนจะอยู่ซ้ายสุด)
-	current_skill_units.sort_custom(func(a, b):
-		return a.get_instance_id() < b.get_instance_id()
-	)
-				
-	# กวาดล้างปุ่มที่ยูนิตตาย หรือไม่อยู่ในสนามแล้ว
-	var current_ids = []
-	for unit in current_skill_units:
-		current_ids.append(unit.get_instance_id())
-		
-	var ids_to_remove = []
-	for id in active_buttons.keys():
-		if not id in current_ids:
-			ids_to_remove.append(id)
+	# สแกนหาตัวละครในสนามที่มีสกิล (ทำแค่ 4 ครั้งต่อวินาที แทนการทำทุกเฟรม)
+	scan_timer -= _delta
+	if scan_timer <= 0.0:
+		scan_timer = 0.25
+		var temp_skill_units = []
+		for unit in main_manager.occupied_tiles.values():
+			if is_instance_valid(unit) and not unit.get("is_dead") and unit.get("skill_name") != null:
+				# ตรวจสอบว่าเป็นยูนิตฝั่งเรา (ไม่ใช่ enemy)
+				var u_name = str(unit.get("unit_name")).to_lower()
+				if main_manager.has_method("is_player_char") and main_manager.is_player_char(u_name):
+					temp_skill_units.append(unit)
+					
+		# เรียงลำดับตามเวลาสร้าง/วางตัวละคร (ตัวที่วางก่อนจะอยู่ซ้ายสุด)
+		temp_skill_units.sort_custom(func(a, b):
+			return a.get_instance_id() < b.get_instance_id()
+		)
+		cached_skill_units = temp_skill_units
+					
+		# กวาดล้างปุ่มที่ยูนิตตาย หรือไม่อยู่ในสนามแล้ว
+		var current_ids = []
+		for unit in cached_skill_units:
+			current_ids.append(unit.get_instance_id())
 			
-	for id in ids_to_remove:
-		_remove_button(id)
-		if active_detail_unit_id == id:
-			_hide_detail_panel()
-			active_detail_unit_id = -1
-			
+		var ids_to_remove = []
+		for id in active_buttons.keys():
+			if not id in current_ids:
+				ids_to_remove.append(id)
+				
+		for id in ids_to_remove:
+			_remove_button(id)
+			if active_detail_unit_id == id:
+				_hide_detail_panel()
+				active_detail_unit_id = -1
+
+	var current_skill_units = cached_skill_units
 	# คำนวณหน้าของการแสดงผลสกิล
 	var total_skills = current_skill_units.size()
 	var max_page = max(0, ceil(total_skills / 5.0) - 1)

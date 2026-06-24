@@ -174,11 +174,7 @@ func _process(delta: float) -> void:
 		set_process(false)
 		return
 
-	# ซิงค์ transform ให้ duplicate ตามตัวละคร (รองรับ physics movement)
-	for dup in _duplicates:
-		if is_instance_valid(dup) and is_instance_valid(dup.get_parent()):
-			# Duplicate เป็น child ของ mesh → ไม่ต้องซิงค์ (inherit transform อัตโนมัติ)
-			pass
+	# Duplicate เป็น child ของ mesh → ไม่ต้องซิงค์ (inherit transform อัตโนมัติ)
 
 	# นับถอยหลัง flash
 	if _flash_dur > 0.0:
