@@ -1,1 +1,1 @@
-#BARK BLAST GAME - Wood block shooting
+#BARK BLAST GAME - Wood block shooting game
